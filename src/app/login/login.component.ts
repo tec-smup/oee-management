@@ -20,18 +20,21 @@ export class LoginComponent implements OnInit {
     event.preventDefault();
     let user = event.target.elements[0].value;
     let pass = event.target.elements[1].value;
+
     this.user.setUserLoggedIn();
     this.router.navigate(['dashboard']);
 
-    this.http.get('http://paul8liveira.blog.br/oee/api/1/get?token=67RRJQRANOMPQ30Q&fields=1,2,3,4,5&results=2')
-        .map(response => response.json())
-        .subscribe(
-          response => {
-            console.log(response);
-          }, 
-          error => console.log(error)
-        );    
-    return false;
+    console.log(user, pass);
+
+    // this.http.get('http://paul8liveira.blog.br/oee/api/1/get?token=67RRJQRANOMPQ30Q&fields=1,2,3,4,5&results=2')
+    //     .map(response => response.json())
+    //     .subscribe(
+    //       response => {
+    //         console.log(response);
+    //       }, 
+    //       error => console.log(error)
+    //     );    
+    // return false;
   }
 }
 
