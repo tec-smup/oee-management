@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../services/user/user.service';
+import { UserComponent } from '../user/user.component';
 
 @Component({
   selector: 'app-login',
@@ -9,22 +10,21 @@ import { UserService } from '../services/user.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  user: UserComponent = new UserComponent();
 
   constructor(private http: Http, 
               private router: Router,
-              private user: UserService) { }  
+              private userService: UserService) { }  
 
   ngOnInit() {}
 
   loginUser(event) {
     event.preventDefault();
-    let user = event.target.elements[0].value;
-    let pass = event.target.elements[1].value;
 
-    this.user.setUserLoggedIn();
+    this.userService.setUserLoggedIn();
     this.router.navigate(['dashboard']);
 
-    console.log(user, pass);
+    console.log(this.user.username, this.user.password);
 
     // this.http.get('http://paul8liveira.blog.br/oee/api/1/get?token=67RRJQRANOMPQ30Q&fields=1,2,3,4,5&results=2')
     //     .map(response => response.json())
