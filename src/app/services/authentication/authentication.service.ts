@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 
 @Injectable()
 export class AuthenticationService {
     public token: string;
+    public message: string;
 
     constructor(private http: Http) {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -13,18 +14,28 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string): Observable<boolean> {
-        return this.http.post('http://localhost:3000/oee/api/authenticate', 
-            JSON.stringify({ username: username, password: password }))
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    let options = new RequestOptions({ headers: headers });
+
+        var post = {
+            username: username,
+            password: password
+        }
+
+        return this.http.post('http://localhost:3000/oee/api/user/authentication', 
+            "username=teste&password=teste", options)
             .map((response: Response) => {
-                let token = response.json() && response.json().token;
-                if (token) {
-                    this.token = token;
-                    localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-                    return true;
-                } 
-                else {
-                    return false;
+                response = response.json();
+                if(!response.success) {
+                    this.message = response.message;
+                    return false;   
                 }
+                this.token = response.token;
+                localStorage.setItem('currentUser', JSON.stringify({ username: username, token: this.token }));
+                return true;                 
+                
+                console.log(username, password);
+                console.log(response);
             });
     }
 

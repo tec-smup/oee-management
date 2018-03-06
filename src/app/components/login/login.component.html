@@ -3,30 +3,30 @@
         <img class="mb-4" src="./assets/imgs/logo.png" alt="" width="72">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         
-        <label class="form-control-label" for="username">Email address</label>        
+        <label for="username" class="sr-only">E-mail</label> 
         <input 
             name="username" 
             [(ngModel)]="user.username" 
             #username="ngModel" 
             type="email" 
             class="form-control"
-            placeholder="Email address"
+            placeholder="E-mail"
             required autofocus>
         
-        <label for="inputPassword" class="sr-only">Password</label>
+        <label for="password" class="sr-only">Senha</label>
         <input 
             name="password" 
             [(ngModel)]="user.password" 
             type="password" 
             class="form-control" 
-            placeholder="Password" 
+            placeholder="Senha" 
             required>
 
         <button 
             [disabled]="loading || !f.form.valid" 
             class="btn btn-lg btn-primary btn-block" 
             type="submit">
-            Sign in        
+            Entrar
         </button>        
         <div *ngIf="error" class="alert alert-danger">{{error}}</div>        
         <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
