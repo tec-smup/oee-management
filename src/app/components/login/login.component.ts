@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import { UserService } from '../../services/user/user.service';
 import { UserComponent } from '../user/user.component';
+import { AuthenticationService } from '../../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -11,30 +10,32 @@ import { UserComponent } from '../user/user.component';
 })
 export class LoginComponent implements OnInit {
   user: UserComponent = new UserComponent();
+  loading = false;
+  error = '';
 
-  constructor(private http: Http, 
-              private router: Router,
-              private userService: UserService) { }  
+  constructor(private router: Router,
+              private authenticationService: AuthenticationService) { }  
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.authenticationService.logout();
+  }
 
-  loginUser(event) {
+  login(event) {
     event.preventDefault();
-
-    this.userService.setUserLoggedIn();
-    this.router.navigate(['dashboard']);
 
     console.log(this.user.username, this.user.password);
 
-    // this.http.get('http://paul8liveira.blog.br/oee/api/1/get?token=67RRJQRANOMPQ30Q&fields=1,2,3,4,5&results=2')
-    //     .map(response => response.json())
-    //     .subscribe(
-    //       response => {
-    //         console.log(response);
-    //       }, 
-    //       error => console.log(error)
-    //     );    
-    // return false;
+    this.loading = true;
+    this.authenticationService.login(this.user.username, this.user.password)
+        .subscribe(result => {
+            if (result === true) {
+              this.router.navigate(['dashboard']);
+            } 
+            else {
+                this.error = 'Username or password is incorrect';
+                this.loading = false;
+            }
+        });
   }
 }
 

@@ -11,15 +11,15 @@ const appRoutes: Routes = [
     {
       path: 'login',
       component: LoginComponent
-    },  
+    },      
     {
       path: 'dashboard',
       canActivate: [AuthGuard],
       component: DashboardComponent
-    },
+    },    
     {
       path: '**',
-      component: DashboardComponent
+      redirectTo: 'dashboard'
     },    
   ];
 

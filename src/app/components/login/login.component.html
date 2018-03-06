@@ -1,17 +1,34 @@
 <div class="text-center">
-    <form class="form-signin" (submit)="loginUser($event)">
+    <form class="form-signin" name="form" (ngSubmit)="f.form.valid && login($event)" #f="ngForm" novalidate>
         <img class="mb-4" src="./assets/imgs/logo.png" alt="" width="72">
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input name="username" [(ngModel)]="user.username" type="email" class="form-control" placeholder="Email address" required autofocus>
+        
+        <label class="form-control-label" for="username">Email address</label>        
+        <input 
+            name="username" 
+            [(ngModel)]="user.username" 
+            #username="ngModel" 
+            type="email" 
+            class="form-control"
+            placeholder="Email address"
+            required autofocus>
+        
         <label for="inputPassword" class="sr-only">Password</label>
-        <input name="password" [(ngModel)]="user.password" type="password" class="form-control" placeholder="Password" required>
-        <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <input 
+            name="password" 
+            [(ngModel)]="user.password" 
+            type="password" 
+            class="form-control" 
+            placeholder="Password" 
+            required>
+
+        <button 
+            [disabled]="loading || !f.form.valid" 
+            class="btn btn-lg btn-primary btn-block" 
+            type="submit">
+            Sign in        
+        </button>        
+        <div *ngIf="error" class="alert alert-danger">{{error}}</div>        
         <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>
 </div>
