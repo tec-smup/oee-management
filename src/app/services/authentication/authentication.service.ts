@@ -1,46 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 
+import { UserComponent } from '../../components/user/user.component';
+import { Login } from '../../models/login';
+import { environment } from '../../../environments/environment';
+
 @Injectable()
 export class AuthenticationService {
-    public token: string;
-    public message: string;
+    token: string;
 
     constructor(private http: Http) {
         var currentUser = JSON.parse(localStorage.getItem('currentUser'));
         this.token = currentUser && currentUser.token;
     }
 
-    login(username: string, password: string): Observable<boolean> {
-    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    let options = new RequestOptions({ headers: headers });
-
-        var post = {
-            username: username,
-            password: password
-        }
-
-        return this.http.post('http://localhost:3000/oee/api/user/authentication', 
-            "username=teste&password=teste", options)
-            .map((response: Response) => {
-                response = response.json();
-                if(!response.success) {
-                    this.message = response.message;
-                    return false;   
-                }
-                this.token = response.token;
-                localStorage.setItem('currentUser', JSON.stringify({ username: username, token: this.token }));
-                return true;                 
+    login(user: UserComponent): Observable<Login> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
                 
-                console.log(username, password);
-                console.log(response);
+        return this.http.post(environment.userAuthenticationURL, 
+            JSON.stringify(user), { headers: headers })
+            .map(res => {
+                let resJson = res.json();
+                if(resJson.success) {
+                    this.token = resJson.token;
+                    localStorage.setItem('currentUser', JSON.stringify(resJson));                    
+                }
+                return resJson;
             });
     }
 
     logout(): void {
-        // clear token remove user from local storage to log user out
         this.token = null;
         localStorage.removeItem('currentUser');
     }

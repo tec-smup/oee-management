@@ -23,13 +23,13 @@ export class LoginComponent implements OnInit {
   login(event) {
     event.preventDefault();
     this.loading = true;
-    this.authenticationService.login(this.user.username, this.user.password)
+    this.authenticationService.login(this.user)
         .subscribe(result => {
-            if (result === true) {
+            if (result.success) {
               this.router.navigate(['dashboard']);
             } 
             else {
-                this.error = this.authenticationService.message;
+                this.error = result.message;
                 this.loading = false;
             }
         });

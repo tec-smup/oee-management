@@ -2,17 +2,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserService {
-
-  private isUserLoggedIn;
-
-  constructor() { 
-    this.isUserLoggedIn = false;
+  constructor() {     
   }
 
-  setUserLoggedIn() {
-    this.isUserLoggedIn = true;
-  }
-  getUserLoggedIn() {
-    return this.isUserLoggedIn;
+  isUserLoggedIn() {
+    if(localStorage.getItem('currentUser')) {
+      return true;
+    }
+    return false;
   }
 }

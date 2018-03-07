@@ -1,7 +1,7 @@
 <div class="text-center">
     <form class="form-signin" name="form" (ngSubmit)="f.form.valid && login($event)" #f="ngForm" novalidate>
         <img class="mb-4" src="./assets/imgs/logo.png" alt="" width="72">
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <h1 class="h3 mb-3 font-weight-normal">Faça o login</h1>
         
         <label for="username" class="sr-only">E-mail</label> 
         <input 
@@ -28,7 +28,8 @@
             type="submit">
             Entrar
         </button>        
-        <div *ngIf="error" class="alert alert-danger">{{error}}</div>        
+        
+        <div *ngIf="error" class="alert alert-danger alert-margin">{{error}}</div>        
         <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>
 </div>
