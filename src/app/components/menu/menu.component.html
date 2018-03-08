@@ -1,0 +1,89 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+  <div class="sidebar-sticky">
+    
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='dashboard')?'nav-link active':'nav-link'"  [routerLink]="['/dashboard']">
+          <i-home class="feather"></i-home>
+          Dashboard
+        </a>
+      </li>
+    </ul>            
+
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
+      <span>Canal</span>
+    </h6>
+    <ul class="nav flex-column mb-2">
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='criarCanal')?'nav-link active':'nav-link'" href="#">
+          <i-plus-circle class="feather"></i-plus-circle>
+          Criar canal
+        </a>
+      </li>
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='consultarMedicoes')?'nav-link active':'nav-link'" href="#">
+          <i-eye class="feather"></i-eye>
+          Consultar medições
+        </a>
+      </li>
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='deletarMedicoes')?'nav-link active':'nav-link'" href="#">
+          <i-trash-2 class="feather"></i-trash-2>
+          Deletar medições
+        </a>
+      </li>
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='medicaoManual')?'nav-link active':'nav-link'" href="#">
+          <i-plus-circle class="feather"></i-plus-circle>
+          Medição manual
+        </a>
+      </li>
+    </ul>
+
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
+      <span>Máquina</span>
+    </h6>
+    <ul class="nav flex-column mb-2">
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='criarMaquina')?'nav-link active':'nav-link'" [routerLink]="['/machine']">
+          <i-plus-circle class="feather"></i-plus-circle>
+          Criar máquina
+        </a>
+      </li>   
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='pausas')?'nav-link active':'nav-link'" href="#">
+          <i-pause-circle class="feather"></i-pause-circle>
+          Pausas
+        </a>
+      </li>                        
+    </ul>
+
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
+      <span>Administração</span>
+    </h6>
+    <ul class="nav flex-column mb-2">
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='criarUsuario')?'nav-link active':'nav-link'" href="#">
+          <i-plus-circle class="feather"></i-plus-circle>
+          Criar usuário
+        </a>
+      </li> 
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='log')?'nav-link active':'nav-link'" href="#">
+          <i-database class="feather"></i-database>
+          Log
+        </a>
+      </li>                         
+    </ul>
+
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='docs')?'nav-link active':'nav-link'" href="#">
+          <i-help-circle class="feather"></i-help-circle>
+          Docs
+        </a>
+      </li>
+    </ul> 
+
+  </div>
+</nav>

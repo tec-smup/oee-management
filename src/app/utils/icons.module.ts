@@ -4,14 +4,18 @@ import {
   IconEye, 
   IconTrash2, 
   IconDatabase, 
-  IconHelpCircle } from 'angular-feather';
+  IconHelpCircle,
+  IconPauseCircle,
+  IconHome } from 'angular-feather';
 
 const icons = [
     IconPlusCircle, 
     IconEye, 
     IconTrash2, 
     IconDatabase, 
-    IconHelpCircle
+    IconHelpCircle,
+    IconPauseCircle,
+    IconHome
   ];
 
   @NgModule({
