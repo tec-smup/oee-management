@@ -13,6 +13,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { Routing } from './app.routes';
 import { UserComponent } from './components/user/user.component';
 import { AuthenticationService } from './services/authentication/authentication.service';
+import { IconsModule } from './icons.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AuthenticationService } from './services/authentication/authentication.
   imports: [
     Routing,
     BrowserModule,
-    LoginModule      
+    LoginModule,
+    IconsModule
   ],
   providers: [UserService, AuthGuard, AuthenticationService],
   bootstrap: [AppComponent]
