@@ -8,10 +8,10 @@ import { MachineService } from '../../services/machine/machine.service';
   styleUrls: ['./machine.component.css']
 })
 export class MachineComponent implements OnInit {
-  private gridApi;
-  private gridColumnApi;
-  private columnDefs;
-  private editType;
+  public gridApi;
+  public gridColumnApi;
+  public columnDefs;
+  public editType;
 
   constructor(private machineService: MachineService) {     
     this.columnDefs = [
