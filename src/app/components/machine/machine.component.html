@@ -3,16 +3,23 @@
   <div class="row">
     <app-menu linkActive="machine"></app-menu>
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-      <h2>Section title</h2>
+      <h2>Máquinas cadastradas</h2>
       <div class="table-responsive">
-        <ag-grid-angular #agGrid 
-          style="width: 100%; height: 200px;" 
+        
+        <ag-grid-angular #agGrid
+          style="width: 100%; height: 500px;"
+          id="myGrid"
           class="ag-theme-balham"
-          [gridOptions]="gridOptions"
+          [columnDefs]="columnDefs"
+          [enterMovesDownAfterEdit]="true"
+          [enterMovesDown]="true"
+          [editType]="editType"
+          (gridReady)="onGridReady($event)"
           enableColResize
           enableSorting
-          enableFilter>
-        </ag-grid-angular>
+          enableFilter 
+        ></ag-grid-angular>        
+
       </div>
     </main>
   </div>
