@@ -2,14 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MachineComponent } from './machine.component';
+import { SharedModule } from '../shared/shared.module';
+import {AgGridModule} from "ag-grid-angular/main";
+import { MachineService } from '../../services/machine/machine.service';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule,
+    AgGridModule.withComponents([])     
   ],
   declarations: [ 
-    MachineComponent
+    MachineComponent,    
   ],
-  exports: [ MachineComponent ]
+  exports: [ MachineComponent ],
+  providers: [ MachineService ]
 })
 export class MachineModule { }

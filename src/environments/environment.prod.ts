@@ -1,4 +1,6 @@
+const serverURL = 'http://paul8liveira.blog.br/oee/api/';
 export const environment = {
   production: true,
-  userAuthenticationURL: 'http://paul8liveira.blog.br/oee/api/user/authentication'
+  userAuthenticationURL: serverURL + 'user/authentication',
+  machineListURL: serverURL + 'machine/list',
 };
