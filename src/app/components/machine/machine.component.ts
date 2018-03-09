@@ -12,6 +12,7 @@ export class MachineComponent implements OnInit {
   public gridColumnApi;
   public columnDefs;
   public editType;
+  public getRowNodeId;
 
   constructor(private machineService: MachineService) {     
     this.columnDefs = [
@@ -36,6 +37,9 @@ export class MachineComponent implements OnInit {
       },
     ];
     this.editType = "fullRow";
+    this.getRowNodeId = function(data) {
+      return data.id;
+    };    
   }
 
   ngOnInit() {
@@ -51,4 +55,10 @@ export class MachineComponent implements OnInit {
     }); 
     params.api.sizeColumnsToFit();   
   } 
+  updateSort() {
+    this.gridApi.refreshInMemoryRowModel("sort");
+  }
+  updateFilter() {
+    this.gridApi.refreshInMemoryRowModel("filter");
+  }  
 }
