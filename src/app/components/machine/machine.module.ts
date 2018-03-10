@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { MachineComponent } from './machine.component';
 import { SharedModule } from '../shared/shared.module';
@@ -10,7 +11,8 @@ import { MachineService } from '../../services/machine/machine.service';
   imports: [
     CommonModule,
     SharedModule,
-    AgGridModule.withComponents([])     
+    FormsModule,
+    AgGridModule.withComponents([])    
   ],
   declarations: [ 
     MachineComponent,    

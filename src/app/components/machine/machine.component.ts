@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {GridOptions} from "ag-grid";
 import { MachineService } from '../../services/machine/machine.service';
+import { Machine } from '../../models/machine';
 
 @Component({
   selector: 'app-machine',
@@ -8,11 +9,13 @@ import { MachineService } from '../../services/machine/machine.service';
   styleUrls: ['./machine.component.css']
 })
 export class MachineComponent implements OnInit {
+  public machine: Machine = new Machine();
   public gridApi;
   public gridColumnApi;
   public columnDefs;
   public editType;
   public getRowNodeId;
+  public paginationPageSize = 10;
 
   constructor(private machineService: MachineService) {     
     this.columnDefs = [
@@ -35,6 +38,16 @@ export class MachineComponent implements OnInit {
         field: "product",
         editable: true
       },
+      {
+        headerName: "Last Maintenance",
+        field: "last_maintenance",
+        editable: true
+      },
+      {
+        headerName: "Next Maintenance",
+        field: "next_maintenance",
+        editable: true
+      },
     ];
     this.editType = "fullRow";
     this.getRowNodeId = function(data) {
@@ -55,10 +68,10 @@ export class MachineComponent implements OnInit {
     }); 
     params.api.sizeColumnsToFit();   
   } 
-  updateSort() {
-    this.gridApi.refreshInMemoryRowModel("sort");
-  }
-  updateFilter() {
-    this.gridApi.refreshInMemoryRowModel("filter");
+
+  adicionar(event) {
+    event.preventDefault();
+    var res = this.gridApi.updateRowData({ add: [this.machine] });
+    this.machine = new Machine();
   }  
 }

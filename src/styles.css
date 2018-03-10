@@ -1,4 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
-body {
+html,body {
     font-size: .875rem;
+    overflow-x: hidden;
+}
+.margin-bottom-5px {
+    margin-bottom: 5px;
+}
+.margin-left-5px {
+    margin-left: 5px;
+}
+.padding-10px {
+    padding: 10px;
+}
+.color-snow {
+    color: snow;
+}
+
+.row-vcenter {
+    display: flex;
+    align-items: center;
+}
+
+.form-control-no-border {
+    border-radius: 0;
+    font-size: 14px;
+}
+
+.btn-no-border {
+    border-radius: 0;
+}
+
+.card {
+    border-radius: 0;
+}
+.card-header {
+    border-bottom: 0;
 }

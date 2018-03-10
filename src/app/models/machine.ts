@@ -1,10 +1,14 @@
-export class Machine {
-    constructor(
-      public code: string,
-      public name: string,
-      public department?: string,
-      public product?: string,
-      public last_maintenance?: string,
-      public next_maintenance?: string,
-    ) {  }  
+import { BaseModel } from "./baseModel";
+
+export class Machine extends BaseModel {
+  code: string;
+  name: string;
+  department?: string;
+  product?: string;
+  last_maintenance?: string;
+  next_maintenance?: string;
+  
+  constructor() {
+    super();
+  }  
 }
