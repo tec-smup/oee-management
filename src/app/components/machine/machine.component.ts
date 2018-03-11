@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import {GridOptions} from "ag-grid";
 import { MachineService } from '../../services/machine/machine.service';
 import { Machine } from '../../models/machine';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 @Component({
   selector: 'app-machine',
@@ -9,15 +10,17 @@ import { Machine } from '../../models/machine';
   styleUrls: ['./machine.component.css']
 })
 export class MachineComponent implements OnInit {
-  public machine: Machine = new Machine();
-  public gridApi;
-  public gridColumnApi;
-  public columnDefs;
-  public editType;
-  public getRowNodeId;
-  public paginationPageSize = 10;
+  machine: Machine = new Machine();
+  gridApi;
+  gridColumnApi;
+  columnDefs;
+  paginationPageSize = 10;
+  rowSelection = "multiple";
 
-  constructor(private machineService: MachineService) {     
+  constructor(private machineService: MachineService, 
+              public toastr: ToastsManager, 
+              vcr: ViewContainerRef) {
+    this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
       {
           headerName: "Code",
@@ -26,7 +29,7 @@ export class MachineComponent implements OnInit {
       {
           headerName: "Name",
           field: "name",
-          editable: true
+          editable: true         
       },
       {
         headerName: "Department",
@@ -48,17 +51,13 @@ export class MachineComponent implements OnInit {
         field: "next_maintenance",
         editable: true
       },
-    ];
-    this.editType = "fullRow";
-    this.getRowNodeId = function(data) {
-      return data.id;
-    };    
+    ];    
   }
 
   ngOnInit() {
   }
 
-  onGridReady(params) {
+  private onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
 
@@ -67,11 +66,30 @@ export class MachineComponent implements OnInit {
       params.api.setRowData(result);
     }); 
     params.api.sizeColumnsToFit();   
+  }
+  private onCellValueChanged(event) {
+    this.machineService.addOrUpdate(event.data)
+    .subscribe(
+      result => {},
+      error => {
+        let message = error.status + " - " + error.statusText + error._body;
+        this.toastr.error(message, "Oops!");
+      }
+    );
   } 
 
-  adicionar(event) {
+  private add(event) {
     event.preventDefault();
     var res = this.gridApi.updateRowData({ add: [this.machine] });
+    this.machineService.addOrUpdate(this.machine)
+    .subscribe(result => {});
     this.machine = new Machine();
+  }
+
+  private remove() {
+    var selectedData = this.gridApi.getSelectedRows();
+    console.log(selectedData);
+    // var res = this.gridApi.updateRowData({ remove: selectedData });
+    // printResult(res);
   }  
 }

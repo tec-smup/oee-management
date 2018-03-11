@@ -11,7 +11,7 @@ import { AuthenticationService } from '../../services/authentication/authenticat
 export class LoginComponent implements OnInit {
   user: UserComponent = new UserComponent();
   loading = false;
-  error = '';
+  message = '';
 
   constructor(private router: Router,
               private authenticationService: AuthenticationService) { }  
@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['dashboard']);
             } 
             else {
-                this.error = result.message;
+                this.message = result.message;
                 this.loading = false;
             }
         });

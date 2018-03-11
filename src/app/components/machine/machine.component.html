@@ -19,7 +19,7 @@
                 <div class="card-block padding-10px">
                   <form 
                     name="form" 
-                    (ngSubmit)="f.form.valid && adicionar($event)" #f="ngForm" novalidate 
+                    (ngSubmit)="f.form.valid && add($event)" #f="ngForm" novalidate 
                     class="needs-validation">
 
                     <div class="row">
@@ -88,7 +88,15 @@
                           type="submit">
                           Adicionar
                         </button>
-                      </div>                            
+                      </div>          
+                      <div class="col-md-2 mb-3 vcenter">
+                        <button 
+                          (click)="remove()"
+                          class="btn btn-no-border btn-primary btn-lg btn-block" 
+                          type="button">
+                          Remover selecionada
+                        </button>
+                      </div>                                         
                     </div>
                     <div 
                       *ngIf="machine.message" 
@@ -111,15 +119,15 @@
           [columnDefs]="columnDefs"
           [enterMovesDownAfterEdit]="true"
           [enterMovesDown]="true"
-          [editType]="editType"
           [animateRows]="true"
-          [getRowNodeId]="getRowNodeId"
+          [rowSelection]="rowSelection"
           (gridReady)="onGridReady($event)"
           enableColResize
           enableSorting
           enableFilter 
           [pagination]="true"
           [paginationPageSize]="paginationPageSize"
+          (cellValueChanged)="onCellValueChanged($event)"
         ></ag-grid-angular>        
 
       </div>

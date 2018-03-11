@@ -8,4 +8,5 @@ export const environment = {
   production: false,
   userAuthenticationURL: serverURL + 'user/authentication',
   machineListURL: serverURL + 'machine/list',
+  machineAddURL: serverURL + 'machine',
 };

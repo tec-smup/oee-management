@@ -12,7 +12,7 @@ import { MachineService } from '../../services/machine/machine.service';
     CommonModule,
     SharedModule,
     FormsModule,
-    AgGridModule.withComponents([])    
+    AgGridModule.withComponents([])   
   ],
   declarations: [ 
     MachineComponent,    

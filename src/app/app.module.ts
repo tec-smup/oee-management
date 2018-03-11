@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { Routing } from './app.routes';
 
@@ -15,6 +16,7 @@ import { UserComponent } from './components/user/user.component';
 
 import { AuthenticationService } from './services/authentication/authentication.service';
 import { UserService } from './services/user/user.service';
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 @NgModule({
   declarations: [
@@ -24,9 +26,11 @@ import { UserService } from './services/user/user.service';
   imports: [
     Routing,
     BrowserModule,
+    BrowserAnimationsModule,
     LoginModule, 
     DashboardModule,   
-    MachineModule
+    MachineModule,
+    ToastModule.forRoot()
   ],
   providers: [
     UserService, 

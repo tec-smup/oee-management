@@ -1,7 +1,7 @@
-export class Login {
-  public success: boolean;
-  public message: string;
-  public token?: string;
+import { BaseModel } from "./baseModel";
 
-  constructor() {  }  
+export class Login extends BaseModel {
+  constructor() {  
+    super();
+  }  
 }

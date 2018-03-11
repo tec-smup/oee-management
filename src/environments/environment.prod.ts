@@ -3,4 +3,5 @@ export const environment = {
   production: true,
   userAuthenticationURL: serverURL + 'user/authentication',
   machineListURL: serverURL + 'machine/list',
+  machineAddURL: serverURL + 'machine',
 };

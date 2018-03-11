@@ -21,12 +21,14 @@
       "styles": [
         "styles.css",
         "../node_modules/ag-grid/dist/styles/ag-grid.css",
-        "../node_modules/ag-grid/dist/styles/ag-theme-balham.css"
+        "../node_modules/ag-grid/dist/styles/ag-theme-balham.css",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css"
       ],
       "scripts": [
         "./assets/js/jquery-3.1.1.slim.min.js",
         "./assets/js/tether.min.js",
-        "./assets/js/bootstrap.min.js"        
+        "./assets/js/bootstrap.min.js",
+        "../node_modules/ng2-toastr/bundles/ng2-toastr.min.js"     
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
