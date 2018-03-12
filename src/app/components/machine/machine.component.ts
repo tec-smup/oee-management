@@ -72,7 +72,7 @@ export class MachineComponent implements OnInit {
       }); 
     params.api.sizeColumnsToFit();   
   }
-  private onCellValueChanged(event) {
+  onCellValueChanged(event) {
     //isso nao precisa, remover quando ativar o jwt
     let machine = new Machine();
     machine.code = event.data.code;
@@ -92,7 +92,7 @@ export class MachineComponent implements OnInit {
     );
   } 
 
-  private add(event) {
+  add(event) {
     event.preventDefault();
     var res = this.gridApi.updateRowData({ add: [this.machine] });
     this.machineService.add(this.machine)
@@ -106,7 +106,7 @@ export class MachineComponent implements OnInit {
     this.machine = new Machine();
   }
 
-  private remove() {
+  remove() {
     var selectedData = this.gridApi.getSelectedRows();
     console.log(selectedData);
     // var res = this.gridApi.updateRowData({ remove: selectedData });
