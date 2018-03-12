@@ -16,6 +16,7 @@ export class MachineComponent implements OnInit {
   columnDefs;
   paginationPageSize = 10;
   rowSelection = "multiple";
+  editType = "fullRow";
 
   constructor(private machineService: MachineService, 
               public toastr: ToastsManager, 
@@ -62,13 +63,26 @@ export class MachineComponent implements OnInit {
     this.gridColumnApi = params.columnApi;
 
     this.machineService.list()
-    .subscribe(result => {
-      params.api.setRowData(result);
-    }); 
+    .subscribe(
+      result => {
+        params.api.setRowData(result);
+      },
+      error => {
+        this.toastr.error("Parece que houve um erro de comunicação, tente daqui a pouco.", "Oops!");
+      }); 
     params.api.sizeColumnsToFit();   
   }
   private onCellValueChanged(event) {
-    this.machineService.addOrUpdate(event.data)
+    //isso nao precisa, remover quando ativar o jwt
+    let machine = new Machine();
+    machine.code = event.data.code;
+    machine.name = event.data.name;
+    machine.department = event.data.department;
+    machine.product = event.data.product;
+    machine.last_maintenance = event.data.last_maintenance;
+    machine.next_maintenance = event.data.next_maintenance;
+
+    this.machineService.update(machine)
     .subscribe(
       result => {},
       error => {
@@ -81,8 +95,14 @@ export class MachineComponent implements OnInit {
   private add(event) {
     event.preventDefault();
     var res = this.gridApi.updateRowData({ add: [this.machine] });
-    this.machineService.addOrUpdate(this.machine)
-    .subscribe(result => {});
+    this.machineService.add(this.machine)
+    .subscribe(
+      result => {},
+      error => {
+        let message = error.status + " - " + error.statusText + error._body;
+        this.toastr.error(message, "Oops!");
+      }      
+    );
     this.machine = new Machine();
   }
 

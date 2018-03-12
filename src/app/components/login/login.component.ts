@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserComponent } from '../user/user.component';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,11 @@ export class LoginComponent implements OnInit {
   message = '';
 
   constructor(private router: Router,
-              private authenticationService: AuthenticationService) { }  
+              private authenticationService: AuthenticationService,
+              public toastr: ToastsManager, 
+              vcr: ViewContainerRef) { 
+                this.toastr.setRootViewContainerRef(vcr);
+              }  
 
   ngOnInit() {
     this.authenticationService.logout();
@@ -32,6 +37,10 @@ export class LoginComponent implements OnInit {
                 this.message = result.message;
                 this.loading = false;
             }
+        },
+        error => {
+          this.toastr.error("Parece que houve um problema com o servidor, tente daqui a pouco...", "Oops!");
+          this.loading = false;
         });
   }
 } 

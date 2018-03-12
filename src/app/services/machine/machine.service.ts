@@ -20,12 +20,19 @@ export class MachineService {
             .map(res => res.json());
     }
 
-    addOrUpdate(machine: Machine): Observable<Machine> {
+    add(machine: Machine): Observable<Machine> {
         let headers = new Headers({ 'Content-Type': 'application/json' });                
         return this.http.post(environment.machineAddURL, 
             JSON.stringify(machine), { headers: headers })
             .map(res => res.json());            
     }    
+
+    update(machine: Machine): Observable<Machine> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        return this.http.post(environment.machineUpdateURL, 
+            JSON.stringify(machine), { headers: headers })
+            .map(res => res.json());            
+    }      
 
     logout(): void {
         this.token = null;
