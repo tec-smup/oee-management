@@ -58,7 +58,7 @@ export class MachineComponent implements OnInit {
   ngOnInit() {
   }
 
-  private onGridReady(params) {
+  onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
 
