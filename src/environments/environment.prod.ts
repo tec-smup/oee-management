@@ -5,4 +5,5 @@ export const environment = {
   machineListURL: serverURL + 'machine/list',
   machineAddURL: serverURL + 'machine',
   machineUpdateURL: serverURL + 'machine/update',
+  machineDeleteURL: serverURL + 'machine/delete',
 };

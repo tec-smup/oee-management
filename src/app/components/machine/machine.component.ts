@@ -24,13 +24,13 @@ export class MachineComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
       {
-          headerName: "Code",
-          field: "code",
+        headerName: "Code",
+        field: "code",
       },
       {
-          headerName: "Name",
-          field: "name",
-          editable: true         
+        headerName: "Name",
+        field: "name",
+        editable: true         
       },
       {
         headerName: "Department",
@@ -68,28 +68,12 @@ export class MachineComponent implements OnInit {
         params.api.setRowData(result);
       },
       error => {
-        this.toastr.error("Parece que houve um erro de comunicação, tente daqui a pouco.", "Oops!");
+        this.toastr.error(error, "Oops!", { enableHTML: true });
       }); 
     params.api.sizeColumnsToFit();   
   }
   onCellValueChanged(event) {
-    //isso nao precisa, remover quando ativar o jwt
-    let machine = new Machine();
-    machine.code = event.data.code;
-    machine.name = event.data.name;
-    machine.department = event.data.department;
-    machine.product = event.data.product;
-    machine.last_maintenance = event.data.last_maintenance;
-    machine.next_maintenance = event.data.next_maintenance;
-
-    this.machineService.update(machine)
-    .subscribe(
-      result => {},
-      error => {
-        let message = error.status + " - " + error.statusText + error._body;
-        this.toastr.error(message, "Oops!");
-      }
-    );
+    this.update(event.data);
   } 
 
   add(event) {
@@ -99,17 +83,56 @@ export class MachineComponent implements OnInit {
     .subscribe(
       result => {},
       error => {
-        let message = error.status + " - " + error.statusText + error._body;
-        this.toastr.error(message, "Oops!");
+        this.toastr.error(error, "Oops!", { enableHTML: true });
       }      
     );
     this.machine = new Machine();
   }
 
-  remove() {
+  update(data) {
+    //isso nao precisa, remover quando ativar o jwt
+    let machine = new Machine();
+    machine.code = data.code;
+    machine.name = data.name;
+    machine.department = data.department;
+    machine.product = data.product;
+    machine.last_maintenance = data.last_maintenance;
+    machine.next_maintenance = data.next_maintenance;
+    //--------
+
+    this.machineService.update(machine)
+    .subscribe(
+      result => {},
+      error => {
+        this.toastr.error(error, "Oops!", { enableHTML: true });
+      }
+    );    
+  }
+
+  delete() {
     var selectedData = this.gridApi.getSelectedRows();
-    console.log(selectedData);
-    // var res = this.gridApi.updateRowData({ remove: selectedData });
-    // printResult(res);
+    var res = this.gridApi.updateRowData({ remove: selectedData });
+    
+    if(res.remove.length > 0) {
+      res.remove.forEach(row => {
+        //isso nao precisa, remover quando ativar o jwt
+        let machine = new Machine();
+        machine.code = row.data.code;
+        machine.name = row.data.name;
+        machine.department = row.data.department;
+        machine.product = row.data.product;
+        machine.last_maintenance = row.data.last_maintenance;
+        machine.next_maintenance = row.data.next_maintenance;
+        //--------
+
+        this.machineService.delete(machine)
+        .subscribe(
+          result => {},
+          error => {
+            this.toastr.error(error, "Oops!", { enableHTML: true });
+          }
+        );         
+      });      
+    }
   }  
 }
