@@ -82,21 +82,14 @@
                           class="form-control form-control-no-border">
                       </div>
                       <div class="col-md-2 mb-3 vcenter">
+                        <label for="next_maintenance">&nbsp;</label>
                         <button 
                           [disabled]="!f.form.valid"
-                          class="btn btn-no-border btn-primary btn-lg btn-block" 
+                          class="btn btn-no-border btn-primary btn-sm btn-block" 
                           type="submit">
                           Adicionar
                         </button>
-                      </div>          
-                      <div class="col-md-2 mb-3 vcenter">
-                        <button 
-                          (click)="remove()"
-                          class="btn btn-no-border btn-primary btn-lg btn-block" 
-                          type="button">
-                          Remover selecionada
-                        </button>
-                      </div>                                         
+                      </div>                                                  
                     </div>
                     <div 
                       *ngIf="machine.message" 
@@ -110,6 +103,18 @@
           </div>
         </div>
       </div>
+      <div class="row margin-bottom-5px">
+        <div class="col-md-12 order-md-1">
+          <div class="col-md-2">
+            <button 
+              (click)="remove()"
+              class="btn btn-no-border btn-primary btn-sm btn-block" 
+              type="button">
+              Remover selecionada
+            </button>
+          </div>
+        </div>  
+      </div>      
 
       <div class="table-responsive">        
         <ag-grid-angular #agGrid

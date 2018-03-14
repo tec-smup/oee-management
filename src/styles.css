@@ -26,6 +26,9 @@ html,body {
     font-size: 14px;
 }
 
+.btn {
+    font-size: 1rem;
+}
 .btn-no-border {
     border-radius: 0;
 }
