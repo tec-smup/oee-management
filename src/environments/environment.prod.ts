@@ -1,4 +1,4 @@
-const serverURL = 'http://www.paul8liveira.blog.br:8008/oee/api/';
+const serverURL = 'http://www.paul8liveira.blog.br:8008/api/';
 export const environment = {
   production: true,
   userAuthenticationURL: serverURL + 'user/authentication',
