@@ -1,11 +1,19 @@
 import { NgModule } from '@angular/core';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { CommonModule } from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
-import { DropdownChannelComponent } from './dropdown.channel.component'
+import { DropdownChannelComponent } from './dropdown.channel.component';
+import { ChannelService } from '../../../services/channel/channel.service';
 
 @NgModule({
-    imports: [BsDropdownModule.forRoot()],
+    imports: [
+      CommonModule,
+      FormsModule,
+      NgSelectModule
+    ],
     declarations: [ DropdownChannelComponent ],
-    exports: [ DropdownChannelComponent ]
+    exports: [ DropdownChannelComponent ],
+    providers: [ChannelService],
   })
   export class DropdownChannelModule { }

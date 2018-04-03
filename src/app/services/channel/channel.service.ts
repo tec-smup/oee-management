@@ -1,0 +1,26 @@
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/map'
+import { catchError } from 'rxjs/operators';
+
+import { Channel } from '../../models/channel';
+import { environment } from '../../../environments/environment';
+import { BaseService } from '../base.service';
+
+@Injectable()
+export class ChannelService extends BaseService {
+    //token: string;
+
+    constructor(private http: Http) {
+        super();
+        // var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        // this.token = currentUser && currentUser.token;
+    }
+
+    list(): Observable<Channel[]> {
+        return this.http.get(environment.channelListURL)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
+    }
+}

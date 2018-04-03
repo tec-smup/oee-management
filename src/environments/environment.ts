@@ -7,8 +7,9 @@ const serverURL = 'http://localhost:3000/api/';
 export const environment = {
   production: false,
   userAuthenticationURL: serverURL + 'user/authentication',
-  machineListURL: serverURL + 'machine/list',
+  machineListURL: serverURL + 'machine/list',                 //machine
   machineAddURL: serverURL + 'machine',
   machineUpdateURL: serverURL + 'machine/update',
   machineDeleteURL: serverURL + 'machine/delete',
+  channelListURL: serverURL + 'channel',                      //channel
 };

@@ -1,13 +1,20 @@
-<div class="btn-group" dropdown>
+<!-- <div class="btn-group" dropdown>
     <button dropdownToggle type="button" class="btn btn-secondary btn-sm dropdown-toggle">
-        Canal <span class="caret"></span>
+        Mudar Canal <span class="caret"></span>
     </button>
     <ul *dropdownMenu class="dropdown-menu" role="menu">
-        <li role="menuitem"><a class="dropdown-item" href="#">Action</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Another action</a></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Something else here</a></li>
-        <li class="divider dropdown-divider"></li>
-        <li role="menuitem"><a class="dropdown-item" href="#">Separated link</a>
-        </li>
+        <li role="menuitem" *ngFor="let channel of channels">
+            <a class="dropdown-item">{{channel.name}}</a>
+        </li>        
     </ul>
+</div> -->
+
+<div class="btn-group">
+    <ng-select
+        [items]="items"
+        bindLabel="name"
+        bindValue="id"
+        placeholder="Selecione um canal"
+        [(ngModel)]="selectedChannelId">
+    </ng-select>
 </div>
