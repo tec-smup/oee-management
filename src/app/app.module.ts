@@ -10,6 +10,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { LoginModule } from './components/login/login.module';
 import { DashboardModule } from './components/dashboard/dashboard.module';
 import { MachineModule } from './components/machine/machine.module';
+import { ChannelModule } from './components/channel/channel.module';
 
 import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
@@ -17,6 +18,7 @@ import { UserComponent } from './components/user/user.component';
 import { AuthenticationService } from './services/authentication/authentication.service';
 import { UserService } from './services/user/user.service';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import {ToastModule} from 'ng2-toastr/ng2-toastr';
     BrowserAnimationsModule,
     LoginModule, 
     DashboardModule,   
+    ChannelModule,
     MachineModule,
     ToastModule.forRoot()
   ],

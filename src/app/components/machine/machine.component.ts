@@ -3,17 +3,19 @@ import {GridOptions} from "ag-grid";
 import { MachineService } from '../../services/machine/machine.service';
 import { Machine } from '../../models/machine';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { BaseComponent } from '../base.component';
 
 @Component({
   selector: 'app-machine',
   templateUrl: './machine.component.html',
   styleUrls: ['./machine.component.css']
 })
-export class MachineComponent implements OnInit {
+export class MachineComponent extends BaseComponent implements OnInit {
   machine: Machine = new Machine();
   gridApi;
   gridColumnApi;
   columnDefs;
+  components;
   paginationPageSize = 10;
   rowSelection = "multiple";
   editType = "fullRow";
@@ -21,6 +23,7 @@ export class MachineComponent implements OnInit {
   constructor(private machineService: MachineService, 
               public toastr: ToastsManager, 
               vcr: ViewContainerRef) {
+    super();                
     this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
       {
@@ -45,14 +48,17 @@ export class MachineComponent implements OnInit {
       {
         headerName: "Last Maintenance",
         field: "last_maintenance",
-        editable: true
+        editable: true,
+        cellEditor: "datePicker"
       },
       {
         headerName: "Next Maintenance",
         field: "next_maintenance",
-        editable: true
+        editable: true,
+        cellEditor: "datePicker"
       },
-    ];    
+    ];   
+    this.components = { datePicker: this.getDatePicker() }; 
   }
 
   ngOnInit() {
@@ -118,11 +124,6 @@ export class MachineComponent implements OnInit {
         //isso nao precisa, remover quando ativar o jwt
         let machine = new Machine();
         machine.code = row.data.code;
-        machine.name = row.data.name;
-        machine.department = row.data.department;
-        machine.product = row.data.product;
-        machine.last_maintenance = row.data.last_maintenance;
-        machine.next_maintenance = row.data.next_maintenance;
         //--------
 
         this.machineService.delete(machine)

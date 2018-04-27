@@ -3,6 +3,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MachineComponent } from './components/machine/machine.component';
+import { ChannelComponent } from './components/channel/channel.component';
 
 const appRoutes: Routes = [
     {
@@ -18,6 +19,11 @@ const appRoutes: Routes = [
       canActivate: [AuthGuard],
       component: DashboardComponent
     },
+    {
+      path: 'channel',
+      canActivate: [AuthGuard],
+      component: ChannelComponent
+    },     
     {
       path: 'machine',
       canActivate: [AuthGuard],

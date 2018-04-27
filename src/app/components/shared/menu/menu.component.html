@@ -15,7 +15,7 @@
     </h6>
     <ul class="nav flex-column mb-2">
       <li class="nav-item">
-        <a [ngClass]="(linkActive=='criarCanal')?'nav-link active':'nav-link'" href="#">
+        <a [ngClass]="(linkActive=='channel')?'nav-link active':'nav-link'" [routerLink]="['/channel']">
           <i-plus-circle class="feather"></i-plus-circle>
           Criar canal
         </a>

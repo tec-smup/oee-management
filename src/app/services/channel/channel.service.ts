@@ -23,4 +23,28 @@ export class ChannelService extends BaseService {
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }
+
+    add(channel: Channel): Observable<Channel> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        return this.http.post(environment.channelAddURL, 
+            JSON.stringify(channel), { headers: headers })
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));            
+    }
+
+    update(channel: Channel): Observable<Channel> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        return this.http.post(environment.channelUpdateURL, 
+            JSON.stringify(channel), { headers: headers })
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));         
+    }
+    
+    delete(channel: Channel): Observable<Channel> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        return this.http.post(environment.channelDeleteURL, 
+            JSON.stringify(channel), { headers: headers })
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));         
+    }     
 }
