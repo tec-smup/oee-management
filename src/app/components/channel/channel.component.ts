@@ -19,7 +19,11 @@ export class ChannelComponent extends BaseComponent implements OnInit {
   paginationPageSize = 10;
   rowSelection = "multiple";
   editType = "fullRow";
-
+  statusMappings = {
+    0: "Inativo",
+    1: "Ativo"
+  };  
+  
   constructor(private channelService: ChannelService, 
               public toastr: ToastsManager, 
               vcr: ViewContainerRef) {
@@ -32,18 +36,22 @@ export class ChannelComponent extends BaseComponent implements OnInit {
         editable: true  
       },
       {
+        headerName: "Description",
+        field: "description",
+        editable: true  
+      },      
+      {
         headerName: "Token",
         field: "token",
         editable: true         
       },
       {
         headerName: "Status",
-        field: "status",
+        field: "active",
         editable: true,
         cellEditor: "agSelectCellEditor",
-        cellEditorParams: {
-          values: ["Ativo", "Inativo"]
-        }
+        cellEditorParams: { values: this.extractValues(this.statusMappings) },
+        refData: this.statusMappings       
       },
       {
         headerName: "Created at",
@@ -84,6 +92,10 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     this.update(event.data);
   } 
 
+  setStatus($event) {
+    this.channel.active = $event;
+  }
+
   add(event) {
     event.preventDefault();
     var res = this.gridApi.updateRowData({ add: [this.channel] });
@@ -104,7 +116,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     channel.name = data.name;
     channel.description = data.description;
     channel.token = data.token;
-    channel.status = data.status;
+    channel.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
     channel.time_shift = data.time_shift;
     //--------
 

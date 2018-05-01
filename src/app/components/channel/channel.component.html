@@ -17,70 +17,56 @@
               </div>
               <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                 <div class="card-block padding-10px">
-                  <!-- <form 
+                  <form 
                     name="form" 
                     (ngSubmit)="f.form.valid && add($event)" #f="ngForm" novalidate 
                     class="needs-validation">
 
                     <div class="row">
                       <div class="col-md-3 mb-3">
-                        <label for="code">Code</label>
+                        <label for="code">Name</label>
                         <input 
-                          name="code" 
-                          [(ngModel)]="channel.code" 
-                          #code="ngModel" 
-                          type="text" 
+                          name="name" 
+                          [(ngModel)]="channel.name" 
+                          #code="ngModel"
+                          type="text"
                           class="form-control form-control-no-border"
                           required autofocus>
                       </div>
                       <div class="col-md-3 mb-3">
-                        <label for="name">Name</label>
+                        <label for="description">Description</label>
                         <input 
-                          name="name" 
-                          [(ngModel)]="channel.name" 
+                          name="description" 
+                          [(ngModel)]="channel.description" 
+                          #code="ngModel" 
+                          type="text" 
+                          class="form-control form-control-no-border">
+                      </div>                       
+                      <div class="col-md-3 mb-3">
+                        <label for="token">Token</label>
+                        <input 
+                          name="token" 
+                          [(ngModel)]="channel.token" 
                           #code="ngModel" 
                           type="text" 
                           class="form-control form-control-no-border"
                           required>
                       </div>
                       <div class="col-md-3 mb-3">
-                        <label for="department">Department</label>
-                        <input 
-                          name="department" 
-                          [(ngModel)]="channel.department" 
-                          #code="ngModel" 
-                          type="text" 
-                          class="form-control form-control-no-border">
-                      </div> 
-                      <div class="col-md-3 mb-3">
-                        <label for="product">Product</label>
-                        <input 
-                          name="product" 
-                          [(ngModel)]="channel.product" 
-                          #code="ngModel" 
-                          type="text" 
-                          class="form-control form-control-no-border">
-                      </div>                            
+                        <label for="department">Status</label>
+                        <dropdown-status (statusEvent)="setStatus($event)"></dropdown-status>
+                      </div>                           
                     </div>
-                    <div class="row row-vcenter">
+                    <div class="row row-vcenter">       
                       <div class="col-md-3 mb-3">
-                        <label for="last_maintenance">Last Maintenance</label>
+                        <label for="time_shift">Time Shift</label>
                         <input 
-                          name="last_maintenance" 
-                          [(ngModel)]="channel.last_maintenance" 
+                          name="time_shift" 
+                          [(ngModel)]="channel.time_shift" 
                           #code="ngModel" 
-                          type="date" 
+                          type="text" 
                           class="form-control form-control-no-border">
-                      </div>
-                      <div class="col-md-3 mb-3">
-                        <label for="next_maintenance">Next Maintenance</label>
-                        <input 
-                          name="next_maintenance" 
-                          [(ngModel)]="channel.next_maintenance" 
-                          #code="ngModel" 
-                          type="date" 
-                          class="form-control form-control-no-border">
-                      </div>
+                      </div>                                  
                       <div class="col-md-2 mb-3 vcenter">
                         <label for="next_maintenance">&nbsp;</label>
                         <button 
@@ -96,7 +82,7 @@
                       [ngClass]="(channel.error)?'alert alert-danger alert-margin':'alert alert-success alert-margin'">
                       {{channel.message}}
                     </div>    
-                  </form>                   -->
+                  </form>                  
                 </div>
               </div>
             </div>

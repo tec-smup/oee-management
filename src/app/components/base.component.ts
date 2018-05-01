@@ -7,6 +7,10 @@ declare var $:any;
 export class BaseComponent implements OnInit {
     ngOnInit() {    
     }
+    
+    extractValues(mappings) {
+        return Object.keys(mappings);
+    }
 
     getNumericCellEditor() {
         function isCharNumeric(charStr) {
