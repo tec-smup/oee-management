@@ -1,0 +1,9 @@
+<ng-select
+    [items]="items"
+    bindLabel="name"
+    bindValue="id"
+    placeholder="Selecione um status"
+    (add)="refreshValue($event)"
+    [(ngModel)]="selectedStatus">
+</ng-select>
+
