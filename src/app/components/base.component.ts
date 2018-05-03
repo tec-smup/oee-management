@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 declare var $:any;
 
 @Component({
-    selector: 'app-base'
+    selector: 'app-base',
+    templateUrl: './base.component.html',
 })
 export class BaseComponent implements OnInit {
     ngOnInit() {    
