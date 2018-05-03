@@ -97,15 +97,16 @@ export class ChannelComponent extends BaseComponent implements OnInit {
   }
 
   add(event) {
-    event.preventDefault();
-    var res = this.gridApi.updateRowData({ add: [this.channel] });
+    event.preventDefault();    
     this.channelService.add(this.channel)
     .subscribe(
-      result => {},
+      result => {
+        this.gridApi.updateRowData({ add: [this.channel] });
+      },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
-      }      
-    );
+      }
+    );    
     this.channel = new Channel();
   }
 

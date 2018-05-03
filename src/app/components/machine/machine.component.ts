@@ -83,11 +83,12 @@ export class MachineComponent extends BaseComponent implements OnInit {
   } 
 
   add(event) {
-    event.preventDefault();
-    var res = this.gridApi.updateRowData({ add: [this.machine] });
+    event.preventDefault();    
     this.machineService.add(this.machine)
     .subscribe(
-      result => {},
+      result => {
+        this.gridApi.updateRowData({ add: [result] });
+      },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
       }      

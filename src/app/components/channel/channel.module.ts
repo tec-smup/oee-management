@@ -8,6 +8,8 @@ import { ChannelService } from '../../services/channel/channel.service';
 import { ChannelComponent } from './channel.component';
 import { DropdownStatusModule } from '../dropdown/status/dropdown.status.module';
 
+import { NumberOnlyDirective } from '../../directives/number.directive';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +19,7 @@ import { DropdownStatusModule } from '../dropdown/status/dropdown.status.module'
     AgGridModule.withComponents([])     
   ],
   declarations: [ 
+    NumberOnlyDirective,
     ChannelComponent,    
   ],
   exports: [ ChannelComponent ],

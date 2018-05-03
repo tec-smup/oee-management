@@ -19,29 +19,33 @@ export class BaseService {
           let objError = JSON.parse(stringError);
 
           //retornos:
-          // 400 - validações em geral
+          // 400 - validações de preenchimento e retornos do mysql
           // 401 - token invalido
           // 500 - exceção não tratada
 
           if(objError.status == 400) {
-            returnMessage += "<ul>";
             let objBody = JSON.parse(objError._body);
-            objBody.forEach(item => {
-              returnMessage += "<li>" + item.msg + "</li>"
-            });
-            returnMessage += "</ul>";
+
+            //retorno do mysql
+            if(objBody.code && objBody.code == 'ER_SIGNAL_EXCEPTION') {
+              returnMessage += objBody.sqlMessage;
+            }
+            //retorno do nodejs
+            else {
+              returnMessage += "<ul>";
+              objBody.forEach(item => {
+                returnMessage += "<li>" + item.msg + "</li>"
+              });
+              returnMessage += "</ul>";              
+            }
           }
           if(objError.status == 401) {
             returnMessage = objError._body;
           }
           //exceção. não vou mostrar o retorno do server mas vou deixar no console
           if(objError.status == 500) {
-            returnMessage = "Parece que houve um erro de comunicação, tente daqui a pouco.";
+            returnMessage = ":( Parece que houve um erro de comunicação, tente daqui a pouco.";
           }
-          
-          console.error(
-            `Backend returned code ${objError.status}, ` +
-            `body was: ${objError._body}`);
         }
 
         return new ErrorObservable(returnMessage);
