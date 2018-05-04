@@ -117,19 +117,20 @@ export class MachineComponent extends BaseComponent implements OnInit {
   }
 
   delete() {
-    var selectedData = this.gridApi.getSelectedRows();
-    var res = this.gridApi.updateRowData({ remove: selectedData });
+    let selectedData = this.gridApi.getSelectedRows();  
     
-    if(res.remove.length > 0) {
-      res.remove.forEach(row => {
+    if(selectedData.length > 0) {
+      selectedData.forEach(row => {
         //isso nao precisa, remover quando ativar o jwt
         let machine = new Machine();
-        machine.code = row.data.code;
+        machine.code = row.code;
         //--------
 
         this.machineService.delete(machine)
         .subscribe(
-          result => {},
+          result => {
+            this.gridApi.updateRowData({ remove: [row] });
+          },
           error => {
             this.toastr.error(error, "Oops!", { enableHTML: true });
           }

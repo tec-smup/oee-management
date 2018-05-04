@@ -27,7 +27,7 @@ export class BaseService {
             let objBody = JSON.parse(objError._body);
 
             //retorno do mysql
-            if(objBody.code && objBody.code == 'ER_SIGNAL_EXCEPTION') {
+            if(objBody.sqlMessage) {
               returnMessage += objBody.sqlMessage;
             }
             //retorno do nodejs
