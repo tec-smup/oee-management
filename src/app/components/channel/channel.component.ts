@@ -42,8 +42,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
       },      
       {
         headerName: "Token",
-        field: "token",
-        editable: true         
+        field: "token"        
       },
       {
         headerName: "Status",
@@ -101,7 +100,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     this.channelService.add(this.channel)
     .subscribe(
       result => {
-        this.gridApi.updateRowData({ add: [this.channel] });
+        this.gridApi.updateRowData({ add: [result] });
       },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
@@ -131,19 +130,20 @@ export class ChannelComponent extends BaseComponent implements OnInit {
   }
 
   delete() {
-    var selectedData = this.gridApi.getSelectedRows();
-    var res = this.gridApi.updateRowData({ remove: selectedData });
+    let selectedData = this.gridApi.getSelectedRows();  
     
-    if(res.remove.length > 0) {
-      res.remove.forEach(row => {
+    if(selectedData.length > 0) {
+      selectedData.forEach(row => {
         //isso nao precisa, remover quando ativar o jwt
         let channel = new Channel();
-        channel.id = row.data.id;
+        channel.id = row.id;
         //--------
 
         this.channelService.delete(channel)
         .subscribe(
-          result => {},
+          result => {
+            this.gridApi.updateRowData({ remove: [row] });
+          },
           error => {
             this.toastr.error(error, "Oops!", { enableHTML: true });
           }

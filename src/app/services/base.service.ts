@@ -45,8 +45,9 @@ export class BaseService {
           //exceção. não vou mostrar o retorno do server mas vou deixar no console
           if(objError.status == 500) {
             returnMessage = ":( Parece que houve um erro de comunicação, tente daqui a pouco.";
-          }
+          }          
         }
+        console.log(returnMessage);
 
         return new ErrorObservable(returnMessage);
       };    

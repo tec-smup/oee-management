@@ -91,7 +91,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
       },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
-      }      
+      }
     );
     this.machine = new Machine();
   }
