@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { DashboardComponent } from './dashboard.component';
 import { LastFeedComponent } from './lastFeed.component';
@@ -8,12 +9,18 @@ import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.modu
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+
 @NgModule({
   imports: [
     CommonModule,
     SharedModule,
+    FormsModule,
     DropdownChannelModule,
-    DropdownMachineModule
+    DropdownMachineModule,
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
   ],
   declarations: [ 
     DashboardComponent,
@@ -23,6 +30,9 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
     DashboardComponent, 
     LastFeedComponent,
   ],
-  providers: [ DashboardService ]
+  providers: [ 
+    DashboardService,
+    { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
+  ]
 })
 export class DashboardModule { }

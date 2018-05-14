@@ -3,21 +3,27 @@ import { Chart } from 'chart.js';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { Dashboard } from '../../models/dashboard';
+import { BaseComponent } from '../base.component';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent extends BaseComponent implements OnInit {
   chart = []; 
   dropdownMachine: string;
   dropdownChannel: number;
+  public dateTimeRange: Date[];
 
   constructor(private dashboardService: DashboardService, 
     public toastr: ToastsManager, 
     vcr: ViewContainerRef) {   
-      this.toastr.setRootViewContainerRef(vcr);      
+      super();
+      this.toastr.setRootViewContainerRef(vcr);   
+      let range1 = new Date(Date.now());
+      let range2 = new Date(range1.getTime() + 60*60000);
+      this.dateTimeRange = [range1, range2];   
   }
 
   ngOnInit() {       
@@ -43,7 +49,12 @@ export class DashboardComponent implements OnInit {
   }
 
   getChartData() {  
-    this.dashboardService.chart('11/05/2018 16:00', '11/05/2018 17:00', this.dropdownChannel, this.dropdownMachine)
+    this.dashboardService.chart(
+      this.formatDateTime(this.dateTimeRange[0]), 
+      this.formatDateTime(this.dateTimeRange[1]), 
+      this.dropdownChannel, 
+      this.dropdownMachine
+    )
     .subscribe(
       result => {
         let time = result.map(e => e.time);

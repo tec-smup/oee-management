@@ -103,4 +103,21 @@ export class BaseComponent implements OnInit {
                 (month.toString().length == 1 ? "0"+month : month) + "/" + 
                 year;
     }    
+
+    formatDateTime(datetime) {
+        let day = datetime.getDate();
+        let month = datetime.getMonth()+1;
+        let year = datetime.getFullYear();
+        let hour = datetime.getHours(); 
+        let minute = datetime.getMinutes();
+        return day.toString() 
+                + "/" + 
+                (month.toString().length == 1 ? "0"+month : month) 
+                + "/" + 
+                year 
+                + " " + 
+                (hour.toString().length == 1 ? "0"+hour : hour) 
+                + ":" + 
+                (minute.toString().length == 1 ? "0"+minute : minute);
+    }    
 }

@@ -5,9 +5,25 @@
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom margin-top-45">
         <div class="btn-toolbar" role="toolbar">
-          <dropdown-channel (changeEvent)="setChannel($event)"></dropdown-channel>
-          &nbsp;
-          <dropdown-machine (changeEvent)="setMachine($event)"></dropdown-machine>              
+          <div class="form-row">
+            <div class="col">
+                <input
+                class="form-control" 
+                placeholder="Date Time Range:"
+                [style.width]="'260px'"
+                [(ngModel)]="dateTimeRange"
+                [selectMode]="'range'"
+                [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1" 
+              />
+              <owl-date-time #dtRange1></owl-date-time>                            
+            </div>
+            <div class="col">
+              <dropdown-machine (changeEvent)="setMachine($event)"></dropdown-machine> 
+            </div>
+            <div class="col">
+              <dropdown-channel (changeEvent)="setChannel($event)"></dropdown-channel>
+            </div>
+          </div>                       
         </div>           
 
         <div class="btn-toolbar mb-2 mb-md-0">
