@@ -15,4 +15,6 @@ export const environment = {
   channelAddURL: serverURL + 'channel',
   channelUpdateURL: serverURL + 'channel/update',
   channelDeleteURL: serverURL + 'channel/delete',    
+  lastFeedURL: serverURL + 'feed/lastFeed',                  //dash
+  chartURL: serverURL + 'feed/chart',
 };

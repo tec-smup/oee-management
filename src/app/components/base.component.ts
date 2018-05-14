@@ -92,4 +92,15 @@ export class BaseComponent implements OnInit {
         };
         return Datepicker;
     }    
+
+    getCurrentDate() {
+        let now = new Date();
+        console.log(now);
+        let day = now.getDate();
+        let month = now.getMonth()+1;
+        let year = now.getFullYear();
+        return day.toString() + "/" + 
+                (month.toString().length == 1 ? "0"+month : month) + "/" + 
+                year;
+    }    
 }

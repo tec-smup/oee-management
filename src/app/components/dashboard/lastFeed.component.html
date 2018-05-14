@@ -1,0 +1,32 @@
+<h2>Medições do dia <small>(100 últimas)</small></h2>
+<div class="table-responsive">
+  <table class="table table-striped table-sm" *ngIf="lastFeed.length > 0">
+    <thead>
+      <tr>
+        <th>Canal</th>
+        <th>Máquina</th>
+        <th>{{lastFeed[0]?.field1_desc}}</th>
+        <th>{{lastFeed[0]?.field2_desc}}</th>
+        <th>{{lastFeed[0]?.field3_desc}}</th>
+        <th>{{lastFeed[0]?.field4_desc}}</th>
+        <th>{{lastFeed[0]?.field5_desc}}</th>
+        <th>Inserido em</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let feed of lastFeed">
+        <td>{{feed.channel_name}}</td>
+        <td>[{{feed.machine_code}}] {{feed.machine_name}}</td>
+        <td>{{feed.field1}}</td>
+        <td class="text-right">{{feed.field2}}</td>
+        <td class="text-right">{{feed.field3}}</td>
+        <td class="text-right">{{feed.field4}}</td>
+        <td class="text-center">{{feed.field5}}</td>         
+        <td>{{feed.inserted_at}}</td>
+      </tr>                
+    </tbody>
+  </table>
+  <div class="alert alert-info" role="alert" *ngIf="lastFeed.length == 0">
+    Nenhuma medição recebida até o momento.
+  </div>  
+</div>

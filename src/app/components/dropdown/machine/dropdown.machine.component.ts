@@ -1,18 +1,18 @@
 import { Component, ViewContainerRef, OnInit, Output, EventEmitter } from '@angular/core';
-import { ChannelService } from '../../../services/channel/channel.service';
+import { MachineService } from '../../../services/machine/machine.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
  
 @Component({
-  selector: 'dropdown-channel',  
-  templateUrl: './dropdown-channel.html',
+  selector: 'dropdown-machine',  
+  templateUrl: './dropdown-machine.html',
 })
-export class DropdownChannelComponent implements OnInit {
+export class DropdownMachineComponent implements OnInit {
   items: Array<any> = [];
-  selectedChannelId: any;
-  @Output() changeEvent = new EventEmitter<number>();
+  selectedMachineCode: any;
+  @Output() changeEvent = new EventEmitter<string>();
 
   constructor(
-    private channelService: ChannelService,
+    private machineService: MachineService,
     public toastr: ToastsManager, 
     vcr: ViewContainerRef
   ) {
@@ -24,11 +24,11 @@ export class DropdownChannelComponent implements OnInit {
   }
 
   load() {
-    this.channelService.list()
+    this.machineService.list()
     .subscribe(
       result => {
         this.items = result;
-        this.selectedChannelId = this.items[0].id;
+        this.selectedMachineCode = this.items[0].code;
         this.refreshValue(this.items[0]);
       },
       error => {
@@ -37,7 +37,7 @@ export class DropdownChannelComponent implements OnInit {
   }
 
   public refreshValue(value:any) {
-    this.selectedChannelId = value.id;    
-    this.changeEvent.emit(this.selectedChannelId);
+    this.selectedMachineCode = value.code;    
+    this.changeEvent.emit(this.selectedMachineCode);
   }    
 }

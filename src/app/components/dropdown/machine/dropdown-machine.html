@@ -2,9 +2,9 @@
     <ng-select
         [items]="items"
         bindLabel="name"
-        bindValue="id"
-        placeholder="Selecione um canal"
+        bindValue="code"
+        placeholder="Selecione uma máquina"
         (add)="refreshValue($event)"
-        [(ngModel)]="selectedChannelId">
+        [(ngModel)]="selectedMachineCode">
     </ng-select>
 </div>
