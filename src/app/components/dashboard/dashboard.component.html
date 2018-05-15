@@ -7,22 +7,24 @@
         <div class="btn-toolbar" role="toolbar">
           <div class="form-row">
             <div class="col">
-                <input
+              <input
                 class="form-control" 
                 placeholder="Date Time Range:"
                 [style.width]="'260px'"
                 [(ngModel)]="dateTimeRange"
                 [selectMode]="'range'"
                 [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1" 
+                (dateTimeChange)="changeDateRange($event)"
+                #dateTimeRangeValidation="ngModel"
               />
-              <owl-date-time #dtRange1></owl-date-time>                            
-            </div>
-            <div class="col">
-              <dropdown-machine (changeEvent)="setMachine($event)"></dropdown-machine> 
+              <owl-date-time #dtRange1></owl-date-time>                                      
             </div>
             <div class="col">
               <dropdown-channel (changeEvent)="setChannel($event)"></dropdown-channel>
             </div>
+            <div class="col">
+              <dropdown-machine (changeEvent)="setMachine($event)"></dropdown-machine> 
+            </div>            
           </div>                       
         </div>           
 

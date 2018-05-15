@@ -9,8 +9,7 @@ import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.modu
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-import { OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 
 @NgModule({
   imports: [

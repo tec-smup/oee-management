@@ -4,6 +4,7 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { Dashboard } from '../../models/dashboard';
 import { BaseComponent } from '../base.component';
+declare var $:any;
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +15,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   chart = []; 
   dropdownMachine: string;
   dropdownChannel: number;
-  public dateTimeRange: Date[];
+  dateTimeRange: Date[];
 
   constructor(private dashboardService: DashboardService, 
     public toastr: ToastsManager, 
@@ -29,23 +30,33 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   ngOnInit() {       
   }
 
+  changeDateRange(dates: any): any {
+    var hours = Math.abs(dates.value[0] - dates.value[1]) / 36e5;   
+    if(hours > 24) {
+      this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Oops!", { enableHTML: true });
+    }
+    else {
+      this.refreshChart();  
+    }  
+  }
+
   setChannel($event) {
     this.dropdownChannel = $event;
-    if(this.dropdownChannel && this.dropdownMachine)
-      this.refreshChart();    
+    this.refreshChart();    
   }
 
   setMachine($event) {
-    this.dropdownMachine = $event;
-    if(this.dropdownChannel && this.dropdownMachine)
-      this.refreshChart();
+    this.dropdownMachine = $event; 
+    this.refreshChart();
   }  
 
   refreshChart() {
-    Chart.helpers.each(Chart.instances, function(instance) {
-      instance.chart.destroy();
-    });
-    this.getChartData();
+    if(this.dropdownChannel && this.dropdownMachine && this.dateTimeRange.length == 2) {
+      Chart.helpers.each(Chart.instances, function(instance) {
+        instance.chart.destroy();
+      });
+      this.getChartData();
+    }
   }
 
   getChartData() {  
