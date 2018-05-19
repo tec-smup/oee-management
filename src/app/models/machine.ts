@@ -7,6 +7,7 @@ export class Machine extends BaseModel {
   product?: string;
   last_maintenance?: string;
   next_maintenance?: string;
+  dropdown_label: string;
   
   constructor() {
     super();

@@ -11,6 +11,7 @@ import { LoginModule } from './components/login/login.module';
 import { DashboardModule } from './components/dashboard/dashboard.module';
 import { MachineModule } from './components/machine/machine.module';
 import { ChannelModule } from './components/channel/channel.module';
+import { MachinePauseModule } from './components/machine.pause/machine.pause.module';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 import { BaseComponent } from './components/base.component';
@@ -34,6 +35,7 @@ import { UserService } from './services/user/user.service';
     DashboardModule,   
     ChannelModule,
     MachineModule,
+    MachinePauseModule,
     ToastModule.forRoot()
   ],
   providers: [

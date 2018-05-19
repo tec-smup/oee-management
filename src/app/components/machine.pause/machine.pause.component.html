@@ -1,0 +1,122 @@
+<app-nav componentName="Justificativa para pausas de máquina"></app-nav>
+<div class="container-fluid">
+  <div class="row">
+    <app-menu linkActive="machinepause"></app-menu>
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 margin-top-45">
+      <div class="row margin-bottom-5px">        
+        <div class="col-md-12 order-md-1">
+
+          <div id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="card">
+              <div class="card-header" role="tab" id="headingOne">
+                <h6 class="mb-0">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Adicionar justificativa
+                  </a>
+                </h6>
+              </div>
+              <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block padding-10px">
+                  <form 
+                    name="form" 
+                    (ngSubmit)="f.form.valid && add($event)" #f="ngForm" novalidate 
+                    class="needs-validation">
+
+                    <div class="row">
+                      <div class="col-md-6 mb-6">
+                        <dropdown-machine (changeEvent)="setMachine($event)"></dropdown-machine>
+                      </div>
+                      <div class="col-md-6 mb-6">
+                        <input
+                          name="dateTimeRange"
+                          class="form-control" 
+                          placeholder="Selecione as datas"
+                          [style.width]="'260px'"
+                          [(ngModel)]="machinePause.dateTimeRange"
+                          [selectMode]="'range'"
+                          [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1" 
+                          (dateTimeChange)="changeDateRange($event)"
+                          #dateTimeRangeValidation="ngModel"
+                        />
+                        <owl-date-time #dtRange1></owl-date-time>
+                      </div>                                                 
+                    </div>
+                    <!-- <div class="row row-vcenter">
+                      <div class="col-md-3 mb-3">
+                        <label for="justification1">Justificativa 1</label>
+                        <input 
+                          name="justification1" 
+                          [(ngModel)]="machinePause.justification1" 
+                          #code="ngModel" 
+                          type="text" 
+                          class="form-control form-control-no-border">
+                      </div>                       
+                      <div class="col-md-3 mb-3">
+                        <label for="justification2">Justificativa 2</label>
+                        <input 
+                          name="justification2" 
+                          [(ngModel)]="machinePause.justification2" 
+                          #code="ngModel" 
+                          type="text" 
+                          class="form-control form-control-no-border">
+                      </div>
+                      
+                      <div class="col-md-2 mb-3 vcenter">
+                        <label for="next_maintenance">&nbsp;</label>
+                        <button 
+                          [disabled]="!f.form.valid"
+                          class="btn btn-no-border btn-primary btn-sm btn-block" 
+                          type="submit">
+                          Adicionar
+                        </button>
+                      </div>                                                  
+                    </div> -->
+                    <div 
+                      *ngIf="machinePause.message" 
+                      [ngClass]="(machinePause.error)?'alert alert-danger alert-margin':'alert alert-success alert-margin'">
+                      {{machinePause.message}}
+                    </div>    
+                  </form>                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row margin-bottom-5px">
+        <div class="col-md-12 order-md-1">
+          <div class="col-md-2 float-right">
+            <button 
+              (click)="delete()"
+              class="btn btn-no-border btn-primary btn-sm btn-block" 
+              type="button">
+              Remover selecionada
+            </button>
+          </div>
+        </div>  
+      </div>      
+
+      <div class="table-responsive">        
+        <ag-grid-angular #agGrid
+          style="width: 100%; height: 350px;"
+          id="myGrid"
+          class="ag-theme-balham"
+          [columnDefs]="columnDefs"
+          [components]="components"
+          [enterMovesDownAfterEdit]="true"
+          [enterMovesDown]="true"
+          [animateRows]="true"
+          [rowSelection]="rowSelection"
+          (gridReady)="onGridReady($event)"
+          enableColResize
+          enableSorting
+          enableFilter 
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          (cellValueChanged)="onCellValueChanged($event)"
+        ></ag-grid-angular>        
+
+      </div>
+    </main>
+  </div>
+</div>

@@ -4,7 +4,6 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { Dashboard } from '../../models/dashboard';
 import { BaseComponent } from '../base.component';
-declare var $:any;
 
 @Component({
   selector: 'app-dashboard',
