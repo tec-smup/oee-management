@@ -18,8 +18,8 @@ export class MachinePauseService extends BaseService {
         // this.token = currentUser && currentUser.token;
     }
 
-    list(): Observable<MachinePause[]> {
-        return this.http.get(environment.machinePauseListURL)
+    list(date: string): Observable<MachinePause[]> {
+        return this.http.get(environment.machinePauseListURL + '?date=' + date)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }

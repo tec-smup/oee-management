@@ -15,50 +15,44 @@ export class MachinePauseComponent extends BaseComponent implements OnInit {
   gridApi;
   gridColumnApi;
   columnDefs;
-  components;
-  paginationPageSize = 10;
   rowSelection = "multiple";
   editType = "fullRow";
+  getRowHeight;
+  date: any;
 
   constructor(private machinePauseService: MachinePauseService, 
               public toastr: ToastsManager, 
               vcr: ViewContainerRef) {
-    super();                
+    super();    
+    this.date = new Date(Date.now());             
     this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
       {
         headerName: "Máquina",
-        field: "mc_cd",
+        field: "mc_name",
+        width: 100
       },
       {
-        headerName: "Data Inicial",
-        field: "date_ini",
+        headerName: "Pausa",
+        field: "pause_to_time", 
+        width: 50
+      },
+      {
+        headerName: "Justificativa",
+        field: "justification",
         editable: true,
-        cellEditor: "datePicker"  
+        cellStyle: { "white-space": "normal" }
       },
       {
-        headerName: "Data Final",
-        field: "date_fin",
-        editable: true,
-        cellEditor: "datePicker"
-      },
-      {
-        headerName: "Justificativa 1",
-        field: "justification1",
-        editable: true
-      },
-      {
-        headerName: "Justificativa 2",
-        field: "justification2",
-        editable: true
+        headerName: "Data registro",
+        field: "date",
+        width: 70
       },      
-      {
-        headerName: "Justificativa 3",
-        field: "justification3",
-        editable: true
-      },      
-    ];   
-    this.components = { datePicker: this.getDatePicker() }; 
+    ];  
+    this.getRowHeight = function(params) {
+      return params.data.justification != null ? 
+        18 * (Math.floor(params.data.justification.length / 45) + 1) : 30;
+    };     
   }
 
   ngOnInit() {
@@ -67,20 +61,8 @@ export class MachinePauseComponent extends BaseComponent implements OnInit {
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-
-    this.machinePauseService.list()
-    .subscribe(
-      result => {
-        params.api.setRowData(result);
-      },
-      error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
-      }); 
     params.api.sizeColumnsToFit();   
   }
-  onCellValueChanged(event) {
-    this.update(event.data);
-  } 
 
   add(event) {
     event.preventDefault();    
@@ -94,58 +76,22 @@ export class MachinePauseComponent extends BaseComponent implements OnInit {
       }
     );
     this.machinePause = new MachinePause();
-  }
-
-  update(data) {
-    //isso nao precisa, remover quando ativar o jwt
-    let machinePause = new MachinePause();
-    machinePause.id = data.id;
-    machinePause.mc_cd = data.mc_cd;
-    machinePause.pause_ini = data.pause_ini;
-    machinePause.pause_fin = data.pause_fin;
-    machinePause.justification1 = data.justification1;
-    machinePause.justification2 = data.justification2;
-    machinePause.justification3 = data.justification3;
-    //--------
-
-    this.machinePauseService.update(machinePause)
-    .subscribe(
-      result => {},
-      error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
-      }
-    );    
-  }
-
-  delete() {
-    let selectedData = this.gridApi.getSelectedRows();  
-    
-    if(selectedData.length > 0) {
-      selectedData.forEach(row => {
-        //isso nao precisa, remover quando ativar o jwt
-        let machinePause = new MachinePause();
-        machinePause.id = row.id;
-        //--------
-
-        this.machinePauseService.delete(machinePause)
-        .subscribe(
-          result => {
-            this.gridApi.updateRowData({ remove: [row] });
-          },
-          error => {
-            this.toastr.error(error, "Oops!", { enableHTML: true });
-          }
-        );         
-      });      
-    }
   }  
 
   setMachine($event) {
     this.machinePause.mc_cd = $event;
   }  
 
-  changeDateRange(dates: any): any {   
-    this.machinePause.pause_ini = dates.value[0];  
-    this.machinePause.pause_fin = dates.value[1];  
+  changeDateRange(date: any): any {    
+    this.date = date.value; 
+
+    this.machinePauseService.list(this.date)
+    .subscribe(
+      result => {
+        this.gridApi.setRowData(result);
+      },
+      error => {
+        this.toastr.error(error, "Oops!", { enableHTML: true });
+      });     
   }  
 }
