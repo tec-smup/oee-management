@@ -17,7 +17,7 @@
       </div>
       <div class="table-responsive">        
         <ag-grid-angular #agGrid
-          style="width: 100%; height: 550px"
+          style="width: 100%; height: 400px"
           id="myGrid"
           class="ag-theme-balham"
           [columnDefs]="columnDefs"
@@ -33,6 +33,11 @@
           (cellValueChanged)="onCellValueChanged($event)"
         ></ag-grid-angular>        
 
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <strong>*Selecione uma data para exibir as pausas do dia. Para informar a justificativa, clique duas vezes sobre a coluna ou pressione F2.</strong>
+        </div>
       </div>
     </main>
   </div>

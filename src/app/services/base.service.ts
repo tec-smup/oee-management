@@ -47,7 +47,6 @@ export class BaseService {
             returnMessage = ":( Parece que houve um erro de comunicação, tente daqui a pouco.";
           }          
         }
-        console.log(returnMessage);
 
         return new ErrorObservable(returnMessage);
       };    

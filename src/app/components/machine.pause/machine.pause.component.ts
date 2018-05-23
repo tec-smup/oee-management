@@ -61,31 +61,39 @@ export class MachinePauseComponent extends BaseComponent implements OnInit {
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-    params.api.sizeColumnsToFit();   
-  }
-
-  add(event) {
-    event.preventDefault();    
-    this.machinePauseService.add(this.machinePause)
+    this.machinePauseService.list(this.getCurrentDate())
     .subscribe(
       result => {
-        this.gridApi.updateRowData({ add: [result] });
+        params.api.setRowData(result);
       },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
+      });    
+    params.api.sizeColumnsToFit();   
+  }
+  onCellValueChanged(event) {
+    this.update(event.data);
+  } 
+
+  update(data) {
+    let pause = new MachinePause();
+    pause.id = 0;
+    pause.mc_cd = data.mc_cd;
+    pause.date_ref = data.date_ref;
+    pause.pause = data.pause;
+    pause.justification = data.justification;
+
+    this.machinePauseService.add(pause)
+    .subscribe(
+      result => {},
+      error => {
+        this.toastr.error(error, "Oops!", { enableHTML: true });
       }
-    );
-    this.machinePause = new MachinePause();
-  }  
+    );    
+  }
 
-  setMachine($event) {
-    this.machinePause.mc_cd = $event;
-  }  
-
-  changeDateRange(date: any): any {    
-    this.date = date.value; 
-
-    this.machinePauseService.list(this.date)
+  changeDateRange(dateSelected: any): any { 
+    this.machinePauseService.list(this.formatDate(this.date))
     .subscribe(
       result => {
         this.gridApi.setRowData(result);
