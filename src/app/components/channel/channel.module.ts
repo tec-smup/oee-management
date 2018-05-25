@@ -9,6 +9,7 @@ import { ChannelComponent } from './channel.component';
 import { DropdownStatusModule } from '../dropdown/status/dropdown.status.module';
 
 import { NumberOnlyDirective } from '../../directives/number.directive';
+import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 
 @NgModule({
   imports: [
@@ -16,13 +17,18 @@ import { NumberOnlyDirective } from '../../directives/number.directive';
     SharedModule,
     FormsModule,
     DropdownStatusModule,
-    AgGridModule.withComponents([])     
+    AgGridModule.withComponents([]),
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule   
   ],
   declarations: [ 
     NumberOnlyDirective,
     ChannelComponent,    
   ],
   exports: [ ChannelComponent ],
-  providers: [ ChannelService ],  
+  providers: [ 
+    ChannelService,
+    { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
+   ],  
 })
 export class ChannelModule { }

@@ -24,7 +24,7 @@
 
                     <div class="row">
                       <div class="col-md-3 mb-3">
-                        <label for="code">Name</label>
+                        <label for="code">Nome</label>
                         <input 
                           name="name" 
                           [(ngModel)]="channel.name" 
@@ -34,7 +34,7 @@
                           required autofocus>
                       </div>
                       <div class="col-md-3 mb-3">
-                        <label for="description">Description</label>
+                        <label for="description">Descrição</label>
                         <input 
                           name="description" 
                           [(ngModel)]="channel.description" 
@@ -59,7 +59,7 @@
                     </div>
                     <div class="row row-vcenter">       
                       <div class="col-md-3 mb-3">
-                        <label for="time_shift">Time Shift</label>
+                        <label for="time_shift">Tempo de turno</label>
                         <input 
                           numberOnly
                           name="time_shift" 
@@ -67,7 +67,29 @@
                           #code="ngModel" 
                           type="text" 
                           class="form-control form-control-no-border">
-                      </div>                                  
+                      </div>   
+                      <div class="col-md-3 mb-3">
+                        <label for="initial_turn">Início do turno</label>
+                        <input 
+                          name="initial_turn" 
+                          class="form-control form-control-no-border"
+                          placeholder="Hora inicial"
+                          [(ngModel)]="channel.initial_turn"
+                          #code="ngModel"
+                          [owlDateTimeTrigger]="initialturn" [owlDateTime]="initialturn">
+                        <owl-date-time [pickerType]="'timer'" #initialturn></owl-date-time>
+                      </div>                        
+                      <div class="col-md-3 mb-3">
+                        <label for="initial_turn">Fim do turno</label>
+                        <input 
+                          name="final_turn" 
+                          class="form-control form-control-no-border"
+                          placeholder="Hora final"
+                          [(ngModel)]="channel.final_turn"
+                          #code="ngModel"
+                          [owlDateTimeTrigger]="finalturn" [owlDateTime]="finalturn">
+                        <owl-date-time [pickerType]="'timer'" #finalturn></owl-date-time>
+                      </div> 
                       <div class="col-md-2 mb-3 vcenter">
                         <label for="next_maintenance">&nbsp;</label>
                         <button 

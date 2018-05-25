@@ -106,6 +106,14 @@ export class BaseComponent implements OnInit {
                 year;
     }    
 
+    getTime(datetime) {
+        let hour = datetime.getHours(); 
+        let minute = datetime.getMinutes();
+        return (hour.toString().length == 1 ? "0"+hour : hour) 
+        + ":" + 
+        (minute.toString().length == 1 ? "0"+minute : minute);
+    }     
+
     formatDateTime(datetime) {
         let day = datetime.getDate();
         let month = datetime.getMonth()+1;
@@ -132,5 +140,15 @@ export class BaseComponent implements OnInit {
                 (month.toString().length == 1 ? "0"+month : month) 
                 + "/" + 
                 year;
-    }     
+    }   
+    
+    setTimeOnDatetime(datetime, time) {
+        return new Date(
+            datetime.getFullYear(), 
+            datetime.getMonth(), 
+            datetime.getDate(), 
+            time.substring(0, 2), 
+            time.substring(3, 5)
+        );       
+    }
 }

@@ -21,9 +21,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     vcr: ViewContainerRef) {   
       super();
       this.toastr.setRootViewContainerRef(vcr);   
-      let range1 = new Date(Date.now());
-      let range2 = new Date(range1.getTime() + 60*60000);
-      this.dateTimeRange = [range1, range2];   
+      let now = new Date(Date.now());
+      this.dateTimeRange = [this.setTimeOnDatetime(now, "07:00"), this.setTimeOnDatetime(now, "18:00")];   
   }
 
   ngOnInit() {       
@@ -40,7 +39,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   }
 
   setChannel($event) {
-    this.dropdownChannel = $event;
+    this.dropdownChannel = $event.id;
     this.refreshChart();    
   }
 

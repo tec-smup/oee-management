@@ -85,7 +85,9 @@ export class MachinePauseComponent extends BaseComponent implements OnInit {
 
     this.machinePauseService.add(pause)
     .subscribe(
-      result => {},
+      result => {
+        this.changeDateRange(pause.date_ref);
+      },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
       }

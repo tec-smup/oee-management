@@ -31,12 +31,12 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
       {
-        headerName: "Name",
+        headerName: "Nome",
         field: "name",
         editable: true  
       },
       {
-        headerName: "Description",
+        headerName: "Descrição",
         field: "description",
         editable: true  
       },      
@@ -53,19 +53,29 @@ export class ChannelComponent extends BaseComponent implements OnInit {
         refData: this.statusMappings       
       },
       {
-        headerName: "Created at",
+        headerName: "Criado em",
         field: "created_at",
       },
       {
-        headerName: "Updated at",
+        headerName: "Atualizado em",
         field: "updated_at",
       },
       {
-        headerName: "Time Shift",
+        headerName: "Tempo de turno",
         field: "time_shift",
         editable: true,
         cellEditor: "numericCellEditor"
       },
+      {
+        headerName: "Início do turno",
+        field: "initial_turn",
+        editable: true
+      },
+      {
+        headerName: "Final do turno",
+        field: "final_turn",
+        editable: true
+      },            
     ];    
     this.components = { numericCellEditor: this.getNumericCellEditor() };
   }
@@ -96,7 +106,10 @@ export class ChannelComponent extends BaseComponent implements OnInit {
   }
 
   add(event) {
-    event.preventDefault();    
+    event.preventDefault(); 
+    this.channel.initial_turn = this.getTime(this.channel.initial_turn);    
+    this.channel.final_turn = this.getTime(this.channel.final_turn);
+
     this.channelService.add(this.channel)
     .subscribe(
       result => {

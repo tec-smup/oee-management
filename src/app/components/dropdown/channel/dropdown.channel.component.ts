@@ -9,7 +9,7 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 export class DropdownChannelComponent implements OnInit {
   items: Array<any> = [];
   selectedChannelId: any;
-  @Output() changeEvent = new EventEmitter<number>();
+  @Output() changeEvent = new EventEmitter<any>();
 
   constructor(
     private channelService: ChannelService,
@@ -37,7 +37,8 @@ export class DropdownChannelComponent implements OnInit {
   }
 
   public refreshValue(value:any) {
-    this.selectedChannelId = value.id;    
-    this.changeEvent.emit(this.selectedChannelId);
+    this.selectedChannelId = value.id;
+    let channel = this.items.filter(f => f.id == this.selectedChannelId);    
+    this.changeEvent.emit(channel[0]);
   }    
 }
