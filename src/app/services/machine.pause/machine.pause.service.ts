@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map'
 import { catchError } from 'rxjs/operators';
 
 import { MachinePause } from '../../models/machine.pause';
+import { MachinePauseList } from '../../models/machine.pause.list';
 import { environment } from '../../../environments/environment';
 import { BaseService } from '../base.service';
 
@@ -18,7 +19,7 @@ export class MachinePauseService extends BaseService {
         // this.token = currentUser && currentUser.token;
     }
 
-    list(date: string): Observable<MachinePause[]> {
+    list(date: string): Observable<MachinePauseList> {
         return this.http.get(environment.machinePauseListURL + '?date=' + date)
             .map(res => res.json())
             .pipe(catchError(this.handleError));

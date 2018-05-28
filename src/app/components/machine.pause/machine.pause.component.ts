@@ -4,6 +4,8 @@ import { MachinePauseService } from '../../services/machine.pause/machine.pause.
 import { MachinePause } from '../../models/machine.pause';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { BaseComponent } from '../base.component';
+import { MachinePauseList } from '../../models/machine.pause.list';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-machine-pause',
@@ -19,11 +21,16 @@ export class MachinePauseComponent extends BaseComponent implements OnInit {
   editType = "fullRow";
   getRowHeight;
   date: any;
+  pauses: MachinePauseList["pauses"] = [];
+  intervalLoad: any;
+  intervalTimer: any;
+  timer: number = 300000;
+  timerStr: string = "00:00:00";
 
   constructor(private machinePauseService: MachinePauseService, 
               public toastr: ToastsManager, 
               vcr: ViewContainerRef) {
-    super();    
+    super();        
     this.date = new Date(Date.now());             
     this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
@@ -61,16 +68,30 @@ export class MachinePauseComponent extends BaseComponent implements OnInit {
   onGridReady(params) {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
-    this.machinePauseService.list(this.getCurrentDate())
+    
+    clearInterval(this.intervalLoad);
+    this.intervalLoad = setInterval(
+      () => {
+        this.loadDataGrid(this.getCurrentDate());
+      }, this.timer);  
+      this.loadDataGrid(this.getCurrentDate());
+  }
+
+  loadDataGrid(date) {    
+    this.machinePauseService.list(date)
     .subscribe(
       result => {
-        params.api.setRowData(result);
+        this.gridApi.setRowData(result.list);
+        this.pauses = result.pauses;
+        this.startIntervalTimer();
       },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
-      });    
-    params.api.sizeColumnsToFit();   
+      }
+    );    
+    this.gridApi.sizeColumnsToFit();
   }
+
   onCellValueChanged(event) {
     this.update(event.data);
   } 
@@ -95,13 +116,22 @@ export class MachinePauseComponent extends BaseComponent implements OnInit {
   }
 
   changeDateRange(dateSelected: any): any { 
-    this.machinePauseService.list(this.formatDate(this.date))
-    .subscribe(
-      result => {
-        this.gridApi.setRowData(result);
-      },
-      error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
-      });     
+    clearInterval(this.intervalLoad);
+    this.intervalLoad = setInterval(
+      () => {
+        this.loadDataGrid(this.formatDate(this.date));
+      }, this.timer);
+      this.loadDataGrid(this.formatDate(this.date));
+  }  
+
+  startIntervalTimer() {
+    let sec = 300;
+    this.timerStr = this.secToTime(sec);
+    clearInterval(this.intervalTimer);
+    this.intervalTimer = setInterval(
+      () => {
+        sec--;
+        this.timerStr = this.secToTime(sec);
+      }, 1000);
   }  
 }

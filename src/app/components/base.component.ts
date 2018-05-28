@@ -151,4 +151,16 @@ export class BaseComponent implements OnInit {
             time.substring(3, 5)
         );       
     }
+
+    secToTime(duration: number): string {
+		var hours  = Math.floor(duration / 3600);
+		var minutes = Math.floor((duration - (hours * 3600))/60);
+    var seconds = Math.floor(duration - (hours * 3600) -  (minutes * 60)); 
+    
+    let shours = (hours < 10) ? "0" + hours : hours;
+    let sminutes = (minutes < 10) ? "0" + minutes : minutes;
+    let sseconds = (seconds < 10) ? "0" + seconds : seconds;
+
+    return shours + ":" + sminutes + ":" + sseconds;    
+  }    
 }
