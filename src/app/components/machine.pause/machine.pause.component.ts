@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import {GridOptions} from "ag-grid";
 import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';
 import { MachinePause } from '../../models/machine.pause';
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
   templateUrl: './machine.pause.component.html',
   styleUrls: ['./machine.pause.component.css']
 })
-export class MachinePauseComponent extends BaseComponent implements OnInit {
+export class MachinePauseComponent extends BaseComponent implements OnInit, OnDestroy {
   machinePause: MachinePause = new MachinePause();
   gridApi;
   gridColumnApi;
@@ -63,6 +63,11 @@ export class MachinePauseComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalTimer);
+    clearInterval(this.intervalLoad);
   }
 
   onGridReady(params) {
