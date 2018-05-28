@@ -63,6 +63,7 @@
                 <tr>
                   <th>Máquina</th>
                   <th>Data</th>
+                  <th>Pausa</th>
                   <th>Justificativa</th>
                   <th>Inserido em</th>
                 </tr>
@@ -71,8 +72,9 @@
                 <tr *ngFor="let pause of pauses">
                   <td>{{pause.mc_cd}}- {{pause.name}}</td>
                   <td>{{pause.date_ref}}</td>
+                  <td>{{pause.pause}}</td>
                   <td>{{pause.justification}}</td>
-                  <td class="text-center">{{pause.inserted_at}}</td>         
+                  <td>{{pause.inserted_at}}</td>         
                 </tr>                
               </tbody>
             </table>
