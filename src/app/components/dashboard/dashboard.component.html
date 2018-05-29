@@ -36,7 +36,7 @@
         </div>
       </div>
       <canvas id="chartCanvas" class="my-4" width="900" height="380">{{ chart }}</canvas>
-      <app-lastfeed></app-lastfeed>
+      <app-lastfeed (refreshDash)="refreshChart($event)"></app-lastfeed>
     </main>
   </div>
 </div>

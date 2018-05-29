@@ -10,6 +10,7 @@ import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.modu
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+import {AgGridModule} from "ag-grid-angular/main";
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from
     DropdownMachineModule,
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
+    AgGridModule.withComponents([]),
   ],
   declarations: [ 
     DashboardComponent,

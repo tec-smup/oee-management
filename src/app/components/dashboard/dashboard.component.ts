@@ -34,22 +34,22 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Oops!", { enableHTML: true });
     }
     else {
-      this.refreshChart();  
+      this.refreshChart(true);  
     }  
   }
 
   setChannel($event) {
     this.dropdownChannel = $event.id;
-    this.refreshChart();    
+    this.refreshChart(true);    
   }
 
   setMachine($event) {
     this.dropdownMachine = $event; 
-    this.refreshChart();
+    this.refreshChart(true);
   }  
 
-  refreshChart() {
-    if(this.dropdownChannel && this.dropdownMachine && this.dateTimeRange.length == 2) {
+  refreshChart(refresh: boolean) {
+    if(refresh && this.dropdownChannel && this.dropdownMachine && this.dateTimeRange.length == 2) {
       Chart.helpers.each(Chart.instances, function(instance) {
         instance.chart.destroy();
       });

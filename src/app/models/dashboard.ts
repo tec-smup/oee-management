@@ -1,4 +1,5 @@
 import { BaseModel } from "./baseModel";
+import { MachinePauseList } from "./machine.pause.list";
 
 class LastFeed {
   channel_name: string;
@@ -25,6 +26,9 @@ class Chart {
 export class Dashboard extends BaseModel {
   lastFeed: LastFeed;
   chart: Chart;
+  lastFeeds: Array<LastFeed>;
+  pauses: MachinePauseList["pauses"];
+  
   
   constructor() {
     super();

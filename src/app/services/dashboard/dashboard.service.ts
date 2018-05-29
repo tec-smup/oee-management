@@ -20,7 +20,7 @@ export class DashboardService extends BaseService {
         // this.token = currentUser && currentUser.token;
     }
 
-    lastFeed(date: string): Observable<Dashboard["lastFeed"][]> {
+    lastFeed(date: string): Observable<Dashboard> {
 
         return this.http.get(environment.lastFeedURL + "?date=" + date)
             .map(res => res.json())
