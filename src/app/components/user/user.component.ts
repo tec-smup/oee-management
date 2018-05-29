@@ -78,7 +78,7 @@ export class UserComponent extends BaseComponent implements OnInit {
     params.api.sizeColumnsToFit();   
   }
   onCellValueChanged(event) {
-    //this.update(event.data);
+    this.update(event.data);
   } 
 
   setStatus($event) {
@@ -88,64 +88,64 @@ export class UserComponent extends BaseComponent implements OnInit {
     this.user.admin = $event;
   }
 
-  // add(event) {
-  //   event.preventDefault(); 
-  //   this.channel.initial_turn = this.getTime(this.channel.initial_turn);    
-  //   this.channel.final_turn = this.getTime(this.channel.final_turn);
+  add(event) {
+    // event.preventDefault(); 
+    // this.channel.initial_turn = this.getTime(this.channel.initial_turn);    
+    // this.channel.final_turn = this.getTime(this.channel.final_turn);
 
-  //   this.channelService.add(this.channel)
-  //   .subscribe(
-  //     result => {
-  //       this.gridApi.updateRowData({ add: [result] });
-  //     },
-  //     error => {
-  //       this.toastr.error(error, "Oops!", { enableHTML: true });
-  //     }
-  //   );    
-  //   this.channel = new Channel();
-  // }
+    // this.channelService.add(this.channel)
+    // .subscribe(
+    //   result => {
+    //     this.gridApi.updateRowData({ add: [result] });
+    //   },
+    //   error => {
+    //     this.toastr.error(error, "Oops!", { enableHTML: true });
+    //   }
+    // );    
+    // this.channel = new Channel();
+  }
 
-  // update(data) {
-  //   //isso nao precisa, remover quando ativar o jwt
-  //   let channel = new Channel();
-  //   channel.id = data.id;
-  //   channel.name = data.name;
-  //   channel.description = data.description;
-  //   channel.token = data.token;
-  //   channel.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
-  //   channel.time_shift = data.time_shift;
-  //   //--------
+  update(data) {
+    // //isso nao precisa, remover quando ativar o jwt
+    // let channel = new Channel();
+    // channel.id = data.id;
+    // channel.name = data.name;
+    // channel.description = data.description;
+    // channel.token = data.token;
+    // channel.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
+    // channel.time_shift = data.time_shift;
+    // //--------
 
-  //   this.channelService.update(channel)
-  //   .subscribe(
-  //     result => {},
-  //     error => {
-  //       this.toastr.error(error, "Oops!", { enableHTML: true });
-  //     }
-  //   );    
-  // }
+    // this.channelService.update(channel)
+    // .subscribe(
+    //   result => {},
+    //   error => {
+    //     this.toastr.error(error, "Oops!", { enableHTML: true });
+    //   }
+    // );    
+  }
 
-  // delete() {
-  //   let selectedData = this.gridApi.getSelectedRows();  
+  delete() {
+    // let selectedData = this.gridApi.getSelectedRows();  
     
-  //   if(selectedData.length > 0) {
-  //     selectedData.forEach(row => {
-  //       //isso nao precisa, remover quando ativar o jwt
-  //       let channel = new Channel();
-  //       channel.id = row.id;
-  //       //--------
+    // if(selectedData.length > 0) {
+    //   selectedData.forEach(row => {
+    //     //isso nao precisa, remover quando ativar o jwt
+    //     let channel = new Channel();
+    //     channel.id = row.id;
+    //     //--------
 
-  //       this.channelService.delete(channel)
-  //       .subscribe(
-  //         result => {
-  //           this.gridApi.updateRowData({ remove: [row] });
-  //         },
-  //         error => {
-  //           this.toastr.error(error, "Oops!", { enableHTML: true });
-  //         }
-  //       );         
-  //     });      
-  //   }
-  // }
+    //     this.channelService.delete(channel)
+    //     .subscribe(
+    //       result => {
+    //         this.gridApi.updateRowData({ remove: [row] });
+    //       },
+    //       error => {
+    //         this.toastr.error(error, "Oops!", { enableHTML: true });
+    //       }
+    //     );         
+    //   });      
+    // }
+  }
 
 }
