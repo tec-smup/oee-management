@@ -9,7 +9,7 @@
         </a>
       </li>
     </ul>            
-
+    <hr style="margin-top: 0.2rem" />
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
       <span>Canal</span>
     </h6>
@@ -39,7 +39,7 @@
         </a>
       </li>
     </ul>
-
+    <hr style="margin-top: 0.2rem" />
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
       <span>Máquina</span>
     </h6>
@@ -57,33 +57,32 @@
         </a>
       </li>                        
     </ul>
-
-    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
-      <span>Administração</span>
-    </h6>
-    <ul class="nav flex-column mb-2">
-      <li class="nav-item">
-        <a [ngClass]="(linkActive=='criarUsuario')?'nav-link active':'nav-link'" href="#">
-          <i-plus-circle class="feather"></i-plus-circle>
-          Criar usuário
-        </a>
-      </li> 
-      <li class="nav-item">
-        <a [ngClass]="(linkActive=='log')?'nav-link active':'nav-link'" href="#">
-          <i-database class="feather"></i-database>
-          Log
-        </a>
-      </li>                         
-    </ul>
-
-    <ul class="nav flex-column">
-      <li class="nav-item">
-        <a [ngClass]="(linkActive=='docs')?'nav-link active':'nav-link'" href="#">
-          <i-help-circle class="feather"></i-help-circle>
-          Docs
-        </a>
-      </li>
-    </ul> 
+    <hr style="margin-top: 0.2rem" />
+    <div [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
+        <span>Administração</span>
+      </h6>
+      <ul class="nav flex-column mb-2">
+        <li class="nav-item">
+          <a [ngClass]="(linkActive=='user')?'nav-link active':'nav-link'" [routerLink]="['/user']">
+            <i-plus-circle class="feather"></i-plus-circle>
+            Criar usuário
+          </a>
+        </li> 
+        <li class="nav-item">
+          <a [ngClass]="(linkActive=='log')?'nav-link active':'nav-link'" href="#">
+            <i-database class="feather"></i-database>
+            Log
+          </a>
+        </li>
+        <li class="nav-item">
+          <a [ngClass]="(linkActive=='docs')?'nav-link active':'nav-link'" href="#">
+            <i-help-circle class="feather"></i-help-circle>
+            Docs
+          </a>
+        </li>                                 
+      </ul>
+    </div>
 
   </div>
 </nav>

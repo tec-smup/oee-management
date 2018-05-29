@@ -3,9 +3,9 @@ import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 
-import { UserComponent } from '../../components/user/user.component';
 import { Login } from '../../models/login';
 import { environment } from '../../../environments/environment';
+import { User } from '../../models/user';
 
 @Injectable()
 export class AuthenticationService {
@@ -16,7 +16,7 @@ export class AuthenticationService {
         this.token = currentUser && currentUser.token;
     }
 
-    login(user: UserComponent): Observable<Login> {
+    login(user: User): Observable<Login> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
                 
         return this.http.post(environment.userAuthenticationURL, 

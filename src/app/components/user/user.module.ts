@@ -4,12 +4,12 @@ import { FormsModule } from '@angular/forms';
 
 import {AgGridModule} from "ag-grid-angular/main";
 import { SharedModule } from '../shared/shared.module';
-import { ChannelService } from '../../services/channel/channel.service';
-import { ChannelComponent } from './channel.component';
+import { UserService } from '../../services/user/user.service';
+import { UserComponent } from './user.component';
 import { DropdownStatusModule } from '../dropdown/status/dropdown.status.module';
+import { DropdownYesNoModule } from '../dropdown/YesNo/dropdown.yesno.module';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
-import { NumberOnlyDirective } from '../../directives/number.directive';
 
 @NgModule({
   imports: [
@@ -17,18 +17,18 @@ import { NumberOnlyDirective } from '../../directives/number.directive';
     SharedModule,
     FormsModule,
     DropdownStatusModule,
+    DropdownYesNoModule,
     AgGridModule.withComponents([]),
     OwlDateTimeModule, 
     OwlNativeDateTimeModule   
   ],
   declarations: [ 
-    ChannelComponent,    
-    NumberOnlyDirective
+    UserComponent,    
   ],
-  exports: [ ChannelComponent ],
+  exports: [ UserComponent ],
   providers: [ 
-    ChannelService,
+    UserService,
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
    ],  
 })
-export class ChannelModule { }
+export class UserModule { }

@@ -16,5 +16,9 @@ export const environment = {
   machinePauseListURL: serverURL + 'machinepause/list',  //machine pause
   machinePauseAddURL: serverURL + 'machinepause',
   machinePauseUpdateURL: serverURL + 'machinepause/update',
-  machinePauseDeleteURL: serverURL + 'machinepause/delete',    
+  machinePauseDeleteURL: serverURL + 'machinepause/delete',   
+  userListURL: serverURL + 'user',                      //user
+  userAddURL: serverURL + 'user',
+  userUpdateURL: serverURL + 'user/update',
+  userDeleteURL: serverURL + 'user/delete',   
 };

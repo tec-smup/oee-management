@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserComponent } from '../user/user.component';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +10,7 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  user: UserComponent = new UserComponent();
+  user: User = new User();
   loading = false;
   message = '';
 
@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['dashboard']);
             } 
             else {
-                this.message = result.message;
-                this.loading = false;
+              this.message = result.message;
+              this.loading = false;
             }
         },
         error => {

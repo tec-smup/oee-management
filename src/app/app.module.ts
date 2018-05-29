@@ -12,11 +12,11 @@ import { DashboardModule } from './components/dashboard/dashboard.module';
 import { MachineModule } from './components/machine/machine.module';
 import { ChannelModule } from './components/channel/channel.module';
 import { MachinePauseModule } from './components/machine.pause/machine.pause.module';
+import { UserModule } from './components/user/user.module';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 import { BaseComponent } from './components/base.component';
 import { AppComponent } from './app.component';
-import { UserComponent } from './components/user/user.component';
 
 import { AuthenticationService } from './services/authentication/authentication.service';
 import { UserService } from './services/user/user.service';
@@ -25,7 +25,6 @@ import { UserService } from './services/user/user.service';
   declarations: [
     BaseComponent,
     AppComponent,
-    UserComponent, 
   ],
   imports: [
     Routing,
@@ -36,6 +35,7 @@ import { UserService } from './services/user/user.service';
     ChannelModule,
     MachineModule,
     MachinePauseModule,
+    UserModule,
     ToastModule.forRoot()
   ],
   providers: [

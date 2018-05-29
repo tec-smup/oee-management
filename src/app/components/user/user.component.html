@@ -1,3 +1,111 @@
-<p>
-  user works!
-</p>
+<app-nav componentName="Usuários cadastrados"></app-nav>
+<div class="container-fluid">
+  <div class="row">
+    <app-menu linkActive="user"></app-menu>
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 margin-top-45">
+      <div class="row margin-bottom-5px">        
+        <div class="col-md-12 order-md-1">
+
+          <div id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="card">
+              <div class="card-header" role="tab" id="headingOne">
+                <h6 class="mb-0">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Adicionar usuário
+                  </a>
+                </h6>
+              </div>
+              <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-block padding-10px">
+                  <form 
+                    name="form" 
+                    (ngSubmit)="f.form.valid && add($event)" #f="ngForm" novalidate 
+                    class="needs-validation">
+
+                    <div class="row">
+                      <div class="col-md-3 mb-3">
+                        <label for="code">Usuário</label>
+                        <input 
+                          name="username" 
+                          [(ngModel)]="user.username" 
+                          #code="ngModel"
+                          type="text"
+                          class="form-control form-control-no-border"
+                          required autofocus>
+                      </div>
+                      <div class="col-md-3 mb-3">
+                        <label for="password">Senha</label>
+                        <input 
+                          name="password" 
+                          [(ngModel)]="user.password" 
+                          #code="ngModel" 
+                          type="text" 
+                          class="form-control form-control-no-border">
+                      </div>                       
+                      <div class="col-md-3 mb-3">
+                        <label for="status">Status</label>
+                        <dropdown-status (statusEvent)="setStatus($event)"></dropdown-status>
+                      </div>
+                      <div class="col-md-3 mb-3">
+                        <label for="admin">Administrador</label>
+                        <dropdown-yesno (yesnoEventEvent)="setAdmin($event)"></dropdown-yesno>
+                      </div>                                                 
+                    </div>
+                    <div class="row row-vcenter">                                                                                             
+                      <div class="col-md-2 mb-3 vcenter">
+                        <button 
+                          [disabled]="!f.form.valid"
+                          class="btn btn-no-border btn-primary btn-sm btn-block" 
+                          type="submit">
+                          Adicionar
+                        </button>
+                      </div>                                                  
+                    </div>
+                    <div 
+                      *ngIf="user.message" 
+                      [ngClass]="(user.error)?'alert alert-danger alert-margin':'alert alert-success alert-margin'">
+                      {{user.message}}
+                    </div>    
+                  </form>                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row margin-bottom-5px">
+        <div class="col-md-12 order-md-1">
+          <div class="col-md-2 float-right">
+            <button 
+              (click)="delete()"
+              class="btn btn-no-border btn-primary btn-sm btn-block" 
+              type="button">
+              Remover selecionado
+            </button>
+          </div>
+        </div>  
+      </div>      
+
+      <div class="table-responsive">        
+        <ag-grid-angular #agGrid
+          style="width: 100%; height: 350px;"
+          id="myGrid"
+          class="ag-theme-balham"
+          [columnDefs]="columnDefs"
+          [enterMovesDownAfterEdit]="true"
+          [enterMovesDown]="true"
+          [animateRows]="true"
+          [rowSelection]="rowSelection"
+          (gridReady)="onGridReady($event)"
+          enableColResize
+          enableSorting
+          enableFilter 
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          (cellValueChanged)="onCellValueChanged($event)"
+        ></ag-grid-angular>        
+
+      </div>
+    </main>
+  </div>
+</div>

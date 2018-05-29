@@ -1,0 +1,9 @@
+<ng-select
+    [items]="items"
+    bindLabel="name"
+    bindValue="id"
+    placeholder="Sim/Não"
+    (add)="refreshValue($event)"
+    [(ngModel)]="selectedYesNo">
+</ng-select>
+

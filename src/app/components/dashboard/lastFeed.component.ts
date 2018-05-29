@@ -43,10 +43,13 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       result => {
         this.lastFeed = result.lastFeeds;
         this.pauses = result.pauses;
-        this.setColumnDefs();
-        this.gridApi.setRowData(this.lastFeed);        
-        this.gridApi.sizeColumnsToFit();    
-        this.startIntervalTimer();     
+        
+        if(this.lastFeed.length > 0) {
+          this.setColumnDefs();
+          this.gridApi.setRowData(this.lastFeed);        
+          this.gridApi.sizeColumnsToFit();              
+        }     
+        this.startIntervalTimer();
       },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
@@ -100,10 +103,13 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       result => {
         this.lastFeed = result.lastFeeds;
         this.pauses = result.pauses;
-        this.setColumnDefs();
-        this.gridApi.setRowData(this.lastFeed);        
-        this.gridApi.sizeColumnsToFit();
-        this.gridApi.hideOverlay();                 
+
+        if(this.lastFeed.length > 0) {
+          this.setColumnDefs();
+          this.gridApi.setRowData(this.lastFeed);        
+          this.gridApi.sizeColumnsToFit();          
+        }
+        this.gridApi.hideOverlay();
       },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });

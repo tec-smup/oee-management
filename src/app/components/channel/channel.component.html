@@ -53,7 +53,7 @@
                           required>
                       </div>
                       <div class="col-md-3 mb-3">
-                        <label for="department">Status</label>
+                        <label for="status">Status</label>
                         <dropdown-status (statusEvent)="setStatus($event)"></dropdown-status>
                       </div>                           
                     </div>
@@ -91,7 +91,7 @@
                         <owl-date-time [pickerType]="'timer'" #finalturn></owl-date-time>
                       </div> 
                       <div class="col-md-2 mb-3 vcenter">
-                        <label for="next_maintenance">&nbsp;</label>
+                        <label for="spacer">&nbsp;</label>
                         <button 
                           [disabled]="!f.form.valid"
                           class="btn btn-no-border btn-primary btn-sm btn-block" 

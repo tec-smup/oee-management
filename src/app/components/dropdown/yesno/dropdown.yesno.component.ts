@@ -2,13 +2,13 @@ import { Component, ViewContainerRef, OnInit, Output, EventEmitter } from '@angu
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
  
 @Component({
-  selector: 'dropdown-status',  
-  templateUrl: './dropdown-status.html',
+  selector: 'dropdown-yesno',  
+  templateUrl: './dropdown-yesno.html',
 })
-export class DropdownStatusComponent implements OnInit {
+export class DropdownYesNoComponent implements OnInit {
   items: Array<any> = [];
-  selectedStatus: any;
-  @Output() statusEvent = new EventEmitter<number>();
+  selectedYesNo: any;
+  @Output() yesnoEvent = new EventEmitter<number>();
 
   constructor(
     public toastr: ToastsManager, 
@@ -25,18 +25,18 @@ export class DropdownStatusComponent implements OnInit {
     this.items = [
       {
         id: 1,
-        name: 'Ativo',
+        name: 'Sim',
       },
       {
         id: 0,
-        name: 'Inativo',
+        name: 'Não',
       },      
     ];    
-    this.selectedStatus = this.items[1].id;
+    this.selectedYesNo = this.items[1].id;
   }
 
-  public refreshValue(value:any) {
-    this.selectedStatus = value.id;    
-    this.statusEvent.emit(this.selectedStatus);
-  }  
+  public refreshValue(value: any) {
+    this.selectedYesNo = value.id;    
+    this.yesnoEvent.emit(this.selectedYesNo);
+  }
 }

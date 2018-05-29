@@ -8,6 +8,11 @@ declare var $:any;
 export class BaseComponent implements OnInit {
     ngOnInit() {    
     }
+
+    getCurrentUser() {
+        let currentUser = localStorage.getItem('currentUser');
+        return JSON.parse(currentUser); 
+    }
     
     extractValues(mappings) {
         return Object.keys(mappings);
