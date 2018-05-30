@@ -4,6 +4,7 @@
     bindValue="id"
     placeholder="Selecione um status"
     (add)="refreshValue($event)"
-    [(ngModel)]="selectedStatus">
+    [(ngModel)]="selectedStatus"
+    [clearable]="false">
 </ng-select>
 

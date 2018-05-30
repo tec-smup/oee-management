@@ -5,6 +5,7 @@
         bindValue="code" 
         placeholder="Selecione uma máquina"
         (add)="refreshValue($event)"
-        [(ngModel)]="selectedMachineCode">
+        [(ngModel)]="selectedMachineCode"
+        [clearable]="false">
     </ng-select>
 </div>

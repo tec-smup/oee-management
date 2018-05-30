@@ -10,5 +10,7 @@ export class User extends BaseModel {
   
   constructor() {
     super();
+    this.admin = 0;
+    this.active = 0;
   }  
 }

@@ -3,7 +3,7 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
  
 @Component({
   selector: 'dropdown-status',  
-  templateUrl: './dropdown-status.html',
+  templateUrl: './dropdown-status.html'
 })
 export class DropdownStatusComponent implements OnInit {
   items: Array<any> = [];

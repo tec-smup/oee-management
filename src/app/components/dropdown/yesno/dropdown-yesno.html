@@ -4,6 +4,7 @@
     bindValue="id"
     placeholder="Sim/Não"
     (add)="refreshValue($event)"
-    [(ngModel)]="selectedYesNo">
+    [(ngModel)]="selectedYesNo"
+    [clearable]="false">
 </ng-select>
 

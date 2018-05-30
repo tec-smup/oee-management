@@ -5,6 +5,7 @@
         bindValue="id"
         placeholder="Selecione um canal"
         (add)="refreshValue($event)"
-        [(ngModel)]="selectedChannelId">
+        [(ngModel)]="selectedChannelId"
+        [clearable]="false">
     </ng-select>
 </div>

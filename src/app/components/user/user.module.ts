@@ -10,6 +10,8 @@ import { DropdownStatusModule } from '../dropdown/status/dropdown.status.module'
 import { DropdownYesNoModule } from '../dropdown/YesNo/dropdown.yesno.module';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+import { ResetPassButtonRenderer } from './grid/resetpass.button.component';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
   imports: [
@@ -18,12 +20,14 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from
     FormsModule,
     DropdownStatusModule,
     DropdownYesNoModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([ResetPassButtonRenderer]),
     OwlDateTimeModule, 
-    OwlNativeDateTimeModule   
+    OwlNativeDateTimeModule,
+    AngularFontAwesomeModule
   ],
   declarations: [ 
     UserComponent,    
+    ResetPassButtonRenderer
   ],
   exports: [ UserComponent ],
   providers: [ 

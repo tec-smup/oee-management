@@ -4,6 +4,7 @@ import { UserService } from '../../services/user/user.service';
 import { User } from '../../models/user';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { BaseComponent } from '../base.component';
+import { ResetPassButtonRenderer } from './grid/resetpass.button.component';
 
 @Component({
   selector: 'app-user',
@@ -18,6 +19,8 @@ export class UserComponent extends BaseComponent implements OnInit {
   paginationPageSize = 10;
   rowSelection = "multiple";
   editType = "fullRow";
+  context;
+  frameworkComponents;
   statusMappings = {
     1: "Ativo",
     0: "Inativo",
@@ -56,8 +59,17 @@ export class UserComponent extends BaseComponent implements OnInit {
       {
         headerName: "Criado em",
         field: "created_at",
-      },            
+      }, 
+      {
+        headerName: "Ações",
+        cellRenderer: "resetPassButtonRenderer",
+        colId: "params",
+      },                   
     ];    
+    this.context = { componentParent: this };
+    this.frameworkComponents = {
+      resetPassButtonRenderer: ResetPassButtonRenderer
+    };    
   }
 
   ngOnInit() {
@@ -89,63 +101,62 @@ export class UserComponent extends BaseComponent implements OnInit {
   }
 
   add(event) {
-    // event.preventDefault(); 
-    // this.channel.initial_turn = this.getTime(this.channel.initial_turn);    
-    // this.channel.final_turn = this.getTime(this.channel.final_turn);
+    event.preventDefault(); 
 
-    // this.channelService.add(this.channel)
-    // .subscribe(
-    //   result => {
-    //     this.gridApi.updateRowData({ add: [result] });
-    //   },
-    //   error => {
-    //     this.toastr.error(error, "Oops!", { enableHTML: true });
-    //   }
-    // );    
-    // this.channel = new Channel();
+    this.userService.add(this.user)
+    .subscribe(
+      result => {
+        this.gridApi.updateRowData({ add: [result] });
+      },
+      error => {
+        this.toastr.error(error, "Oops!", { enableHTML: true });
+      }
+    );    
+    this.user = new User();
   }
 
   update(data) {
-    // //isso nao precisa, remover quando ativar o jwt
-    // let channel = new Channel();
-    // channel.id = data.id;
-    // channel.name = data.name;
-    // channel.description = data.description;
-    // channel.token = data.token;
-    // channel.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
-    // channel.time_shift = data.time_shift;
-    // //--------
+    //isso nao precisa, remover quando ativar o jwt
+    let user = new User();
+    user.id = data.id;
+    user.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
+    user.admin = (isNaN(data.admin) ? (data.admin == 'Sim' ? 1 : 0) : parseInt(data.admin));
+    //--------
 
-    // this.channelService.update(channel)
-    // .subscribe(
-    //   result => {},
-    //   error => {
-    //     this.toastr.error(error, "Oops!", { enableHTML: true });
-    //   }
-    // );    
+    this.userService.update(user)
+    .subscribe(
+      result => {},
+      error => {
+        this.toastr.error(error, "Oops!", { enableHTML: true });
+      }
+    );    
   }
 
   delete() {
-    // let selectedData = this.gridApi.getSelectedRows();  
+    let selectedData = this.gridApi.getSelectedRows();  
     
-    // if(selectedData.length > 0) {
-    //   selectedData.forEach(row => {
-    //     //isso nao precisa, remover quando ativar o jwt
-    //     let channel = new Channel();
-    //     channel.id = row.id;
-    //     //--------
+    if(selectedData.length > 0) {
+      selectedData.forEach(row => {
+        //isso nao precisa, remover quando ativar o jwt
+        let user = new User();
+        user.id = row.id;
+        //--------
 
-    //     this.channelService.delete(channel)
-    //     .subscribe(
-    //       result => {
-    //         this.gridApi.updateRowData({ remove: [row] });
-    //       },
-    //       error => {
-    //         this.toastr.error(error, "Oops!", { enableHTML: true });
-    //       }
-    //     );         
-    //   });      
-    // }
+        this.userService.delete(user)
+        .subscribe(
+          result => {
+            this.gridApi.updateRowData({ remove: [row] });
+          },
+          error => {
+            this.toastr.error(error, "Oops!", { enableHTML: true });
+          }
+        );         
+      });      
+    }
+  }
+
+  methodFromParent(cell) {
+    alert("Parent Component Method from " + cell + "!");
   }
 
 }
