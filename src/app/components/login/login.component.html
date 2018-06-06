@@ -11,7 +11,8 @@
             type="email" 
             class="form-control"
             placeholder="E-mail"
-            required autofocus>
+            required autofocus
+            [disabled]="loading">
         
         <label for="password" class="sr-only">Senha</label>
         <input 
@@ -20,7 +21,8 @@
             type="password" 
             class="form-control" 
             placeholder="Senha" 
-            required>
+            required
+            [disabled]="loading">
 
         <button 
             [disabled]="loading || !f.form.valid" 
