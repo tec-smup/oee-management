@@ -1,12 +1,13 @@
 import { Component, ViewContainerRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChannelService } from '../../../services/channel/channel.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { BaseComponent } from '../../base.component';
  
 @Component({
   selector: 'dropdown-channel',  
   templateUrl: './dropdown-channel.html',
 })
-export class DropdownChannelComponent implements OnInit {
+export class DropdownChannelComponent extends BaseComponent implements OnInit {
   items: Array<any> = [];
   selectedChannelId: any;
   @Output() changeEvent = new EventEmitter<any>();
@@ -16,6 +17,7 @@ export class DropdownChannelComponent implements OnInit {
     public toastr: ToastsManager, 
     vcr: ViewContainerRef
   ) {
+    super();
     this.toastr.setRootViewContainerRef(vcr);              
   }
 
@@ -24,7 +26,7 @@ export class DropdownChannelComponent implements OnInit {
   }
 
   load() {
-    this.channelService.list()
+    this.channelService.list(this.getCurrentUser().id)
     .subscribe(
       result => {
         this.items = result;

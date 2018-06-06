@@ -1,12 +1,13 @@
 import { Component, ViewContainerRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { MachineService } from '../../../services/machine/machine.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { BaseComponent } from '../../base.component';
  
 @Component({
   selector: 'dropdown-machine',  
   templateUrl: './dropdown-machine.html',
 })
-export class DropdownMachineComponent implements OnInit {
+export class DropdownMachineComponent extends BaseComponent implements OnInit {
   items: Array<any> = [];
   selectedMachineCode: any;
   @Output() changeEvent = new EventEmitter<string>();
@@ -16,6 +17,7 @@ export class DropdownMachineComponent implements OnInit {
     public toastr: ToastsManager, 
     vcr: ViewContainerRef
   ) {
+    super();
     this.toastr.setRootViewContainerRef(vcr);              
   }
 
@@ -24,7 +26,7 @@ export class DropdownMachineComponent implements OnInit {
   }
 
   load() {
-    this.machineService.list()
+    this.machineService.list(this.getCurrentUser().id)
     .subscribe(
       result => {
         this.items = result;

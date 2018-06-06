@@ -87,7 +87,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
 
-    this.channelService.list()
+    this.channelService.list(this.getCurrentUser().id)
     .subscribe(
       result => {
         params.api.setRowData(result);

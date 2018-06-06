@@ -18,8 +18,9 @@ export class ChannelService extends BaseService {
         // this.token = currentUser && currentUser.token;
     }
 
-    list(): Observable<Channel[]> {
-        return this.http.get(environment.channelListURL)
+    list(userId: number): Observable<Channel[]> {
+        let url = environment.channelListURL.replace(":userId", userId.toString());
+        return this.http.get(url)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }

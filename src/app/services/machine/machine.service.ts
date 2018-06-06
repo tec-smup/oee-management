@@ -18,8 +18,9 @@ export class MachineService extends BaseService {
         // this.token = currentUser && currentUser.token;
     }
 
-    list(): Observable<Machine[]> {
-        return this.http.get(environment.machineListURL)
+    list(userId: number): Observable<Machine[]> {
+        let url = environment.machineListURL.replace(":userId", userId.toString());
+        return this.http.get(url)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }
