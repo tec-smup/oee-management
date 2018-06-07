@@ -109,6 +109,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     event.preventDefault(); 
     this.channel.initial_turn = this.getTime(this.channel.initial_turn);    
     this.channel.final_turn = this.getTime(this.channel.final_turn);
+    this.channel.userId = this.getCurrentUser().id;
 
     this.channelService.add(this.channel)
     .subscribe(
