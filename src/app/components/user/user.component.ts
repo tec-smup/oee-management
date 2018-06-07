@@ -61,10 +61,14 @@ export class UserComponent extends BaseComponent implements OnInit {
         field: "created_at",
       }, 
       {
-        headerName: "Ações",
-        cellRenderer: "resetPassButtonRenderer",
-        colId: "params",
-      },                   
+        headerName: "Empresa",
+        field: "company_name",
+      },      
+      // {
+      //   headerName: "Ações",
+      //   cellRenderer: "resetPassButtonRenderer",
+      //   colId: "params",
+      // },                   
     ];    
     this.context = { componentParent: this };
     this.frameworkComponents = {
@@ -101,8 +105,7 @@ export class UserComponent extends BaseComponent implements OnInit {
   }
 
   add(event) {
-    event.preventDefault(); 
-
+    event.preventDefault();
     this.userService.add(this.user)
     .subscribe(
       result => {

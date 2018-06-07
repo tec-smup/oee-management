@@ -7,10 +7,11 @@ export class User extends BaseModel {
   active: number;
   admin: number;
   created_at: string;
+  company_name: string;
   
   constructor() {
     super();
     this.admin = 0;
-    this.active = 0;
+    this.active = 1;
   }  
 }
