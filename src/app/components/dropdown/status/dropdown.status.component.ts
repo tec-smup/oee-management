@@ -32,7 +32,7 @@ export class DropdownStatusComponent implements OnInit {
         name: 'Inativo',
       },      
     ];    
-    this.selectedStatus = this.items[1].id;
+    this.selectedStatus = this.items[0].id;
   }
 
   public refreshValue(value:any) {

@@ -29,7 +29,7 @@ export class DropdownChannelComponent extends BaseComponent implements OnInit {
     this.channelService.list(this.getCurrentUser().id)
     .subscribe(
       result => {
-        this.items = result;
+        this.items = result.filter(f => f.active.toString() === "Ativo");
         this.selectedChannelId = this.items[0].id;
         this.refreshValue(this.items[0]);
       },

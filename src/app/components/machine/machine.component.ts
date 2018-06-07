@@ -84,8 +84,8 @@ export class MachineComponent extends BaseComponent implements OnInit {
 
   add(event) {
     event.preventDefault();    
-    this.machine.userId = this.getCurrentUser().id;
-    this.machineService.add(this.machine) //remover quando ativar definitivamente o token
+    this.machine.userId = this.getCurrentUser().id; //remover quando ativar definitivamente o token
+    this.machineService.add(this.machine) 
     .subscribe(
       result => {
         this.gridApi.updateRowData({ add: [result] });

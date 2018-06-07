@@ -4,9 +4,10 @@ import { HttpModule } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
-    imports: [ HttpModule, FormsModule, CommonModule ],
+    imports: [ HttpModule, FormsModule, CommonModule, AngularFontAwesomeModule ],
     declarations: [ LoginComponent ],
     exports: [ LoginComponent ]
 })
