@@ -8,6 +8,7 @@ export class User extends BaseModel {
   admin: number;
   created_at: string;
   company_name: string;
+  phone: string;
   
   constructor() {
     super();

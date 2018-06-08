@@ -24,11 +24,11 @@
 
                     <div class="row">
                       <div class="col-md-3 mb-3">
-                        <label for="code">Usuário</label>
+                        <label for="username">Usuário</label>
                         <input 
                           name="username" 
                           [(ngModel)]="user.username" 
-                          #code="ngModel"
+                          #username="ngModel"
                           type="text"
                           class="form-control form-control-no-border"
                           required autofocus>
@@ -38,7 +38,7 @@
                         <input 
                           name="password" 
                           [(ngModel)]="user.password" 
-                          #code="ngModel" 
+                          #password="ngModel" 
                           type="text" 
                           class="form-control form-control-no-border">
                       </div>                       
@@ -53,15 +53,25 @@
                     </div>
                     <div class="row">
                       <div class="col-md-3 mb-3">
-                        <label for="code">Empresa</label>
+                        <label for="company_name">Empresa</label>
                         <input 
                           name="company_name" 
                           [(ngModel)]="user.company_name" 
-                          #code="ngModel"
+                          #companyname="ngModel"
                           type="text"
                           class="form-control form-control-no-border"
                         >
-                      </div>                                   
+                      </div> 
+                      <div class="col-md-3 mb-3">
+                        <label for="phone">Telefone</label>
+                        <input 
+                          name="phone" 
+                          [(ngModel)]="user.phone" 
+                          #phone="ngModel"
+                          type="text"
+                          class="form-control form-control-no-border"
+                        >
+                      </div>                                                         
                     </div>                    
                     <div class="row row-vcenter">                                                                                             
                       <div class="col-md-2 mb-3 vcenter">

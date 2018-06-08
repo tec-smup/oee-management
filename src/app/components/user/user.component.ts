@@ -55,15 +55,21 @@ export class UserComponent extends BaseComponent implements OnInit {
         cellEditor: "agSelectCellEditor",
         cellEditorParams: { values: this.extractValues(this.YesNoMappings) },
         refData: this.YesNoMappings
-      },      
-      {
-        headerName: "Criado em",
-        field: "created_at",
       }, 
       {
         headerName: "Empresa",
         field: "company_name",
-      },      
+        editable: true,
+      },   
+      {
+        headerName: "Telefone",
+        field: "phone",
+        editable: true,
+      },            
+      {
+        headerName: "Criado em",
+        field: "created_at",
+      },          
       // {
       //   headerName: "Ações",
       //   cellRenderer: "resetPassButtonRenderer",
@@ -122,6 +128,8 @@ export class UserComponent extends BaseComponent implements OnInit {
     //isso nao precisa, remover quando ativar o jwt
     let user = new User();
     user.id = data.id;
+    user.company_name = data.company_name;
+    user.phone = data.phone;
     user.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
     user.admin = (isNaN(data.admin) ? (data.admin == 'Sim' ? 1 : 0) : parseInt(data.admin));
     //--------
