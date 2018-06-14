@@ -24,10 +24,12 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     public toastr: ToastsManager, 
     vcr: ViewContainerRef) {   
       super();
-      this.toastr.setRootViewContainerRef(vcr);      
+      this.toastr.setRootViewContainerRef(vcr);    
+      console.log("const lastfeed");  
   }
 
   ngOnInit() {
+    console.log("init lastfeed");
   }
 
   ngOnDestroy() {
