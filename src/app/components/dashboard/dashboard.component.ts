@@ -2,7 +2,6 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { Chart } from 'chart.js';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
-import { Dashboard } from '../../models/dashboard';
 import { BaseComponent } from '../base.component';
 
 @Component({
@@ -39,13 +38,12 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   }
 
   setChannel($event) {
-    console.log("setChannel" + $event);
     this.dropdownChannel = $event.id;
-    this.refreshChart(true);    
+    //this.refreshChart(true);    
   }
 
   setMachine($event) {
-    this.dropdownMachine = $event; 
+    this.dropdownMachine = $event;
     this.refreshChart(true);
   }  
 

@@ -7,7 +7,7 @@ const serverURL = 'http://localhost:3000/oee/api/';
 export const environment = {
   production: false,
   userAuthenticationURL: serverURL + 'user/authentication',
-  machineListURL: serverURL + ':userId/machine/list',                 //machine
+  machineListURL: serverURL + ':userId/:channelId/machine/list',                 //machine
   machineAddURL: serverURL + 'machine',
   machineUpdateURL: serverURL + 'machine/update',
   machineDeleteURL: serverURL + 'machine/delete',

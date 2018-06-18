@@ -1,4 +1,12 @@
-import { Component, ViewContainerRef, OnInit, Output, EventEmitter } from '@angular/core';
+import { 
+  Component, 
+  ViewContainerRef, 
+  OnInit, 
+  Output, 
+  EventEmitter, 
+  Input, 
+  OnChanges, 
+  SimpleChange  } from '@angular/core';
 import { MachineService } from '../../../services/machine/machine.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { BaseComponent } from '../../base.component';
@@ -10,6 +18,7 @@ import { BaseComponent } from '../../base.component';
 export class DropdownMachineComponent extends BaseComponent implements OnInit {
   items: Array<any> = [];
   selectedMachineCode: any;
+  @Input() channelId: number;
   @Output() changeEvent = new EventEmitter<string>();
 
   constructor(
@@ -21,12 +30,19 @@ export class DropdownMachineComponent extends BaseComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);              
   }
 
-  ngOnInit() {  
-    this.load();     
+  ngOnInit() {       
   }
 
-  load() {
-    this.machineService.list(this.getCurrentUser().id)
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    console.log(changes);
+    let id = changes.channelId && changes.channelId.currentValue != null ? changes.channelId.currentValue : null;
+    if(id) {
+      this.load(id);
+    }
+  }
+
+  load(channelId: number) {
+    this.machineService.list(this.getCurrentUser().id, channelId)
     .subscribe(
       result => {
         this.items = result;

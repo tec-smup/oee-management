@@ -1,4 +1,13 @@
-import { Component, OnInit, ViewContainerRef, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { 
+  Component, 
+  OnInit, 
+  ViewContainerRef, 
+  EventEmitter, 
+  Output, 
+  OnDestroy, 
+  Input,
+  OnChanges, 
+  SimpleChange } from '@angular/core';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { Dashboard } from '../../models/dashboard';
@@ -16,6 +25,10 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   gridColumnApi;
   columnDefs;
   paginationPageSize = 25;
+  @Input() channelId: number;
+  channelIdSelected:  number = 0;
+  @Input() date: Date[];
+  dateSelected: string;
   @Output() refreshDash = new EventEmitter<boolean>();
   intervalTimer: any;
   timerStr: string = "00:00:00";
@@ -25,22 +38,18 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     vcr: ViewContainerRef) {   
       super();
       this.toastr.setRootViewContainerRef(vcr);    
-      console.log("const lastfeed");  
   }
 
   ngOnInit() {
-    console.log("init lastfeed");
   }
 
-  ngOnDestroy() {
-    clearInterval(this.intervalTimer);
-  }
+  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
+    this.channelIdSelected = changes.channelId && changes.channelId.currentValue != null ? 
+      changes.channelId.currentValue : this.channelIdSelected;
 
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
+    this.dateSelected = changes.date ? this.formatDate(changes.date.currentValue[0]) : this.dateSelected;
     
-    this.dashboardService.lastFeed(this.getCurrentDate())
+    this.dashboardService.lastFeed(this.dateSelected, this.channelIdSelected)
     .subscribe(
       result => {
         this.lastFeed = result.lastFeeds;
@@ -55,7 +64,16 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
-      });        
+      });     
+  }  
+
+  ngOnDestroy() {
+    clearInterval(this.intervalTimer);
+  }
+
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;        
   }
 
   setColumnDefs() {
@@ -100,7 +118,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     this.refreshDash.emit(true);
     this.startIntervalTimer();
     this.gridApi.showLoadingOverlay();
-    this.dashboardService.lastFeed(this.getCurrentDate())
+    this.dashboardService.lastFeed(this.getCurrentDate(), this.channelId)
     .subscribe(
       result => {
         this.lastFeed = result.lastFeeds;

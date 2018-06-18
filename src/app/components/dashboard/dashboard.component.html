@@ -25,8 +25,8 @@
               <dropdown-channel (changeEvent)="setChannel($event)"></dropdown-channel>
             </div>
             <div class="col">
-              <dropdown-machine (changeEvent)="setMachine($event)"></dropdown-machine> 
-            </div>            
+              <dropdown-machine [channelId]="dropdownChannel" (changeEvent)="setMachine($event)"></dropdown-machine> 
+            </div>                     
           </div>                       
         </div>           
 
@@ -38,7 +38,7 @@
         </div> -->
       </div>
       <canvas id="chartCanvas" class="my-4" width="900" height="380">{{ chart }}</canvas>
-      <app-lastfeed (refreshDash)="refreshChart($event)"></app-lastfeed>
+      <app-lastfeed [channelId]="dropdownChannel" [date]="dateTimeRange" (refreshDash)="refreshChart($event)"></app-lastfeed>
     </main>
   </div>
 </div>

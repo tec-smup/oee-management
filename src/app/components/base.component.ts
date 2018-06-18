@@ -100,7 +100,7 @@ export class BaseComponent implements OnInit {
 
     getCurrentDate() {
         let now = new Date();
-        console.log(now);
+        //console.log(now);
         let day = now.getDate();
         let month = now.getMonth()+1;
         let year = now.getFullYear();
