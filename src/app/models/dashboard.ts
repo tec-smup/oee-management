@@ -20,8 +20,9 @@ class LastFeed {
 }
 
 class Chart {
-  time: string;
-  oee: string;
+  labels: string;
+  data: string;
+  chart_tooltip_desc: string;
 }
 
 export class Dashboard extends BaseModel {

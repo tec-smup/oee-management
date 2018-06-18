@@ -48,9 +48,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
   refreshChart(refresh: boolean) {
     if(refresh && this.dropdownChannel && this.dropdownMachine && this.dateTimeRange.length == 2) {
-      Chart.helpers.each(Chart.instances, function(instance) {
-        instance.chart.destroy();
-      });
       this.getChartData();
     }
   }
@@ -64,15 +61,35 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     )
     .subscribe(
       result => {
-        let time = result.map(e => e.time);
-        let oee = result.map(e => e.oee);
+        let labels = result.map(e => e.labels);
+        let data = result.map(e => e.data);
+        let tooltips = result[0] ? result[0].chart_tooltip_desc : "";
+
+        let instanceExists = false;
+        Chart.helpers.each(Chart.instances, function(instance) {    
+          instanceExists = true;
+          
+          let callbacks = instance.options.tooltips.callbacks;
+          callbacks.label = function(tooltipItem, data) {
+            return tooltips.replace("__value", tooltipItem.yLabel);
+          };
+
+          instance.data.labels = labels;
+          instance.data.datasets.forEach(function(dataset) {            
+            dataset.data = data;
+          });
+          instance.update(); 
+        });
+
+        if(instanceExists)
+          return;
 
         this.chart = new Chart('chartCanvas', {
           type: 'line',
           data: {
-            labels: time,
+            labels: labels,
             datasets: [{
-              data: oee,
+              data: data,
               lineTension: 0,
               backgroundColor: 'transparent',
               borderColor: '#007bff',
@@ -94,7 +111,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             tooltips: {
               callbacks: {
                 label: function(tooltipItem, data) {
-                  return 'OEE: ' + tooltipItem.yLabel + '%';
+                  return "OEE: " + tooltipItem.yLabel + '%';
                 }
               }                  
             }                      
