@@ -68,7 +68,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
 
-    this.machineService.list(this.getCurrentUser().id, 0)
+    this.machineService.list(this.getCurrentUser().id, 0) //passa canal zero pois quero ver todas as maquinas do usuario
     .subscribe(
       result => {
         params.api.setRowData(result);

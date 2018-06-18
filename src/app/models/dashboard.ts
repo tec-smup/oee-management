@@ -16,6 +16,7 @@ class LastFeed {
   field3_desc: string;
   field4_desc: string;
   field5_desc: string;  
+  refresh_time: number;
 }
 
 class Chart {

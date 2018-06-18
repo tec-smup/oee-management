@@ -34,7 +34,6 @@ export class DropdownMachineComponent extends BaseComponent implements OnInit {
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    console.log(changes);
     let id = changes.channelId && changes.channelId.currentValue != null ? changes.channelId.currentValue : null;
     if(id) {
       this.load(id);

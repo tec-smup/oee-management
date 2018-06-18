@@ -39,7 +39,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
   setChannel($event) {
     this.dropdownChannel = $event.id;
-    //this.refreshChart(true);    
   }
 
   setMachine($event) {

@@ -19,16 +19,20 @@ import { BaseComponent } from '../base.component';
   styleUrls: ['./dashboard.component.css']
 })
 export class LastFeedComponent extends BaseComponent implements OnInit, OnDestroy {
+  @Input() channelId: number;
+  channelIdSelected:  number = 0;
+  @Input() date: Date[];
+  dateSelected: string;
+  @Input() machineCode: string;
+  machineCodeSelected: string = "";
+
   lastFeed: Array<Dashboard["lastFeed"]> = [];
   pauses: Dashboard["pauses"] = [];
   gridApi;
   gridColumnApi;
   columnDefs;
   paginationPageSize = 25;
-  @Input() channelId: number;
-  channelIdSelected:  number = 0;
-  @Input() date: Date[];
-  dateSelected: string;
+
   @Output() refreshDash = new EventEmitter<boolean>();
   intervalTimer: any;
   timerStr: string = "00:00:00";
@@ -47,9 +51,15 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     this.channelIdSelected = changes.channelId && changes.channelId.currentValue != null ? 
       changes.channelId.currentValue : this.channelIdSelected;
 
+    this.machineCodeSelected = changes.machineCode && changes.machineCode.currentValue != null ? 
+      changes.machineCode.currentValue : this.machineCodeSelected;  
+
     this.dateSelected = changes.date ? this.formatDate(changes.date.currentValue[0]) : this.dateSelected;
     
-    this.dashboardService.lastFeed(this.dateSelected, this.channelIdSelected)
+    if(this.channelIdSelected == 0 || !this.machineCodeSelected)
+      return;
+
+    this.dashboardService.lastFeed(this.dateSelected, this.channelIdSelected, this.machineCodeSelected, this.getCurrentUser().id)
     .subscribe(
       result => {
         this.lastFeed = result.lastFeeds;
@@ -118,7 +128,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     this.refreshDash.emit(true);
     this.startIntervalTimer();
     this.gridApi.showLoadingOverlay();
-    this.dashboardService.lastFeed(this.getCurrentDate(), this.channelId)
+    this.dashboardService.lastFeed(this.dateSelected, this.channelIdSelected, this.machineCodeSelected, this.getCurrentUser().id)
     .subscribe(
       result => {
         this.lastFeed = result.lastFeeds;
@@ -137,7 +147,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   }  
 
   startIntervalTimer() {
-    let sec = 300;
+    let sec = this.lastFeed[0] ? this.lastFeed[0].refresh_time : 300;
     this.timerStr = this.secToTime(sec);
     clearInterval(this.intervalTimer);
     this.intervalTimer = setInterval(

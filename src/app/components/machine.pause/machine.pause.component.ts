@@ -83,7 +83,7 @@ export class MachinePauseComponent extends BaseComponent implements OnInit, OnDe
   }
 
   loadDataGrid(date) {    
-    this.machinePauseService.list(date)
+    this.machinePauseService.list(date, this.getCurrentUser().id)
     .subscribe(
       result => {
         this.gridApi.setRowData(result.list);
