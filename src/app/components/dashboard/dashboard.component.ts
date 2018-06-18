@@ -111,7 +111,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             tooltips: {
               callbacks: {
                 label: function(tooltipItem, data) {
-                  return "OEE: " + tooltipItem.yLabel + '%';
+                  return tooltips.replace("__value", tooltipItem.yLabel);
                 }
               }                  
             }                      
