@@ -88,7 +88,8 @@
                           [(ngModel)]="machine.mobile_name" 
                           #mobilename="ngModel" 
                           type="text" 
-                          class="form-control form-control-no-border">
+                          class="form-control form-control-no-border"
+                          maxlength="5">
                       </div>                      
                       <div class="col-md-2 mb-3 vcenter">
                         <label for="next_maintenance">&nbsp;</label>
@@ -114,7 +115,7 @@
       </div>
       <div class="row margin-bottom-5px" [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
         <div class="col-md-12 order-md-1">
-          <div class="col-md-2 float-right">
+          <div class="col-md-2 float-right margin-bottom-5px">
             <button 
               (click)="delete()"
               class="btn btn-no-border btn-primary btn-sm btn-block" 

@@ -40,7 +40,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
       {
         headerName: "Nome no app",
         field: "mobile_name",
-        editable: true         
+        editable: true,
       },      
       {
         headerName: "Departamento",

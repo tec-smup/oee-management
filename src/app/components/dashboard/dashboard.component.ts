@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { Chart } from 'chart.js';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
@@ -26,6 +26,13 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {       
   }
+
+  ngOnDestroy() {
+    //destroi instancias anteriores do grafico
+    Chart.helpers.each(Chart.instances, function(instance) {    
+      instance.destroy(); 
+    }); 
+  }  
 
   changeDateRange(dates: any): any {
     var hours = Math.abs(dates.value[0] - dates.value[1]) / 36e5;   
