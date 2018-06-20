@@ -19,40 +19,47 @@ export class MachineComponent extends BaseComponent implements OnInit {
   paginationPageSize = 10;
   rowSelection = "multiple";
   editType = "fullRow";
+  currentUser;
 
   constructor(private machineService: MachineService, 
               public toastr: ToastsManager, 
               vcr: ViewContainerRef) {
     super();                
+    this.currentUser = this.getCurrentUser();
     this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
       {
-        headerName: "Code",
+        headerName: "Código",
         field: "code",
       },
       {
-        headerName: "Name",
+        headerName: "Nome",
         field: "name",
         editable: true         
       },
       {
-        headerName: "Department",
+        headerName: "Nome no app",
+        field: "mobile_name",
+        editable: true         
+      },      
+      {
+        headerName: "Departamento",
         field: "department",
         editable: true
       },
       {
-        headerName: "Product",
+        headerName: "Produto",
         field: "product",
         editable: true
       },
       {
-        headerName: "Last Maintenance",
+        headerName: "Última manutenção",
         field: "last_maintenance",
         editable: true,
         cellEditor: "datePicker"
       },
       {
-        headerName: "Next Maintenance",
+        headerName: "Próxima manutenção",
         field: "next_maintenance",
         editable: true,
         cellEditor: "datePicker"
@@ -102,6 +109,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
     let machine = new Machine();
     machine.code = data.code;
     machine.name = data.name;
+    machine.mobile_name = data.mobile_name;
     machine.department = data.department;
     machine.product = data.product;
     machine.last_maintenance = data.last_maintenance;

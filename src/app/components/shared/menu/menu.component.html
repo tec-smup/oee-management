@@ -20,19 +20,19 @@
           Criar canal
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
         <a [ngClass]="(linkActive=='consultarMedicoes')?'nav-link active':'nav-link'" href="#">
           <i-eye class="feather"></i-eye>
           Consultar medições
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
         <a [ngClass]="(linkActive=='deletarMedicoes')?'nav-link active':'nav-link'" href="#">
           <i-trash-2 class="feather"></i-trash-2>
           Deletar medições
         </a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
         <a [ngClass]="(linkActive=='medicaoManual')?'nav-link active':'nav-link'" href="#">
           <i-plus-circle class="feather"></i-plus-circle>
           Medição manual

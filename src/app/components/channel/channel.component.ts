@@ -23,11 +23,13 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     0: "Inativo",
     1: "Ativo"
   };  
+  currentUser;
   
   constructor(private channelService: ChannelService, 
               public toastr: ToastsManager, 
               vcr: ViewContainerRef) {
     super();
+    this.currentUser = this.getCurrentUser();
     this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
       {

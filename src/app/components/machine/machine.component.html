@@ -6,7 +6,7 @@
       <div class="row margin-bottom-5px">        
         <div class="col-md-12 order-md-1">
 
-          <div id="accordion" role="tablist" aria-multiselectable="true">
+          <div id="accordion" role="tablist" aria-multiselectable="true" [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
             <div class="card">
               <div class="card-header" role="tab" id="headingOne">
                 <h6 class="mb-0">
@@ -24,7 +24,7 @@
 
                     <div class="row">
                       <div class="col-md-3 mb-3">
-                        <label for="code">Code</label>
+                        <label for="code">Código</label>
                         <input 
                           name="code" 
                           [(ngModel)]="machine.code" 
@@ -34,53 +34,62 @@
                           required autofocus>
                       </div>
                       <div class="col-md-3 mb-3">
-                        <label for="name">Name</label>
+                        <label for="name">Nome</label>
                         <input 
                           name="name" 
                           [(ngModel)]="machine.name" 
-                          #code="ngModel" 
+                          #name="ngModel" 
                           type="text" 
                           class="form-control form-control-no-border"
                           required>
                       </div>
                       <div class="col-md-3 mb-3">
-                        <label for="department">Department</label>
+                        <label for="department">Departamento</label>
                         <input 
                           name="department" 
                           [(ngModel)]="machine.department" 
-                          #code="ngModel" 
+                          #department="ngModel" 
                           type="text" 
                           class="form-control form-control-no-border">
                       </div> 
                       <div class="col-md-3 mb-3">
-                        <label for="product">Product</label>
+                        <label for="product">Produto</label>
                         <input 
                           name="product" 
                           [(ngModel)]="machine.product" 
-                          #code="ngModel" 
+                          #product="ngModel" 
                           type="text" 
                           class="form-control form-control-no-border">
                       </div>                            
                     </div>
                     <div class="row row-vcenter">
                       <div class="col-md-3 mb-3">
-                        <label for="last_maintenance">Last Maintenance</label>
+                        <label for="last_maintenance">Última manutenção</label>
                         <input 
                           name="last_maintenance" 
                           [(ngModel)]="machine.last_maintenance" 
-                          #code="ngModel" 
+                          #lastmaintenance="ngModel" 
                           type="date" 
                           class="form-control form-control-no-border">
                       </div>
                       <div class="col-md-3 mb-3">
-                        <label for="next_maintenance">Next Maintenance</label>
+                        <label for="next_maintenance">Próxima manutenção</label>
                         <input 
                           name="next_maintenance" 
                           [(ngModel)]="machine.next_maintenance" 
-                          #code="ngModel" 
+                          #nextmaintenance="ngModel" 
                           type="date" 
                           class="form-control form-control-no-border">
                       </div>
+                      <div class="col-md-3 mb-3">
+                        <label for="mobile_name">Nome no app</label>
+                        <input 
+                          name="mobile_name" 
+                          [(ngModel)]="machine.mobile_name" 
+                          #mobilename="ngModel" 
+                          type="text" 
+                          class="form-control form-control-no-border">
+                      </div>                      
                       <div class="col-md-2 mb-3 vcenter">
                         <label for="next_maintenance">&nbsp;</label>
                         <button 
@@ -103,7 +112,7 @@
           </div>
         </div>
       </div>
-      <div class="row margin-bottom-5px">
+      <div class="row margin-bottom-5px" [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
         <div class="col-md-12 order-md-1">
           <div class="col-md-2 float-right">
             <button 
