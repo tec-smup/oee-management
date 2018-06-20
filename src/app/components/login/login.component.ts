@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { User } from '../../models/user';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.authenticationService.logout();
+    //destroi instancias anteriores do grafico
+    Chart.helpers.each(Chart.instances, function(instance) {    
+      instance.destroy(); 
+    });    
   }
 
   login(event) {

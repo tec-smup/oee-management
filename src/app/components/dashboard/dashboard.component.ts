@@ -68,7 +68,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         let instanceExists = false;
         Chart.helpers.each(Chart.instances, function(instance) {    
           instanceExists = true;
-          
+
           let callbacks = instance.options.tooltips.callbacks;
           callbacks.label = function(tooltipItem, data) {
             return tooltips.replace("__value", tooltipItem.yLabel);
