@@ -20,8 +20,11 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     vcr: ViewContainerRef) {   
       super();
       this.toastr.setRootViewContainerRef(vcr);   
+      
+      //devo fazer isso aqui pois o componente que carrega as últimas medições depende dessa data
       let now = new Date(Date.now());
-      this.dateTimeRange = [this.setTimeOnDatetime(now, "07:00"), this.setTimeOnDatetime(now, "18:00")];   
+      let channelTurn = this.getTurn();
+      this.dateTimeRange = [this.setTimeOnDatetime(now, (channelTurn.initial || "08:00")), this.setTimeOnDatetime(now, (channelTurn.final || "18:00"))];   
   }
 
   ngOnInit() {       
@@ -45,6 +48,10 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   }
 
   setChannel($event) {
+    let now1 = this.dateTimeRange[0];
+    let now2 = this.dateTimeRange[1];
+    this.dateTimeRange = [this.setTimeOnDatetime(now1, ($event.initial_turn || "08:00")), this.setTimeOnDatetime(now2, ($event.final_turn || "18:00"))];   
+
     this.dropdownChannel = $event.id;
   }
 

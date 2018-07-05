@@ -13,6 +13,14 @@ export class BaseComponent implements OnInit {
         let currentUser = localStorage.getItem('currentUser');
         return JSON.parse(currentUser); 
     }
+    getTurn() {
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let turn = {
+            initial: currentUser.initial_turn,
+            final: currentUser.final_turn
+        };
+        return turn; 
+    }     
     
     extractValues(mappings) {
         return Object.keys(mappings);
