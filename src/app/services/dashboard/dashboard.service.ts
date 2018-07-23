@@ -7,8 +7,6 @@ import { catchError } from 'rxjs/operators';
 import { Dashboard } from '../../models/dashboard';
 import { environment } from '../../../environments/environment';
 import { BaseService } from '../base.service';
-import { HttpParams } from '@angular/common/http';
-
 
 @Injectable()
 export class DashboardService extends BaseService {
@@ -20,9 +18,9 @@ export class DashboardService extends BaseService {
         // this.token = currentUser && currentUser.token;
     }
 
-    lastFeed(date: string, channelId: number, machineCode: string, userId: number): Observable<Dashboard> {
+    lastFeed(dateIni: string, dateFin: string, channelId: number, machineCode: string, userId: number): Observable<Dashboard> {
 
-        return this.http.get(environment.lastFeedURL + "?date=" + date + "&ch_id=" + channelId.toString() + "&mc_cd=" + machineCode + "&userId=" + userId.toString())
+        return this.http.get(environment.lastFeedURL + "?dateIni=" + dateIni + "&dateFin=" + dateFin + "&ch_id=" + channelId.toString() + "&mc_cd=" + machineCode + "&userId=" + userId.toString())
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }   

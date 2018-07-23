@@ -38,13 +38,14 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   }  
 
   changeDateRange(dates: any): any {
-    var hours = Math.abs(dates.value[0] - dates.value[1]) / 36e5;   
-    if(hours > 24) {
-      this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Oops!", { enableHTML: true });
-    }
-    else {
-      this.refreshChart(true);  
-    }  
+    // var hours = Math.abs(dates.value[0] - dates.value[1]) / 36e5;   
+    // if(hours > 24) {
+    //   this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Oops!", { enableHTML: true });
+    // }
+    // else {
+    //   this.refreshChart(true);  
+    // }  
+    this.refreshChart(true);
   }
 
   setChannel($event) {

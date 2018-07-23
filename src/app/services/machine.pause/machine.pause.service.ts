@@ -20,7 +20,7 @@ export class MachinePauseService extends BaseService {
     }
 
     list(date: string, userId: number): Observable<MachinePauseList> {
-        return this.http.get(environment.machinePauseListURL + '?date=' + date + "&userId=" + userId.toString())
+        return this.http.get(environment.machinePauseListURL + '?dateIni=' + date + "&dateFin=" + date + "&userId=" + userId.toString())
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }

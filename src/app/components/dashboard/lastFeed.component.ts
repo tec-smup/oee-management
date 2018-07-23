@@ -22,7 +22,8 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   @Input() channelId: number;
   channelIdSelected:  number = 0;
   @Input() date: Date[];
-  dateSelected: string;
+  dateIniSelected: string;
+  dateFinSelected: string;
   @Input() machineCode: string;
   machineCodeSelected: string = "";
 
@@ -54,12 +55,15 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     this.machineCodeSelected = changes.machineCode && changes.machineCode.currentValue != null ? 
       changes.machineCode.currentValue : this.machineCodeSelected;  
 
-    this.dateSelected = changes.date ? this.formatDate(changes.date.currentValue[0]) : this.dateSelected;
+    console.log(changes.date);
+
+    this.dateIniSelected = changes.date ? this.formatDate(changes.date.currentValue[0]) : this.dateIniSelected;
+    this.dateFinSelected = changes.date ? this.formatDate(changes.date.currentValue[1]) : this.dateFinSelected;
     
     if(this.channelIdSelected == 0 || !this.machineCodeSelected)
       return;
 
-    this.dashboardService.lastFeed(this.dateSelected, this.channelIdSelected, this.machineCodeSelected, this.getCurrentUser().id)
+    this.dashboardService.lastFeed(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, this.machineCodeSelected, this.getCurrentUser().id)
     .subscribe(
       result => {
         this.lastFeed = result.lastFeeds;
@@ -128,7 +132,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     this.refreshDash.emit(true);
     this.startIntervalTimer();
     this.gridApi.showLoadingOverlay();
-    this.dashboardService.lastFeed(this.dateSelected, this.channelIdSelected, this.machineCodeSelected, this.getCurrentUser().id)
+    this.dashboardService.lastFeed(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, this.machineCodeSelected, this.getCurrentUser().id)
     .subscribe(
       result => {
         this.lastFeed = result.lastFeeds;
