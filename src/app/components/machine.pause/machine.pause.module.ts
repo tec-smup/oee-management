@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MachinePauseComponent } from './machine.pause.component';
 import { SharedModule } from '../shared/shared.module';
-import {AgGridModule} from "ag-grid-angular/main";
+import {AgGridModule} from "ag-grid-angular";
 import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';
 
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';

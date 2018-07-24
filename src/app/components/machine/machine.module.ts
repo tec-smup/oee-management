@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MachineComponent } from './machine.component';
 import { SharedModule } from '../shared/shared.module';
-import {AgGridModule} from "ag-grid-angular/main";
+import {AgGridModule} from "ag-grid-angular";
 import { MachineService } from '../../services/machine/machine.service';
 
 @NgModule({

@@ -10,6 +10,7 @@ export class Channel extends BaseModel {
   time_shift: number;
   initial_turn: string;
   final_turn: string;
+  reset_time_shift: number;
   
   constructor() {
     super();
@@ -20,5 +21,6 @@ export class Channel extends BaseModel {
     this.time_shift = 0;     
     this.initial_turn = '07:00';
     this.final_turn = '17:00';
+    this.reset_time_shift = 0;
   }  
 }

@@ -1,5 +1,5 @@
 import { Component, ViewContainerRef, OnInit, Output, EventEmitter } from '@angular/core';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastsManager } from 'ng2-toastr';
  
 @Component({
   selector: 'dropdown-status',  

@@ -90,6 +90,12 @@
                           [owlDateTimeTrigger]="finalturn" [owlDateTime]="finalturn">
                         <owl-date-time [pickerType]="'timer'" #finalturn></owl-date-time>
                       </div> 
+                      <div class="col-md-3 mb-3">
+                        <label for="reset_time_shift">Resetar turno?</label>
+                        <dropdown-yesno (yesnoEvent)="setResetTimeShift($event)"></dropdown-yesno>
+                      </div>                                                 
+                    </div>
+                    <div class="row row-vcenter">
                       <div class="col-md-2 mb-3 vcenter">
                         <label for="spacer">&nbsp;</label>
                         <button 
@@ -98,8 +104,8 @@
                           type="submit">
                           Adicionar
                         </button>
-                      </div>                                                  
-                    </div>
+                      </div> 
+                    </div>                    
                     <div 
                       *ngIf="channel.message" 
                       [ngClass]="(channel.error)?'alert alert-danger alert-margin':'alert alert-success alert-margin'">

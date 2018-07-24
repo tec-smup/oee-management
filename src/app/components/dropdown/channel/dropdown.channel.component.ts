@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { ChannelService } from '../../../services/channel/channel.service';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../../base.component';
  
 @Component({

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { GridOptions } from "ag-grid";
 import { ChannelService } from '../../services/channel/channel.service';
 import { Channel } from '../../models/channel';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 
 @Component({
@@ -23,6 +23,10 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     0: "Inativo",
     1: "Ativo"
   };  
+  YesNoMappings = {
+    1: "Sim",
+    0: "Não",
+  };
   currentUser;
   
   constructor(private channelService: ChannelService, 
@@ -55,12 +59,12 @@ export class ChannelComponent extends BaseComponent implements OnInit {
         refData: this.statusMappings       
       },
       {
-        headerName: "Criado em",
-        field: "created_at",
-      },
-      {
-        headerName: "Atualizado em",
-        field: "updated_at",
+        headerName: "Resetar turno?",
+        field: "reset_time_shift",
+        editable: true,
+        cellEditor: "agSelectCellEditor",
+        cellEditorParams: { values: this.extractValues(this.YesNoMappings) },
+        refData: this.YesNoMappings
       },
       {
         headerName: "Tempo de turno",
@@ -77,6 +81,14 @@ export class ChannelComponent extends BaseComponent implements OnInit {
         headerName: "Final do turno",
         field: "final_turn",
         editable: true
+      },            
+      {
+        headerName: "Criado em",
+        field: "created_at",
+      },
+      {
+        headerName: "Atualizado em",
+        field: "updated_at",
       },            
     ];    
     this.components = { numericCellEditor: this.getNumericCellEditor() };
@@ -107,6 +119,10 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     this.channel.active = $event;
   }
 
+  setResetTimeShift($event) {
+    this.channel.reset_time_shift = $event;
+  }  
+
   add(event) {
     event.preventDefault(); 
     this.channel.initial_turn = this.getTime(this.channel.initial_turn);    
@@ -134,6 +150,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     channel.token = data.token;
     channel.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
     channel.time_shift = data.time_shift;
+    channel.reset_time_shift = (isNaN(data.reset_time_shift) ? (data.reset_time_shift == 'Sim' ? 1 : 0) : parseInt(data.reset_time_shift));
     //--------
 
     this.channelService.update(channel)

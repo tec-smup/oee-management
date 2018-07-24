@@ -2,7 +2,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import {GridOptions} from "ag-grid";
 import { MachineService } from '../../services/machine/machine.service';
 import { Machine } from '../../models/machine';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 
 @Component({

@@ -13,7 +13,7 @@ import { MachineModule } from './components/machine/machine.module';
 import { ChannelModule } from './components/channel/channel.module';
 import { MachinePauseModule } from './components/machine.pause/machine.pause.module';
 import { UserModule } from './components/user/user.module';
-import {ToastModule} from 'ng2-toastr/ng2-toastr';
+import {ToastModule} from 'ng2-toastr';
 
 import { BaseComponent } from './components/base.component';
 import { AppComponent } from './app.component';

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import {GridOptions} from "ag-grid";
 import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';
 import { MachinePause } from '../../models/machine.pause';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 import { MachinePauseList } from '../../models/machine.pause.list';
 import { Observable } from 'rxjs/Observable';

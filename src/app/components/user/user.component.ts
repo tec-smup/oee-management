@@ -2,9 +2,9 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { GridOptions } from "ag-grid";
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../models/user';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
-import { ResetPassButtonRenderer } from './grid/resetpass.button.component';
+import { UserChannelButtonRenderer } from './grid/userchannel.button.component';
 
 @Component({
   selector: 'app-user',
@@ -70,15 +70,15 @@ export class UserComponent extends BaseComponent implements OnInit {
         headerName: "Criado em",
         field: "created_at",
       },          
-      // {
-      //   headerName: "Ações",
-      //   cellRenderer: "resetPassButtonRenderer",
-      //   colId: "params",
-      // },                   
+      {
+        headerName: "Configurações",
+        cellRenderer: "userChannelButtonRenderer",
+        colId: "params",
+      },                   
     ];    
     this.context = { componentParent: this };
     this.frameworkComponents = {
-      resetPassButtonRenderer: ResetPassButtonRenderer
+      userChannelButtonRenderer: UserChannelButtonRenderer
     };    
   }
 
@@ -166,8 +166,8 @@ export class UserComponent extends BaseComponent implements OnInit {
     }
   }
 
-  methodFromParent(cell) {
-    alert("Parent Component Method from " + cell + "!");
-  }
+  // methodFromParent(cell) {
+  //   alert("Parent Component Method from " + cell + "!");
+  // }
 
 }

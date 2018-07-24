@@ -8,7 +8,7 @@ import {
   OnChanges, 
   SimpleChange  } from '@angular/core';
 import { MachineService } from '../../../services/machine/machine.service';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../../base.component';
  
 @Component({

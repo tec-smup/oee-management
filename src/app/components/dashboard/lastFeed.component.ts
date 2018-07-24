@@ -55,8 +55,6 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     this.machineCodeSelected = changes.machineCode && changes.machineCode.currentValue != null ? 
       changes.machineCode.currentValue : this.machineCodeSelected;  
 
-    console.log(changes.date);
-
     this.dateIniSelected = changes.date ? this.formatDate(changes.date.currentValue[0]) : this.dateIniSelected;
     this.dateFinSelected = changes.date ? this.formatDate(changes.date.currentValue[1]) : this.dateFinSelected;
     
