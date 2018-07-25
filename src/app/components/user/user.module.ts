@@ -15,6 +15,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UserChannelModalComponent } from './modal/userchannel.modal.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ChannelService } from '../../services/channel/channel.service';
+import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.module';
 
 @NgModule({
   imports: [
@@ -27,21 +28,22 @@ import { ChannelService } from '../../services/channel/channel.service';
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
     AngularFontAwesomeModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    DropdownChannelModule,
   ],
   declarations: [ 
     UserComponent,    
     UserChannelModalComponent,
     UserChannelButtonRenderer,    
   ],
-  entryComponents: [
-    UserChannelModalComponent
-  ],
   exports: [ UserComponent ],
-  providers: [ 
+  providers: [      
     UserService,
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
-    ChannelService
-   ],  
+    ChannelService,
+   ],
+   entryComponents: [
+    UserChannelModalComponent
+  ],     
 })
 export class UserModule { }

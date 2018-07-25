@@ -6,6 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { BaseService } from '../base.service';
 import { User } from '../../models/user';
+import { UserChannel } from '../../models/user.channel';
 
 @Injectable()
 export class UserService extends BaseService {
@@ -46,6 +47,22 @@ export class UserService extends BaseService {
       let headers = new Headers({ 'Content-Type': 'application/json' });                
       return this.http.post(environment.userDeleteURL, 
           JSON.stringify(user), { headers: headers })
+          .map(res => res.json())
+          .pipe(catchError(this.handleError));         
+  }  
+
+  addChannel(userChannel: UserChannel): Observable<UserChannel> {
+      let headers = new Headers({ 'Content-Type': 'application/json' });                
+      return this.http.post(environment.userChannelAddURL, 
+          JSON.stringify(userChannel), { headers: headers })
+          .map(res => res.json())
+          .pipe(catchError(this.handleError));            
+  }
+  
+  deleteChannel(userChannel: UserChannel): Observable<UserChannel> {
+      let headers = new Headers({ 'Content-Type': 'application/json' });                
+      return this.http.post(environment.userChannelDeleteURL, 
+          JSON.stringify(userChannel), { headers: headers })
           .map(res => res.json())
           .pipe(catchError(this.handleError));         
   }  

@@ -12,9 +12,10 @@ export const environment = {
   machineUpdateURL: serverURL + 'machine/update',
   machineDeleteURL: serverURL + 'machine/delete',
   channelListURL: serverURL + ':userId/channel',                      //channel
+  channelListAllURL: serverURL + 'channel/all',
   channelAddURL: serverURL + 'channel',
   channelUpdateURL: serverURL + 'channel/update',
-  channelDeleteURL: serverURL + 'channel/delete',    
+  channelDeleteURL: serverURL + 'channel/delete',      
   lastFeedURL: serverURL + 'feed/lastFeed',                  //dash
   chartURL: serverURL + 'feed/chart',
   machinePauseListURL: serverURL + 'machinepause/list',      //machine pause
@@ -25,4 +26,6 @@ export const environment = {
   userAddURL: serverURL + 'user',
   userUpdateURL: serverURL + 'user/update',
   userDeleteURL: serverURL + 'user/delete',    
+  userChannelAddURL: serverURL + 'userchannel', //userchannel
+  userChannelDeleteURL: serverURL + 'userchannel/delete',
 };

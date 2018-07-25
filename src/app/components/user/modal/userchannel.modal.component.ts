@@ -3,6 +3,8 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ChannelService } from "../../../services/channel/channel.service";
 import { ToastsManager } from 'ng2-toastr';
 import { Channel } from "../../../models/channel";
+import { UserChannel } from "../../../models/user.channel";
+import { UserService } from "../../../services/user/user.service";
 
 @Component({
     selector: 'modal-content',
@@ -14,6 +16,10 @@ import { Channel } from "../../../models/channel";
         </button>
       </div>
       <div class="modal-body">
+        <div class="form-group">
+          <dropdown-channel (changeEvent)="setChannel($event)"></dropdown-channel>
+          <button type="button" class="btn btn-outline-primary" (click)="add()">Adicionar</button>
+        </div>
         <table class="table table-hover table-striped table-sm">
           <thead>
             <tr>
@@ -28,7 +34,7 @@ import { Channel } from "../../../models/channel";
               <td>{{channel.active}}</td>
               <td>
                 <div class="btn-group btn-group-sm" role="group" aria-label="Acoes">
-                  <button type="button" class="btn btn-outline-danger" title="Remover canal">
+                  <button type="button" class="btn btn-outline-danger" (click)="delete(channel.id)" title="Remover canal">
                     <fa name="minus-circle"></fa>
                   </button>
                 </div>              
@@ -38,33 +44,61 @@ import { Channel } from "../../../models/channel";
         </table>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" (click)="bsModalRef.hide()">{{closeBtnName}}</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="bsModalRef.hide()">Fechar</button>
       </div>
-    `
+      `
   })
    
   export class UserChannelModalComponent implements OnInit {
     title: string;
     userId: number;
-    closeBtnName: string;
     channels: Array<Channel> = [];
+    userChannel: UserChannel = new UserChannel();
    
     constructor(
       public bsModalRef: BsModalRef,
       private channelService: ChannelService,
+      private userService: UserService,
       public toastr: ToastsManager,
       vcr: ViewContainerRef) {
-        this.toastr.setRootViewContainerRef(vcr); 
-      }
+        this.toastr.setRootViewContainerRef(vcr);         
+    }
    
     ngOnInit() {
-      this.channelService.list(this.userId)
+      this.userChannel.userId = this.userId;
+      this.loadGrid();
+    }
+
+    loadGrid() {
+      this.channelService.list(this.userChannel.userId)
       .subscribe(
         result => {
           this.channels = result;
         },
         error => {
           this.toastr.error(error, "Oops!", { enableHTML: true });
-        });
+        });      
+    }
+
+    setChannel($event) {
+      this.userChannel.channelId = $event.id;
+    }    
+
+    add() {
+
+    }
+
+    delete(channelId: number) {
+      this.userChannel.channelId = channelId;
+
+      this.userService.deleteChannel(this.userChannel)
+      .subscribe(
+        result => {
+          this.loadGrid();
+        },
+        error => {
+          this.toastr.error(error, "Oops!", { enableHTML: true });
+        }
+      );          
     }
   }

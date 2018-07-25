@@ -7,6 +7,7 @@ export const environment = {
   machineUpdateURL: serverURL + 'machine/update',
   machineDeleteURL: serverURL + 'machine/delete',
   channelListURL: serverURL + ':userId/channel',            //channel
+  channelListAllURL: serverURL + 'channel/all',
   channelAddURL: serverURL + 'channel',
   channelUpdateURL: serverURL + 'channel/update',
   channelDeleteURL: serverURL + 'channel/delete',  
@@ -19,5 +20,7 @@ export const environment = {
   userListURL: serverURL + 'user',                      //user
   userAddURL: serverURL + 'user',
   userUpdateURL: serverURL + 'user/update',
-  userDeleteURL: serverURL + 'user/delete',   
+  userDeleteURL: serverURL + 'user/delete',  
+  userChannelAddURL: serverURL + 'userchannel', //userchannel
+  userChannelDeleteURL: serverURL + 'userchannel/delete',   
 };

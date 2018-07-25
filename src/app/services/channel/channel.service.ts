@@ -25,6 +25,13 @@ export class ChannelService extends BaseService {
             .pipe(catchError(this.handleError));
     }
 
+    listAll(): Observable<Channel[]> {
+        let url = environment.channelListAllURL;
+        return this.http.get(url)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
+    }    
+
     add(channel: Channel): Observable<Channel> {
         let headers = new Headers({ 'Content-Type': 'application/json' });                
         return this.http.post(environment.channelAddURL, 

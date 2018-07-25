@@ -31,10 +31,10 @@ export class UserChannelButtonRenderer implements ICellRendererAngularComp {
         const initialState = {
             userId: this.params.data.id,
             title: 'Canais do usuário - ' + this.params.data.username
-            //list:[]
         };
         this.bsModalRef = this.modalService.show(UserChannelModalComponent, {initialState});
-        this.bsModalRef.content.closeBtnName = 'Fechar';
+        //preenchendo variavel da modal
+        //this.bsModalRef.content.closeBtnName = 'Fechar';
     }
 
     refresh(): boolean {
