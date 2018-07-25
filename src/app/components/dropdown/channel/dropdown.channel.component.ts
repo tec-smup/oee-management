@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, ViewContainerRef, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ChannelService } from '../../../services/channel/channel.service';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../../base.component';
@@ -10,6 +10,7 @@ import { BaseComponent } from '../../base.component';
 export class DropdownChannelComponent extends BaseComponent implements OnInit {
   items: Array<any> = [];
   selectedChannelId: any;
+  @Input() listAll: boolean;
   @Output() changeEvent = new EventEmitter<any>();
 
   constructor(
@@ -26,17 +27,43 @@ export class DropdownChannelComponent extends BaseComponent implements OnInit {
   }
 
   load() {
-    this.channelService.list(this.getCurrentUser().id)
+    if(this.listAll == true) {
+      this.list();
+    }
+    else {
+      this.listByUser();     
+    }
+  }
+
+  private listByUser() {
+    this.channelService.listByUser(this.getCurrentUser().id)
     .subscribe(
       result => {
         this.items = result.filter(f => f.active.toString() === "Ativo");
-        this.selectedChannelId = this.items[0].id;
-        this.refreshValue(this.items[0]);
+        if(this.items.length > 0) {
+          this.selectedChannelId = this.items[0].id;
+          this.refreshValue(this.items[0]);
+        }
       },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
-      });     
+      });    
   }
+
+  private list() {
+    this.channelService.listAll()
+    .subscribe(
+      result => {
+        this.items = result.filter(f => f.active.toString() === "Ativo");
+        if(this.items.length > 0) {
+          this.selectedChannelId = this.items[0].id;
+          this.refreshValue(this.items[0]);
+        }
+      },
+      error => {
+        this.toastr.error(error, "Oops!", { enableHTML: true });
+      });    
+  }  
 
   public refreshValue(value:any) {
     this.selectedChannelId = value.id;

@@ -6,6 +6,7 @@
         placeholder="Selecione um canal"
         (add)="refreshValue($event)"
         [(ngModel)]="selectedChannelId"
-        [clearable]="false">
+        [clearable]="false"
+        [ngStyle]="{ 'width': '200px' }">
     </ng-select>
 </div>

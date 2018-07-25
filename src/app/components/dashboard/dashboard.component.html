@@ -22,7 +22,7 @@
               <owl-date-time #dtRange1></owl-date-time>                                      
             </div>
             <div class="col">
-              <dropdown-channel (changeEvent)="setChannel($event)"></dropdown-channel>
+              <dropdown-channel [listAll]="false" (changeEvent)="setChannel($event)"></dropdown-channel>
             </div>
             <div class="col">
               <dropdown-machine [channelId]="dropdownChannel" (changeEvent)="setMachine($event)"></dropdown-machine> 

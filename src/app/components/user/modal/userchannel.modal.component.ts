@@ -17,7 +17,7 @@ import { UserService } from "../../../services/user/user.service";
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <dropdown-channel (changeEvent)="setChannel($event)"></dropdown-channel>
+          <dropdown-channel [listAll]="true" (changeEvent)="setChannel($event)"></dropdown-channel>
           <button type="button" class="btn btn-outline-primary" (click)="add()">Adicionar</button>
         </div>
         <table class="table table-hover table-striped table-sm">
@@ -70,7 +70,7 @@ import { UserService } from "../../../services/user/user.service";
     }
 
     loadGrid() {
-      this.channelService.list(this.userChannel.userId)
+      this.channelService.listByUser(this.userChannel.userId)
       .subscribe(
         result => {
           this.channels = result;
@@ -82,10 +82,18 @@ import { UserService } from "../../../services/user/user.service";
 
     setChannel($event) {
       this.userChannel.channelId = $event.id;
-    }    
+    }
 
     add() {
-
+      this.userService.addChannel(this.userChannel)
+      .subscribe(
+        result => {
+          this.loadGrid();
+        },
+        error => {
+          this.toastr.error(error, "Oops!", { enableHTML: true });
+        }
+      );  
     }
 
     delete(channelId: number) {

@@ -6,6 +6,7 @@
         placeholder="Selecione uma máquina"
         (add)="refreshValue($event)"
         [(ngModel)]="selectedMachineCode"
-        [clearable]="false">
+        [clearable]="false"
+        [ngStyle]="{ 'width': '200px' }">
     </ng-select>
 </div>

@@ -21,6 +21,7 @@ export const environment = {
   userAddURL: serverURL + 'user',
   userUpdateURL: serverURL + 'user/update',
   userDeleteURL: serverURL + 'user/delete',  
+  userChangePassURL: serverURL + 'user/changePass',
   userChannelAddURL: serverURL + 'userchannel', //userchannel
   userChannelDeleteURL: serverURL + 'userchannel/delete',   
 };

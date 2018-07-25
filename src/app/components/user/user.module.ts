@@ -10,12 +10,13 @@ import { DropdownStatusModule } from '../dropdown/status/dropdown.status.module'
 import { DropdownYesNoModule } from '../dropdown/YesNo/dropdown.yesno.module';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
-import { UserChannelButtonRenderer } from './grid/userchannel.button.component';
+import { UserChannelButtonRenderer } from './grid/user.grid.buttons.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { UserChannelModalComponent } from './modal/userchannel.modal.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ChannelService } from '../../services/channel/channel.service';
 import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.module';
+import { ChangePassModalComponent } from './modal/changepass.modal.component';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.modu
   declarations: [ 
     UserComponent,    
     UserChannelModalComponent,
+    ChangePassModalComponent,
     UserChannelButtonRenderer,    
   ],
   exports: [ UserComponent ],
@@ -43,7 +45,8 @@ import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.modu
     ChannelService,
    ],
    entryComponents: [
-    UserChannelModalComponent
+    UserChannelModalComponent,
+    ChangePassModalComponent
   ],     
 })
 export class UserModule { }

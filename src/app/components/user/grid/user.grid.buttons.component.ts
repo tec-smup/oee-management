@@ -3,14 +3,18 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { UserChannelModalComponent } from "../modal/userchannel.modal.component";
+import { ChangePassModalComponent } from "../modal/changepass.modal.component";
 
 @Component({
-    selector: 'resetpass-button',
+    selector: 'user-grid-buttons',
     template: `
     <div class="btn-group btn-group-sm" role="group" aria-label="Canais do usuário">
         <button type="button" class="btn btn-outline-secondary" (click)="userChannelModal()" title="Canais do usuário">
             <fa name="rss"></fa>
         </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="changePassModal()" title="Trocar senha">
+            <fa name="key"></fa>
+        </button>        
     </div>      
     `,
 })
@@ -36,6 +40,14 @@ export class UserChannelButtonRenderer implements ICellRendererAngularComp {
         //preenchendo variavel da modal
         //this.bsModalRef.content.closeBtnName = 'Fechar';
     }
+
+    public changePassModal() {
+        const initialState = {
+            userId: this.params.data.id,
+            title: 'Alterar senha - ' + this.params.data.username
+        };
+        this.bsModalRef = this.modalService.show(ChangePassModalComponent, {initialState});
+    }    
 
     refresh(): boolean {
         return false;

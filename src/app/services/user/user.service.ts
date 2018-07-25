@@ -66,4 +66,12 @@ export class UserService extends BaseService {
           .map(res => res.json())
           .pipe(catchError(this.handleError));         
   }  
+
+  changePass(user: User): Observable<User> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });                
+    return this.http.post(environment.userChangePassURL, 
+        JSON.stringify(user), { headers: headers })
+        .map(res => res.json())
+        .pipe(catchError(this.handleError));         
+}   
 }

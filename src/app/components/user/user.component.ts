@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { GridOptions } from "ag-grid";
 import { UserService } from '../../services/user/user.service';
 import { User } from '../../models/user';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
-import { UserChannelButtonRenderer } from './grid/userchannel.button.component';
+import { UserChannelButtonRenderer } from './grid/user.grid.buttons.component';
 
 @Component({
   selector: 'app-user',

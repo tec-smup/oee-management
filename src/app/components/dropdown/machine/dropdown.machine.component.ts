@@ -45,8 +45,10 @@ export class DropdownMachineComponent extends BaseComponent implements OnInit {
     .subscribe(
       result => {
         this.items = result;
-        this.selectedMachineCode = this.items[0].code;
-        this.refreshValue(this.items[0]);
+        if(this.items.length > 0) {
+          this.selectedMachineCode = this.items[0].code;
+          this.refreshValue(this.items[0]);
+        }
       },
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
