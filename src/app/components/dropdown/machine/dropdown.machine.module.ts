@@ -5,6 +5,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { DropdownMachineComponent } from './dropdown.machine.component';
 import { MachineService } from '../../../services/machine/machine.service';
+import { DropdownMachineNoCascadeComponent } from './dropdown.machine.no.cascade.component';
 
 @NgModule({
     imports: [
@@ -12,8 +13,14 @@ import { MachineService } from '../../../services/machine/machine.service';
       FormsModule,
       NgSelectModule
     ],
-    declarations: [ DropdownMachineComponent ],
-    exports: [ DropdownMachineComponent ],
+    declarations: [ 
+      DropdownMachineComponent,
+      DropdownMachineNoCascadeComponent
+    ],
+    exports: [ 
+      DropdownMachineComponent,
+      DropdownMachineNoCascadeComponent
+    ],
     providers: [MachineService],
   })
   export class DropdownMachineModule { }

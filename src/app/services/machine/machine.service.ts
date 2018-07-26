@@ -27,6 +27,21 @@ export class MachineService extends BaseService {
             .pipe(catchError(this.handleError));
     }
 
+    listAll(): Observable<Machine[]> {
+        let url = environment.machineListAllURL;
+        return this.http.get(url)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
+    }    
+
+    listByChannel(channelId: number): Observable<Machine[]> {
+        let url = environment.machineListByChannelURL
+            .replace(":channelId", channelId.toString());
+        return this.http.get(url)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
+    }    
+
     add(machine: Machine): Observable<Machine> {
         let headers = new Headers({ 'Content-Type': 'application/json' });                
         return this.http.post(environment.machineAddURL, 

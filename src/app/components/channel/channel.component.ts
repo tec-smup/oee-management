@@ -4,6 +4,7 @@ import { ChannelService } from '../../services/channel/channel.service';
 import { Channel } from '../../models/channel';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
+import { ChannelGridButtonRenderer } from './grid/channel.grid.buttons.component';
 
 @Component({
   selector: 'app-channel',
@@ -19,6 +20,8 @@ export class ChannelComponent extends BaseComponent implements OnInit {
   paginationPageSize = 10;
   rowSelection = "multiple";
   editType = "fullRow";
+  context;
+  frameworkComponents;  
   statusMappings = {
     0: "Inativo",
     1: "Ativo"
@@ -90,8 +93,17 @@ export class ChannelComponent extends BaseComponent implements OnInit {
         headerName: "Atualizado em",
         field: "updated_at",
       },            
-    ];    
+      {
+        headerName: "Configurações",
+        cellRenderer: "channelGridButtonRenderer",
+        colId: "params",
+      },      
+    ];        
     this.components = { numericCellEditor: this.getNumericCellEditor() };
+    this.context = { componentParent: this };
+    this.frameworkComponents = {
+      channelGridButtonRenderer: ChannelGridButtonRenderer
+    };    
   }
 
   ngOnInit() {
