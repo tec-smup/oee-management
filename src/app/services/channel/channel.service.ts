@@ -8,6 +8,7 @@ import { Channel } from '../../models/channel';
 import { environment } from '../../../environments/environment';
 import { BaseService } from '../base.service';
 import { ChannelMachine } from '../../models/channel.machine';
+import { ChannelConfig } from '../../models/channel.config';
 
 @Injectable()
 export class ChannelService extends BaseService {
@@ -71,5 +72,12 @@ export class ChannelService extends BaseService {
             JSON.stringify(channelMachine), { headers: headers })
             .map(res => res.json())
             .pipe(catchError(this.handleError));         
-    }     
+    }   
+    
+    getChannelConfig(channelId: number): Observable<ChannelConfig> {
+        let url = environment.channelConfigURL.replace(":channelId", channelId.toString());
+        return this.http.get(url)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
+    }    
 }

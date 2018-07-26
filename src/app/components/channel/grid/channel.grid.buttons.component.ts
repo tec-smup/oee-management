@@ -3,6 +3,7 @@ import { ICellRendererAngularComp } from "ag-grid-angular";
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { MachineModalComponent } from "../modal/machine.modal.component";
+import { ConfigModalComponent } from "../modal/config.modal.component";
 
 @Component({
     selector: 'channel-grid-buttons',
@@ -36,6 +37,14 @@ export class ChannelGridButtonRenderer implements ICellRendererAngularComp {
             title: 'Máquinas do canal - ' + this.params.data.name
         };
         this.bsModalRef = this.modalService.show(MachineModalComponent, {initialState});
+    }
+
+    public channelConfigModal() {
+        const initialState = {
+            channelId: this.params.data.id,
+            title: 'Configuração do canal - ' + this.params.data.name
+        };
+        this.bsModalRef = this.modalService.show(ConfigModalComponent, {initialState});
     }
 
     refresh(): boolean {

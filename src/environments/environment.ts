@@ -14,6 +14,7 @@ export const environment = {
   machineUpdateURL: serverURL + 'machine/update',
   machineDeleteURL: serverURL + 'machine/delete',
   channelListURL: serverURL + ':userId/channel',                      //channel
+  channelConfigURL: serverURL + 'channelconfig/:channelId',
   channelListAllURL: serverURL + 'channel/all',
   channelAddURL: serverURL + 'channel',
   channelAddMachineURL: serverURL + 'channel/machine',

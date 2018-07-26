@@ -16,6 +16,8 @@ import { MachineModalComponent } from './modal/machine.modal.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
+import { ConfigModalComponent } from './modal/config.modal.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -29,12 +31,14 @@ import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.modu
     DropdownYesNoModule,
     AngularFontAwesomeModule,
     ModalModule.forRoot(),
-    DropdownMachineModule
+    DropdownMachineModule,
+    ReactiveFormsModule
   ],
   declarations: [ 
     ChannelComponent,    
     NumberOnlyDirective,
     MachineModalComponent,
+    ConfigModalComponent,
     ChannelGridButtonRenderer    
   ],
   exports: [ ChannelComponent ],
@@ -44,6 +48,7 @@ import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.modu
    ],
    entryComponents: [
     MachineModalComponent,
+    ConfigModalComponent
   ],      
 })
 export class ChannelModule { }
