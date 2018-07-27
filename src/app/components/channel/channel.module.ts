@@ -18,6 +18,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
 import { ConfigModalComponent } from './modal/config.modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SQLModalComponent } from './modal/sql.modal.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NumberOnlyDirective,
     MachineModalComponent,
     ConfigModalComponent,
+    SQLModalComponent,
     ChannelGridButtonRenderer    
   ],
   exports: [ ChannelComponent ],
@@ -48,7 +50,8 @@ import { ReactiveFormsModule } from '@angular/forms';
    ],
    entryComponents: [
     MachineModalComponent,
-    ConfigModalComponent
+    ConfigModalComponent,
+    SQLModalComponent
   ],      
 })
 export class ChannelModule { }

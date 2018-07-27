@@ -40,6 +40,11 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
       {
+        headerName: "ID",
+        field: "id",
+        editable: false,
+      },
+      {
         headerName: "Nome",
         field: "name",
         editable: true  
@@ -103,7 +108,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     this.context = { componentParent: this };
     this.frameworkComponents = {
       channelGridButtonRenderer: ChannelGridButtonRenderer
-    };    
+    };        
   }
 
   ngOnInit() {

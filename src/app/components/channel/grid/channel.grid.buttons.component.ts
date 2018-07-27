@@ -4,6 +4,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { MachineModalComponent } from "../modal/machine.modal.component";
 import { ConfigModalComponent } from "../modal/config.modal.component";
+import { SQLModalComponent } from "../modal/sql.modal.component";
 
 @Component({
     selector: 'channel-grid-buttons',
@@ -45,6 +46,14 @@ export class ChannelGridButtonRenderer implements ICellRendererAngularComp {
             title: 'Configuração do canal - ' + this.params.data.name
         };
         this.bsModalRef = this.modalService.show(ConfigModalComponent, {initialState});
+    }
+
+    public channelSQLModal() {
+        const initialState = {
+            channelId: this.params.data.id,
+            title: 'Configuração do SQL - ' + this.params.data.name
+        };
+        this.bsModalRef = this.modalService.show(SQLModalComponent, {initialState});
     }
 
     refresh(): boolean {

@@ -18,8 +18,13 @@ import { Observable } from 'rxjs';
       </div>
       <div class="modal-body">
         <form 
-        *ngIf="user | async; else loading" [formGroup]="form"
+        *ngIf="channelConfig | async; else loading" [formGroup]="form"
           (ngSubmit)="form.valid && confirm($event)">
+
+          <input 
+              id="channel_id" 
+              formControlName="channel_id"
+              type="hidden" />
 
           <div class="form-group">
             <label for="field1">Descrição do campo 1</label>
@@ -78,7 +83,7 @@ import { Observable } from 'rxjs';
               formControlName="refresh_time"
               type="number" 
               class="form-control" />
-              <small id="refreshtime" class="form-text text-muted">Tempo de atualização do gráfico.</small>
+              <small id="refreshtime" class="form-text text-muted">Tempo de atualização do gráfico em segundos.</small>
           </div>  
           <div class="form-group">
             <label for="chart_tooltip_desc">Tooltip do gráfico</label>
@@ -121,6 +126,7 @@ import { Observable } from 'rxjs';
    
     ngOnInit() {
       this.form = this.formBuilder.group({
+        channel_id: [''],
         field1: ['', Validators.required],
         field2: ['', Validators.required],
         field3: ['', Validators.required],
@@ -130,23 +136,23 @@ import { Observable } from 'rxjs';
         chart_tooltip_desc: ['', Validators.required],
       });
 
-      this.channelConfig = this.channelService.getChannelConfig(this.channelId).pipe(
+      this.channelConfig = this.channelService.getChannelConfig(this.channelId)
+      .pipe(
         tap(channelConfig => this.form.patchValue(channelConfig))
       );
     }
 
-    // confirm(event) {
-    //   event.preventDefault();
-    //   this.userService.changePass(this.user)
-    //   .subscribe(
-    //     result => {
-    //       console.log(result);
-    //       this.toastr.success("Senha alterada.", "Sucesso!", { enableHTML: true });
-    //       this.user.password = "";
-    //     },
-    //     error => {
-    //       this.toastr.error(error, "Oops!", { enableHTML: true });
-    //     }
-    //   );      
-    // }
+    confirm(event) {
+      event.preventDefault();
+
+      this.channelService.updateChannelConfig(this.form.value)
+      .subscribe(
+        result => {
+          this.toastr.success("Configurações do canal atualizadas.", "Sucesso!", { enableHTML: true });
+        },
+        error => {
+          this.toastr.error(error, "Oops!", { enableHTML: true });
+        }
+      );      
+    }
   }

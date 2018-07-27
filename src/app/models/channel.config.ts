@@ -2,7 +2,7 @@ import { BaseModel } from "./baseModel";
 
 export class ChannelConfig extends BaseModel {
   id: number;
-  channelId: number;
+  channel_id: number;
   field1: string;
   field2: string;
   field3: string;
