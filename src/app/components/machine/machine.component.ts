@@ -4,6 +4,7 @@ import { MachineService } from '../../services/machine/machine.service';
 import { Machine } from '../../models/machine';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
+import { MachineGridButtonRenderer } from './grid/machine.grid.buttons.component';
 
 @Component({
   selector: 'app-machine',
@@ -20,6 +21,8 @@ export class MachineComponent extends BaseComponent implements OnInit {
   rowSelection = "multiple";
   editType = "fullRow";
   currentUser;
+  context;
+  frameworkComponents;    
 
   constructor(private machineService: MachineService, 
               public toastr: ToastsManager, 
@@ -64,8 +67,17 @@ export class MachineComponent extends BaseComponent implements OnInit {
         editable: true,
         cellEditor: "datePicker"
       },
+      {
+        headerName: "Configurações",
+        cellRenderer: "machineGridButtonRenderer",
+        colId: "params",
+      },      
     ];   
     this.components = { datePicker: this.getDatePicker() }; 
+    this.context = { componentParent: this };
+    this.frameworkComponents = {
+      machineGridButtonRenderer: MachineGridButtonRenderer
+    };    
   }
 
   ngOnInit() {

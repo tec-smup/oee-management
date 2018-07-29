@@ -2,10 +2,10 @@ import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { ToastsManager } from 'ng2-toastr';
-import { ChannelConfig } from "../../../models/channel.config";
-import { ChannelService } from "../../../services/channel/channel.service";
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { MachineConfig } from "../../../models/machine.config";
+import { MachineService } from "../../../services/machine/machine.service";
 
 @Component({
     selector: 'modal-content',
@@ -18,13 +18,23 @@ import { Observable } from 'rxjs';
       </div>
       <div class="modal-body">
         <form 
-        *ngIf="channelConfig | async; else loading" [formGroup]="form"
+        *ngIf="machineConfig | async; else loading" [formGroup]="form"
           (ngSubmit)="form.valid && confirm($event)">
 
           <input 
-              id="channel_id" 
-              formControlName="channel_id"
+              id="machine_code" 
+              formControlName="machine_code"
               type="hidden" />
+
+          <div class="form-group">
+            <label for="chart_tooltip_desc">Tooltip do gráfico</label>
+            <input 
+              id="chart_tooltip_desc" 
+              formControlName="chart_tooltip_desc"
+              type="text" 
+              class="form-control" />
+              <small id="chart_tooltip_desc" class="form-text text-muted">Esse tooltip aparece quando você passa o mouse sobre as linhas do gráfico. Não esqueça de informar o marcador __value. Ex: OEE: __value%</small>
+          </div>
 
           <div class="form-group">
           
@@ -125,13 +135,13 @@ import { Observable } from 'rxjs';
    
   export class SQLModalComponent implements OnInit {
     title: string;
-    channelId: number;
+    machineCode: string;
     form: FormGroup;
-    channelConfig: Observable<ChannelConfig>;
+    machineConfig: Observable<MachineConfig>;
    
     constructor(
       public bsModalRef: BsModalRef,
-      private channelService: ChannelService,
+      private machineService: MachineService,
       public toastr: ToastsManager,
       private formBuilder: FormBuilder,
       vcr: ViewContainerRef) {
@@ -140,24 +150,25 @@ import { Observable } from 'rxjs';
    
     ngOnInit() {
       this.form = this.formBuilder.group({
-        channel_id: [''],
+        machine_code: [''],
         chart_sql: [''],
         mobile_sql: [''],
+        chart_tooltip_desc: ['', Validators.required],
       });
 
-      this.channelConfig = this.channelService.getChannelConfig(this.channelId)
+      this.machineConfig = this.machineService.getMachineConfig(this.machineCode)
       .pipe(
-        tap(channelConfig => this.form.patchValue(channelConfig))
+        tap(machineConfig => this.form.patchValue(machineConfig))
       );
     }
 
     confirm(event) {
       event.preventDefault();
 
-      this.channelService.updateChannelSQL(this.form.value)
+      this.machineService.updateMachineSQL(this.form.value)
       .subscribe(
         result => {
-          this.toastr.success("Configurações de SQL do canal atualizadas.", "Sucesso!", { enableHTML: true });
+          this.toastr.success("Configurações de SQL da máquina atualizadas.", "Sucesso!", { enableHTML: true });
         },
         error => {
           this.toastr.error(error, "Oops!", { enableHTML: true });

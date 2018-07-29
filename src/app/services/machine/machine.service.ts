@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { Machine } from '../../models/machine';
 import { environment } from '../../../environments/environment';
 import { BaseService } from '../base.service';
+import { MachineConfig } from '../../models/machine.config';
 
 @Injectable()
 export class MachineService extends BaseService {
@@ -62,6 +63,29 @@ export class MachineService extends BaseService {
         let headers = new Headers({ 'Content-Type': 'application/json' });                
         return this.http.post(environment.machineDeleteURL, 
             JSON.stringify(machine), { headers: headers })
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));         
+    } 
+    
+    getMachineConfig(machineCode: string): Observable<MachineConfig> {
+        let url = environment.machineConfigURL.replace(":machineCode", machineCode.toString());
+        return this.http.get(url)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
+    }   
+
+    updateMachineConfig(machineConfig: MachineConfig): Observable<MachineConfig> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        return this.http.post(environment.machineConfigUpdateURL, 
+            JSON.stringify(machineConfig), { headers: headers })
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));         
+    }    
+    
+    updateMachineSQL(machineConfig: MachineConfig): Observable<MachineConfig> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        return this.http.post(environment.machineSQLUpdateURL, 
+            JSON.stringify(machineConfig), { headers: headers })
             .map(res => res.json())
             .pipe(catchError(this.handleError));         
     }    
