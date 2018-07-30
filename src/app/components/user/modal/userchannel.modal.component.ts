@@ -76,7 +76,7 @@ import { UserService } from "../../../services/user/user.service";
           this.channels = result;
         },
         error => {
-          this.toastr.error(error, "Oops!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true });
         });      
     }
 
@@ -91,7 +91,7 @@ import { UserService } from "../../../services/user/user.service";
           this.loadGrid();
         },
         error => {
-          this.toastr.error(error, "Oops!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true });
         }
       );  
     }
@@ -105,7 +105,7 @@ import { UserService } from "../../../services/user/user.service";
           this.loadGrid();
         },
         error => {
-          this.toastr.error(error, "Oops!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true });
         }
       );          
     }

@@ -124,7 +124,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
         params.api.setRowData(result);
       },
       error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true });
       }); 
     params.api.sizeColumnsToFit();   
   }
@@ -152,7 +152,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
         this.gridApi.updateRowData({ add: [result] });
       },
       error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true });
       }
     );    
     this.channel = new Channel();
@@ -174,7 +174,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     .subscribe(
       result => {},
       error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true });
       }
     );    
   }
@@ -195,7 +195,7 @@ export class ChannelComponent extends BaseComponent implements OnInit {
             this.gridApi.updateRowData({ remove: [row] });
           },
           error => {
-            this.toastr.error(error, "Oops!", { enableHTML: true });
+            this.toastr.error(error, "Erro!", { enableHTML: true });
           }
         );         
       });      

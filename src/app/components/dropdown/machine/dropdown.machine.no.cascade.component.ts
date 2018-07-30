@@ -42,7 +42,7 @@ export class DropdownMachineNoCascadeComponent extends BaseComponent implements 
         }
       },
       error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true });
       });     
   }
 

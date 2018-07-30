@@ -40,7 +40,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
   changeDateRange(dates: any): any {
     // var hours = Math.abs(dates.value[0] - dates.value[1]) / 36e5;   
     // if(hours > 24) {
-    //   this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Oops!", { enableHTML: true });
+    //   this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Erro!", { enableHTML: true });
     // }
     // else {
     //   this.refreshChart(true);  
@@ -69,8 +69,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
   getChartData() {  
     this.dashboardService.chart(
-      this.formatDateTime(this.dateTimeRange[0]), 
-      this.formatDateTime(this.dateTimeRange[1]), 
+      this.formatDateTimeMySQL(this.dateTimeRange[0], true), 
+      this.formatDateTimeMySQL(this.dateTimeRange[1], false), 
       this.dropdownChannel, 
       this.dropdownMachine
     )
@@ -134,31 +134,36 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         });        
       },
       error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true });
       });  
   }  
   
-  exportExcel() { 
+  exportExcel() {
     this.dashboardService.exportChartExcel(
-      this.formatDateTime(this.dateTimeRange[0]), 
-      this.formatDateTime(this.dateTimeRange[1]), 
+      this.formatDateTimeMySQL(this.dateTimeRange[0], true), 
+      this.formatDateTimeMySQL(this.dateTimeRange[1], false), 
       this.dropdownChannel, 
       this.dropdownMachine
     ) 
     .subscribe(
       result => {
-        let url = window.URL.createObjectURL(result.data);
-        let a = document.createElement('a');
-        document.body.appendChild(a);
-        a.setAttribute('style', 'display: none');
-        a.href = url;
-        a.download = result.filename;
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
+        if(result.data.size > 0) {
+          let url = window.URL.createObjectURL(result.data);
+          let a = document.createElement('a');
+          document.body.appendChild(a);
+          a.setAttribute('style', 'display: none');
+          a.href = url;
+          a.download = result.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+        }
+        else {
+          this.toastr.warning("Não existe dados com os filtros selecionados.", "Aviso!", { enableHTML: true });
+        }
       },
       error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true });
       }
     );
   }

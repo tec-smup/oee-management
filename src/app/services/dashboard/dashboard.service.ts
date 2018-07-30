@@ -35,7 +35,7 @@ export class DashboardService extends BaseService {
             .pipe(catchError(this.handleError));
     }
 
-    exportChartExcel(date_ini: string, date_fin: string, ch_id: number, mc_cd: string) {                
+    exportChartExcel(date_ini: string, date_fin: string, ch_id: number, mc_cd: string) {
         let params = {
             date_ini: date_ini, 
             date_fin: date_fin, 

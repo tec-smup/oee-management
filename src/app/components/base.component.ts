@@ -145,6 +145,28 @@ export class BaseComponent implements OnInit {
                 (minute.toString().length == 1 ? "0"+minute : minute));
     }    
 
+    //2018-06-15 08:00:00
+    formatDateTimeMySQL(datetime, initial) {
+        let day = datetime.getDate();
+        let month = datetime.getMonth()+1;
+        let year = datetime.getFullYear();
+        let hour = datetime.getHours(); 
+        let minute = datetime.getMinutes();
+
+        return (
+            year 
+            + "-" + 
+            (month.toString().length == 1 ? "0"+month : month) 
+            + "-" + 
+            (day.toString().length == 1 ? "0"+day : day)
+            + " " + 
+            (hour.toString().length == 1 ? "0"+hour : hour) 
+            + ":" + 
+            (minute.toString().length == 1 ? "0"+minute : minute) 
+            + (initial === true ? ":00" : ":59")
+        );
+    }        
+
     formatDate(datetime) {
         let day = datetime.getDate();
         let month = datetime.getMonth()+1;

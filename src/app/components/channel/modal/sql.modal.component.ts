@@ -160,7 +160,7 @@ import { Observable } from 'rxjs';
           this.toastr.success("Configurações de SQL do canal atualizadas.", "Sucesso!", { enableHTML: true });
         },
         error => {
-          this.toastr.error(error, "Oops!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true });
         }
       );      
     }

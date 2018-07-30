@@ -55,8 +55,8 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     this.machineCodeSelected = changes.machineCode && changes.machineCode.currentValue != null ? 
       changes.machineCode.currentValue : this.machineCodeSelected;  
 
-    this.dateIniSelected = changes.date ? this.formatDate(changes.date.currentValue[0]) : this.dateIniSelected;
-    this.dateFinSelected = changes.date ? this.formatDate(changes.date.currentValue[1]) : this.dateFinSelected;
+    this.dateIniSelected = changes.date ? this.formatDateTimeMySQL(changes.date.currentValue[0], true) : this.dateIniSelected;
+    this.dateFinSelected = changes.date ? this.formatDateTimeMySQL(changes.date.currentValue[1], false) : this.dateFinSelected;
     
     if(this.channelIdSelected == 0 || !this.machineCodeSelected)
       return;
@@ -75,7 +75,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
         this.startIntervalTimer();
       },
       error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true });
       });     
   }  
 
@@ -144,7 +144,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
         this.gridApi.hideOverlay();
       },
       error => {
-        this.toastr.error(error, "Oops!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true });
       });    
   }  
 

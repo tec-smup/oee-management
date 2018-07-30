@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
             }
         },
         error => {
-          this.toastr.error("Parece que houve um problema com o servidor, tente daqui a pouco...", "Oops!");
+          this.toastr.error("Parece que houve um problema com o servidor, tente daqui a pouco...", "Erro!");
           this.loading = false;
         });
   }

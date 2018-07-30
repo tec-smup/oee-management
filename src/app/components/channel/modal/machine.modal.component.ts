@@ -78,7 +78,7 @@ import { ChannelService } from "../../../services/channel/channel.service";
           this.machines = result;
         },
         error => {
-          this.toastr.error(error, "Oops!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true });
         });      
     }
 
@@ -93,7 +93,7 @@ import { ChannelService } from "../../../services/channel/channel.service";
           this.loadGrid();
         },
         error => {
-          this.toastr.error(error, "Oops!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true });
         }
       );  
     }
@@ -107,7 +107,7 @@ import { ChannelService } from "../../../services/channel/channel.service";
           this.loadGrid();
         },
         error => {
-          this.toastr.error(error, "Oops!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true });
         }
       );          
     }

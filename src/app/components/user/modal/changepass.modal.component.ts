@@ -67,7 +67,7 @@ import { User } from "../../../models/user";
           this.user.password = "";
         },
         error => {
-          this.toastr.error(error, "Oops!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true });
         }
       );      
     }
