@@ -136,5 +136,30 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       error => {
         this.toastr.error(error, "Oops!", { enableHTML: true });
       });  
-  }   
+  }  
+  
+  exportExcel() { 
+    this.dashboardService.exportChartExcel(
+      this.formatDateTime(this.dateTimeRange[0]), 
+      this.formatDateTime(this.dateTimeRange[1]), 
+      this.dropdownChannel, 
+      this.dropdownMachine
+    ) 
+    .subscribe(
+      result => {
+        let url = window.URL.createObjectURL(result.data);
+        let a = document.createElement('a');
+        document.body.appendChild(a);
+        a.setAttribute('style', 'display: none');
+        a.href = url;
+        a.download = result.filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      },
+      error => {
+        this.toastr.error(error, "Oops!", { enableHTML: true });
+      }
+    );
+  }
 }

@@ -7,7 +7,8 @@ const serverURL = 'http://localhost:3000/oee/api/';
 export const environment = {
   production: false,
   userAuthenticationURL: serverURL + 'user/authentication',
-  machineListURL: serverURL + ':userId/:channelId/machine/list',                 //machine
+  //machine
+  machineListURL: serverURL + ':userId/:channelId/machine/list',
   machineListAllURL: serverURL + 'machine/list',
   machineListByChannelURL: serverURL + 'machine/channel/:channelId',
   machineAddURL: serverURL + 'machine',
@@ -16,7 +17,8 @@ export const environment = {
   machineConfigURL: serverURL + 'machineconfig/:machineCode',
   machineConfigUpdateURL: serverURL + 'machineconfig',
   machineSQLUpdateURL: serverURL + 'machineconfig/sql',  
-  channelListURL: serverURL + ':userId/channel',                      //channel
+  //channel
+  channelListURL: serverURL + ':userId/channel',
   channelConfigURL: serverURL + 'channelconfig/:channelId',
   channelConfigUpdateURL: serverURL + 'channelconfig',
   channelSQLUpdateURL: serverURL + 'channelconfig/sql',
@@ -26,17 +28,22 @@ export const environment = {
   channelUpdateURL: serverURL + 'channel/update',
   channelDeleteURL: serverURL + 'channel/delete',      
   channelDeleteMachineURL: serverURL + 'channel/delete/machine',      
-  lastFeedURL: serverURL + 'feed/lastFeed',                  //dash
+  //dash
+  lastFeedURL: serverURL + 'feed/lastFeed',
   chartURL: serverURL + 'feed/chart',
-  machinePauseListURL: serverURL + 'machinepause/list',      //machine pause
+  exportChartExcelURL: serverURL + 'exportexcel/chart',
+  //machine pause
+  machinePauseListURL: serverURL + 'machinepause/list',  
   machinePauseAddURL: serverURL + 'machinepause',
   machinePauseUpdateURL: serverURL + 'machinepause/update',
   machinePauseDeleteURL: serverURL + 'machinepause/delete', 
-  userListURL: serverURL + 'user',                          //user
+  //user
+  userListURL: serverURL + 'user',
   userAddURL: serverURL + 'user',
   userUpdateURL: serverURL + 'user/update',
   userDeleteURL: serverURL + 'user/delete',    
-  userChangePassURL: serverURL + 'user/changePass',    
-  userChannelAddURL: serverURL + 'userchannel', //userchannel
+  userChangePassURL: serverURL + 'user/changePass',
+  //userchannel    
+  userChannelAddURL: serverURL + 'userchannel', 
   userChannelDeleteURL: serverURL + 'userchannel/delete',
 };

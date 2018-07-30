@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, ResponseContentType } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { catchError } from 'rxjs/operators';
@@ -33,5 +33,28 @@ export class DashboardService extends BaseService {
         return this.http.get(environment.chartURL + query)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
+    }
+
+    exportChartExcel(date_ini: string, date_fin: string, ch_id: number, mc_cd: string) {                
+        let params = {
+            date_ini: date_ini, 
+            date_fin: date_fin, 
+            ch_id: ch_id, 
+            mc_cd: mc_cd
+        };
+        return this.http.get(
+            environment.exportChartExcelURL, 
+            {
+                responseType: ResponseContentType.Blob,
+                search: params
+            }
+        )
+        .map(res => {
+            return {
+              filename: (new Date().getTime()) + '.xlsx',
+              data: res.blob()
+            };
+        })
+        .pipe(catchError(this.handleError));        
     }
 }
