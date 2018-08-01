@@ -9,11 +9,8 @@ import { User } from '../../models/user';
 
 @Injectable()
 export class AuthenticationService {
-    token: string;
 
     constructor(private http: Http) {
-        var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;
     }
 
     login(user: User): Observable<Login> {
@@ -24,7 +21,6 @@ export class AuthenticationService {
             .map(res => {
                 let resJson = res.json();
                 if(resJson.success) {
-                    this.token = resJson.token;
                     localStorage.setItem('currentUser', JSON.stringify(resJson));                    
                 }
                 return resJson;
@@ -32,7 +28,6 @@ export class AuthenticationService {
     }
 
     logout(): void {
-        this.token = null;
         localStorage.removeItem('currentUser');
     }
 }
