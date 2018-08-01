@@ -63,7 +63,7 @@ export class DropdownChannelComponent extends BaseComponent implements OnInit {
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true });
       });    
-  }  
+  }
 
   public refreshValue(value:any) {
     this.selectedChannelId = value.id;

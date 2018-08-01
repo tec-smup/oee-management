@@ -9,6 +9,10 @@ export class BaseService {
 
     }   
 
+    protected getToken() {
+      return localStorage.getItem('token') || null;
+    }    
+
     protected handleError(error: HttpErrorResponse) {
         let returnMessage = "";
         if (error.error instanceof ErrorEvent) {

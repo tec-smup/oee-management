@@ -10,9 +10,12 @@ export class BaseComponent implements OnInit {
     }
 
     getCurrentUser() {
-        let currentUser = localStorage.getItem('currentUser');
+        let currentUser = localStorage.getItem('currentUser') || null;
         return JSON.parse(currentUser); 
     }
+    getToken() {
+        return localStorage.getItem('token') || null;
+    }    
     getTurn() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         let turn = {

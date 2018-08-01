@@ -1,7 +1,6 @@
 const serverURL = 'https://oee-server.appspot.com/api/';
 export const environment = {
-  production: true,
-  userAuthenticationURL: serverURL + 'user/authentication',
+  production: true,  
   //machine
   machineListURL: serverURL + ':userId/:channelId/machine/list',
   machineListAllURL: serverURL + 'machine/list',
@@ -33,11 +32,13 @@ export const environment = {
   machinePauseUpdateURL: serverURL + 'machinepause/update',
   machinePauseDeleteURL: serverURL + 'machinepause/delete', 
   //user
+  userAuthenticationURL: serverURL + 'auth',
   userListURL: serverURL + 'user',
   userAddURL: serverURL + 'user',
   userUpdateURL: serverURL + 'user/update',
   userDeleteURL: serverURL + 'user/delete',    
   userChangePassURL: serverURL + 'user/changePass',
+  userGetDataByTokenPassURL: serverURL + 'user/data',
   //userchannel    
   userChannelAddURL: serverURL + 'userchannel', 
   userChannelDeleteURL: serverURL + 'userchannel/delete',  
