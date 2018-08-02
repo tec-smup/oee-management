@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, ResponseContentType } from '@angular/http';
+import { Http, Headers, ResponseContentType, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { catchError } from 'rxjs/operators';
@@ -19,8 +19,13 @@ export class DashboardService extends BaseService {
     }
 
     lastFeed(dateIni: string, dateFin: string, channelId: number, machineCode: string, userId: number): Observable<Dashboard> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({headers: headers});
 
-        return this.http.get(environment.lastFeedURL + "?dateIni=" + dateIni + "&dateFin=" + dateFin + "&ch_id=" + channelId.toString() + "&mc_cd=" + machineCode + "&userId=" + userId.toString())
+        return this.http.get(environment.lastFeedURL + "?dateIni=" + dateIni + "&dateFin=" + dateFin + "&ch_id=" + channelId.toString() + "&mc_cd=" + machineCode + "&userId=" + userId.toString(), options)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }   
@@ -30,7 +35,14 @@ export class DashboardService extends BaseService {
             + "&date_fin=" + date_fin 
             + "&ch_id=" + ch_id 
             + "&mc_cd=" + mc_cd;
-        return this.http.get(environment.chartURL + query)
+
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({headers: headers});
+
+        return this.http.get(environment.chartURL + query, options)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }
@@ -42,13 +54,17 @@ export class DashboardService extends BaseService {
             ch_id: ch_id, 
             mc_cd: mc_cd
         };
-        return this.http.get(
-            environment.exportChartExcelURL, 
-            {
-                responseType: ResponseContentType.Blob,
-                search: params
-            }
-        )
+
+        let headers = new Headers({ 
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({
+            headers: headers,
+            responseType: ResponseContentType.Blob,
+            search: params             
+        });
+        
+        return this.http.get(environment.exportChartExcelURL, options)
         .map(res => {
             return {
               filename: (new Date().getTime()) + '.xlsx',

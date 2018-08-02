@@ -40,11 +40,6 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     this.toastr.setRootViewContainerRef(vcr);     
     this.columnDefs = [
       {
-        headerName: "ID",
-        field: "id",
-        editable: false,
-      },
-      {
         headerName: "Nome",
         field: "name",
         editable: true  

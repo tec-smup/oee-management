@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 import { catchError } from 'rxjs/operators';
@@ -29,22 +29,37 @@ export class MachineService extends BaseService {
     }
 
     listAll(): Observable<Machine[]> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({headers: headers});
+
         let url = environment.machineListAllURL;
-        return this.http.get(url)
+        return this.http.get(url, options)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }    
 
     listByChannel(channelId: number): Observable<Machine[]> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({headers: headers});
+
         let url = environment.machineListByChannelURL
             .replace(":channelId", channelId.toString());
-        return this.http.get(url)
+        return this.http.get(url, options)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }    
 
     add(machine: Machine): Observable<Machine> {
-        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });                
         return this.http.post(environment.machineAddURL, 
             JSON.stringify(machine), { headers: headers })
             .map(res => res.json())
@@ -52,7 +67,10 @@ export class MachineService extends BaseService {
     }
 
     update(machine: Machine): Observable<Machine> {
-        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });                
         return this.http.post(environment.machineUpdateURL, 
             JSON.stringify(machine), { headers: headers })
             .map(res => res.json())
@@ -60,7 +78,10 @@ export class MachineService extends BaseService {
     }     
     
     delete(machine: Machine): Observable<Machine> {
-        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });                
         return this.http.post(environment.machineDeleteURL, 
             JSON.stringify(machine), { headers: headers })
             .map(res => res.json())
@@ -68,14 +89,23 @@ export class MachineService extends BaseService {
     } 
     
     getMachineConfig(machineCode: string): Observable<MachineConfig> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({headers: headers});
+
         let url = environment.machineConfigURL.replace(":machineCode", machineCode.toString());
-        return this.http.get(url)
+        return this.http.get(url, options)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }   
 
     updateMachineConfig(machineConfig: MachineConfig): Observable<MachineConfig> {
-        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });                
         return this.http.post(environment.machineConfigUpdateURL, 
             JSON.stringify(machineConfig), { headers: headers })
             .map(res => res.json())
@@ -83,7 +113,10 @@ export class MachineService extends BaseService {
     }    
     
     updateMachineSQL(machineConfig: MachineConfig): Observable<MachineConfig> {
-        let headers = new Headers({ 'Content-Type': 'application/json' });                
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });                
         return this.http.post(environment.machineSQLUpdateURL, 
             JSON.stringify(machineConfig), { headers: headers })
             .map(res => res.json())
