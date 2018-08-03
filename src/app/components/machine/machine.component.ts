@@ -87,16 +87,36 @@ export class MachineComponent extends BaseComponent implements OnInit {
     this.gridApi = params.api;
     this.gridColumnApi = params.columnApi;
 
+    if(this.getCurrentUser().admin === 1)
+      this.listAll();
+    else
+      this.list();
+   
+  }
+
+  list() {
     this.machineService.list(this.getCurrentUser().id, 0) //passa canal zero pois quero ver todas as maquinas do usuario
     .subscribe(
       result => {
-        params.api.setRowData(result);
+        this.gridApi.setRowData(result);
       },
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true });
       }); 
-    params.api.sizeColumnsToFit();   
+    this.gridApi.sizeColumnsToFit();
   }
+  listAll() {
+    this.machineService.listAll() //passa canal zero pois quero ver todas as maquinas do usuario
+    .subscribe(
+      result => {
+        this.gridApi.setRowData(result);
+      },
+      error => {
+        this.toastr.error(error, "Erro!", { enableHTML: true });
+      }); 
+    this.gridApi.sizeColumnsToFit();    
+  }
+
   onCellValueChanged(event) {
     this.update(event.data);
   } 
@@ -117,18 +137,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
   }
 
   update(data) {
-    //isso nao precisa, remover quando ativar o jwt
-    let machine = new Machine();
-    machine.code = data.code;
-    machine.name = data.name;
-    machine.mobile_name = data.mobile_name;
-    machine.department = data.department;
-    machine.product = data.product;
-    machine.last_maintenance = data.last_maintenance;
-    machine.next_maintenance = data.next_maintenance;
-    //--------
-
-    this.machineService.update(machine)
+    this.machineService.update(data)
     .subscribe(
       result => {},
       error => {
@@ -142,12 +151,8 @@ export class MachineComponent extends BaseComponent implements OnInit {
     
     if(selectedData.length > 0) {
       selectedData.forEach(row => {
-        //isso nao precisa, remover quando ativar o jwt
-        let machine = new Machine();
-        machine.code = row.code;
-        //--------
 
-        this.machineService.delete(machine)
+        this.machineService.delete(row)
         .subscribe(
           result => {
             this.gridApi.updateRowData({ remove: [row] });

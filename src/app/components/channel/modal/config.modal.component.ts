@@ -26,65 +26,74 @@ import { Observable } from 'rxjs';
               formControlName="channel_id"
               type="hidden" />
 
-          <div class="form-group">
-            <label for="field1">Descrição do campo 1</label>
-            <input 
-              id="field1" 
-              formControlName="field1"
-              type="text" 
-              class="form-control" 
-              placeholder="Campo 1"/>
-              <small id="field1" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="field1">Descrição do campo 1</label>
+              <input 
+                id="field1" 
+                formControlName="field1"
+                type="text" 
+                class="form-control" 
+                placeholder="Campo 1"/>
+                <small id="field1" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="field2">Descrição do campo 2</label>
+              <input 
+                id="field2" 
+                formControlName="field2"
+                type="text" 
+                class="form-control" 
+                placeholder="Campo 2"/>
+                <small id="field2" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
+            </div>          
           </div>
-          <div class="form-group">
-            <label for="field2">Descrição do campo 2</label>
-            <input 
-              id="field2" 
-              formControlName="field2"
-              type="text" 
-              class="form-control" 
-              placeholder="Campo 2"/>
-              <small id="field2" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
-          </div>   
-          <div class="form-group">
-            <label for="field3">Descrição do campo 3</label>
-            <input 
-              id="field3" 
-              formControlName="field3"
-              type="text" 
-              class="form-control" 
-              placeholder="Campo 3"/>
-              <small id="field3" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
-          </div>      
-          <div class="form-group">
-            <label for="field4">Descrição do campo 4</label>
-            <input 
-              id="field4" 
-              formControlName="field4"
-              type="text" 
-              class="form-control" 
-              placeholder="Campo 4"/>
-              <small id="field4" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
-          </div>    
-          <div class="form-group">
-            <label for="field5">Descrição do campo 5</label>
-            <input 
-              id="field5" 
-              formControlName="field5"
-              type="text" 
-              class="form-control" 
-              placeholder="Campo 5"/>
-              <small id="field5" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
-          </div> 
-          <div class="form-group">
-            <label for="refreshtime">Tempo de atualização</label>
-            <input 
-              id="refresh_time" 
-              formControlName="refresh_time"
-              type="number" 
-              class="form-control" />
-              <small id="refreshtime" class="form-text text-muted">Tempo de atualização do gráfico em segundos.</small>
-          </div>  
+   
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="field3">Descrição do campo 3</label>
+              <input 
+                id="field3" 
+                formControlName="field3"
+                type="text" 
+                class="form-control" 
+                placeholder="Campo 3"/>
+                <small id="field3" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
+            </div>      
+            <div class="form-group col-md-6">
+              <label for="field4">Descrição do campo 4</label>
+              <input 
+                id="field4" 
+                formControlName="field4"
+                type="text" 
+                class="form-control" 
+                placeholder="Campo 4"/>
+                <small id="field4" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
+            </div>    
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="field5">Descrição do campo 5</label>
+              <input 
+                id="field5" 
+                formControlName="field5"
+                type="text" 
+                class="form-control" 
+                placeholder="Campo 5"/>
+                <small id="field5" class="form-text text-muted">A descrição dete campo aparece na lista de medições do dia.</small>
+            </div> 
+            <div class="form-group col-md-6">
+              <label for="refreshtime">Tempo de atualização</label>
+              <input 
+                id="refresh_time" 
+                formControlName="refresh_time"
+                type="number" 
+                class="form-control" />
+                <small id="refreshtime" class="form-text text-muted">Tempo de atualização do gráfico em segundos.</small>
+            </div>  
+          </div>
+
           <div class="form-group">
             <label for="chart_tooltip_desc">Tooltip do gráfico</label>
             <input 

@@ -124,16 +124,10 @@ export class UserComponent extends BaseComponent implements OnInit {
   }
 
   update(data) {
-    //isso nao precisa, remover quando ativar o jwt
-    let user = new User();
-    user.id = data.id;
-    user.company_name = data.company_name;
-    user.phone = data.phone;
-    user.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
-    user.admin = (isNaN(data.admin) ? (data.admin == 'Sim' ? 1 : 0) : parseInt(data.admin));
-    //--------
+    data.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
+    data.admin = (isNaN(data.admin) ? (data.admin == 'Sim' ? 1 : 0) : parseInt(data.admin));
 
-    this.userService.update(user)
+    this.userService.update(data)
     .subscribe(
       result => {},
       error => {
@@ -147,12 +141,7 @@ export class UserComponent extends BaseComponent implements OnInit {
     
     if(selectedData.length > 0) {
       selectedData.forEach(row => {
-        //isso nao precisa, remover quando ativar o jwt
-        let user = new User();
-        user.id = row.id;
-        //--------
-
-        this.userService.delete(user)
+        this.userService.delete(row)
         .subscribe(
           result => {
             this.gridApi.updateRowData({ remove: [row] });

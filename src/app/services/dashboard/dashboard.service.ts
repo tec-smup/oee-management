@@ -10,12 +10,9 @@ import { BaseService } from '../base.service';
 
 @Injectable()
 export class DashboardService extends BaseService {
-    //token: string;
 
     constructor(private http: Http) {
         super();
-        // var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        // this.token = currentUser && currentUser.token;
     }
 
     lastFeed(dateIni: string, dateFin: string, channelId: number, machineCode: string, userId: number): Observable<Dashboard> {

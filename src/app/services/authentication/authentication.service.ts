@@ -9,8 +9,6 @@ import 'rxjs/add/operator/map'
 import { catchError } from 'rxjs/operators';
 import { BaseService } from '../base.service';
 
-
-
 @Injectable()
 export class AuthenticationService extends BaseService {
 

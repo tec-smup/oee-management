@@ -154,18 +154,10 @@ export class ChannelComponent extends BaseComponent implements OnInit {
   }
 
   update(data) {
-    //isso nao precisa, remover quando ativar o jwt
-    let channel = new Channel();
-    channel.id = data.id;
-    channel.name = data.name;
-    channel.description = data.description;
-    channel.token = data.token;
-    channel.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
-    channel.time_shift = data.time_shift;
-    channel.reset_time_shift = (isNaN(data.reset_time_shift) ? (data.reset_time_shift == 'Sim' ? 1 : 0) : parseInt(data.reset_time_shift));
-    //--------
-
-    this.channelService.update(channel)
+    data.active = (isNaN(data.active) ? (data.active == 'Ativo' ? 1 : 0) : parseInt(data.active));
+    data.reset_time_shift = (isNaN(data.reset_time_shift) ? (data.reset_time_shift == 'Sim' ? 1 : 0) : parseInt(data.reset_time_shift));
+    
+    this.channelService.update(data)
     .subscribe(
       result => {},
       error => {
@@ -179,12 +171,8 @@ export class ChannelComponent extends BaseComponent implements OnInit {
     
     if(selectedData.length > 0) {
       selectedData.forEach(row => {
-        //isso nao precisa, remover quando ativar o jwt
-        let channel = new Channel();
-        channel.id = row.id;
-        //--------
 
-        this.channelService.delete(channel)
+        this.channelService.delete(row)
         .subscribe(
           result => {
             this.gridApi.updateRowData({ remove: [row] });

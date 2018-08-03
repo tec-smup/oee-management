@@ -24,7 +24,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       //devo fazer isso aqui pois o componente que carrega as últimas medições depende dessa data
       let now = new Date(Date.now());
       let channelTurn = this.getTurn();
-      this.dateTimeRange = [this.setTimeOnDatetime(now, (channelTurn.initial || "08:00")), this.setTimeOnDatetime(now, (channelTurn.final || "18:00"))];   
+      this.dateTimeRange = [this.setTimeOnDatetime(now, (channelTurn.initial)), this.setTimeOnDatetime(now, (channelTurn.final))];   
   }
 
   ngOnInit() {       

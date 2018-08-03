@@ -19,8 +19,8 @@ export class BaseComponent implements OnInit {
     getTurn() {
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         let turn = {
-            initial: currentUser.initial_turn,
-            final: currentUser.final_turn
+            initial: currentUser.initial_turn || '08:00',
+            final: currentUser.final_turn || '18:00'
         };
         return turn; 
     }     

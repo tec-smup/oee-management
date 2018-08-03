@@ -11,12 +11,8 @@ import { MachineConfig } from '../../models/machine.config';
 
 @Injectable()
 export class MachineService extends BaseService {
-    //token: string;
-
     constructor(private http: Http) {
         super();
-        // var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        // this.token = currentUser && currentUser.token;
     }
 
     list(userId: number, channelId: number): Observable<Machine[]> {

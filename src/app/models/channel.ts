@@ -5,6 +5,7 @@ export class Channel extends BaseModel {
   name: string;
   description: string;
   active: number;
+  token: string;
   created_at: string;
   updated_at: string;
   time_shift: number;
@@ -17,7 +18,7 @@ export class Channel extends BaseModel {
     this.name = '';
     this.description = '';
     this.active = 1; //ativo
-    this.token = ''; //não sera necessario quando ativar o jwt na api
+    this.token = ''; 
     this.time_shift = 0;     
     this.initial_turn = '07:00';
     this.final_turn = '17:00';
