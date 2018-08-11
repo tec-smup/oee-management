@@ -8,13 +8,15 @@
           Dashboard
         </a>
       </li>
-    </ul>            
-    <hr style="margin-top: 0.2rem" />
-    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
-      <span>Canal</span>
-    </h6>
+    </ul>                
+    <div [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
+      <hr style="margin-top: 0.2rem" />
+      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
+        <span>Canal</span>
+      </h6>
+    </div>
     <ul class="nav flex-column mb-2">
-      <li class="nav-item">
+      <li class="nav-item" [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
         <a [ngClass]="(linkActive=='channel')?'nav-link active':'nav-link'" [routerLink]="['/channel']">
           <i-plus-circle class="feather"></i-plus-circle>
           Criar canal
@@ -44,7 +46,7 @@
       <span>Máquina</span>
     </h6>
     <ul class="nav flex-column mb-2">
-      <li class="nav-item">
+      <li class="nav-item" [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
         <a [ngClass]="(linkActive=='machine')?'nav-link active':'nav-link'" [routerLink]="['/machine']">
           <i-plus-circle class="feather"></i-plus-circle>
           Criar máquina

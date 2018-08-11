@@ -15,10 +15,10 @@ export class UserService extends BaseService {
     }
 
     isUserLoggedIn() {
-    if(localStorage.getItem('currentUser')) {
-        return true;
-    }
-    return false;
+        if(localStorage.getItem('currentUser')) {
+            return true;
+        }
+        return false;
     }
 
     list(): Observable<User[]> {

@@ -16,10 +16,16 @@ export class MachineService extends BaseService {
     }
 
     list(userId: number, channelId: number): Observable<Machine[]> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({headers: headers});
+
         let url = environment.machineListURL
             .replace(":userId", userId.toString())
             .replace(":channelId", channelId.toString());
-        return this.http.get(url)
+        return this.http.get(url, options)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }
