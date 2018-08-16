@@ -3,6 +3,7 @@ import { Chart } from 'chart.js';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
+import { AmChart, AmChartsService } from '../../../../node_modules/@amcharts/amcharts3-angular';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,12 +11,14 @@ import { BaseComponent } from '../base.component';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent extends BaseComponent implements OnInit {
-  chart = []; 
+  amChart: AmChart;
   dropdownMachine: string;
   dropdownChannel: number;
   dateTimeRange: Date[];
 
-  constructor(private dashboardService: DashboardService, 
+  constructor(
+    private dashboardService: DashboardService, 
+    private AmCharts: AmChartsService,
     public toastr: ToastsManager, 
     vcr: ViewContainerRef) {   
       super();
@@ -27,14 +30,22 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       this.dateTimeRange = [this.setTimeOnDatetime(now, (channelTurn.initial)), this.setTimeOnDatetime(now, (channelTurn.final))];   
   }
 
-  ngOnInit() {       
+  ngOnInit() {     
+    this.amChart = this.AmCharts.makeChart('amChart', this.makeOptions([]));      
+
+    // this.timer = setInterval(() => {
+    //     this.AmCharts.updateChart(this.amChart, () => {
+    //         this.amChart.dataProvider = this.makeRandomDataProvider();
+    //     });
+    // }, 3000);     
   }
 
   ngOnDestroy() {
     //destroi instancias anteriores do grafico
-    Chart.helpers.each(Chart.instances, function(instance) {    
-      instance.destroy(); 
-    }); 
+    //clearInterval(this.timer);
+    if (this.amChart) {
+        this.AmCharts.destroyChart(this.amChart);
+    }     
   }  
 
   changeDateRange(dates: any): any {
@@ -76,68 +87,86 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     )
     .subscribe(
       result => {
-        let labels = result.map(e => e.labels);
-        let data = result.map(e => e.data);
-        let tooltips = result[0] ? result[0].chart_tooltip_desc : "";
-
-        let instanceExists = false;
-        Chart.helpers.each(Chart.instances, function(instance) {    
-          instanceExists = true;
-
-          let callbacks = instance.options.tooltips.callbacks;
-          callbacks.label = function(tooltipItem, data) {
-            return tooltips.replace("__value", tooltipItem.yLabel);
-          };
-
-          instance.data.labels = labels;
-          instance.data.datasets.forEach(function(dataset) {            
-            dataset.data = data;
-          });
-          instance.update(); 
-        });
-
-        if(instanceExists)
-          return;
-
-        this.chart = new Chart('chartCanvas', {
-          type: 'line',
-          data: {
-            labels: labels,
-            datasets: [{
-              data: data,
-              lineTension: 0,
-              backgroundColor: 'transparent',
-              borderColor: '#007bff',
-              borderWidth: 4,
-              pointBackgroundColor: '#007bff'
-            }]
-          },
-          options: {
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero: false
-                }
-              }]
-            },
-            legend: {
-              display: false,
-            },  
-            tooltips: {
-              callbacks: {
-                label: function(tooltipItem, data) {
-                  return tooltips.replace("__value", tooltipItem.yLabel);
-                }
-              }                  
-            }                      
-          }         
-        });        
+        let tooltips = result[0] ? result[0].chart_tooltip_desc : "[[value]]";
+        
+        this.AmCharts.updateChart(this.amChart, () => {
+          this.amChart.dataProvider = result;          
+        });              
       },
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true });
       });  
   }  
-  
+
+  makeOptions(dataProvider) {
+      return {
+          "type": "serial",
+          "theme": "light",
+          "language": "pt",
+          "marginRight": 20,
+          "autoMarginOffset": 20,
+          "responsive": {
+            "enabled": true
+          },          
+          "marginTop": 0,
+          "dataProvider": dataProvider,
+          "valueAxes": [{
+              "axisAlpha": 0.2,
+              "dashLength": 1,
+              "position": "left"
+          }],
+          "mouseWheelZoomEnabled": true,
+          "graphs": [{
+              "id": "g1",
+              "balloonText": "[[value]]",
+              "bullet": "round",
+              "bulletBorderAlpha": 1,
+              "bulletColor": "#FFFFFF",
+              "hideBulletsCount": 50,
+              "valueField": "data",
+              "useLineColorForBulletBorder": true,
+              "balloon": {
+                  "drop": true
+              },
+              "balloonFunction": function(graphDataItem, graph) {
+                let text = graphDataItem.dataContext.chart_tooltip_desc;
+                let data = graphDataItem.dataContext.data;
+                return text.replace("__value", data);
+              }
+          }],
+          "chartScrollbar": {
+              "autoGridCount": true,
+              "graph": "g1",
+              "scrollbarHeight": 40
+          },
+          "chartCursor": {
+              "categoryBalloonDateFormat": "JJ:NN:SS, DD/MM/YYYY",
+              "limitToGraph":"g1"
+          },
+          "categoryField": "labels",
+          "categoryAxis": {
+              "dateFormats": [
+                  { "period": "fff", "format": "JJ:NN:SS" },
+                  { "period": "ss", "format": "JJ:NN:SS" },
+                  { "period": "mm", "format": "JJ:NN:SS" },
+                  { "period": "hh", "format": "JJ:NN:SS" },
+                  { "period": "DD", "format": "DD/MM" },
+                  { "period": "WW", "format": "DD/MM" },
+                  { "period": "MM", "format": "MMM" },
+                  { "period": "YYYY", "format": "YYYY"}
+              ],
+              "parseDates": true,
+              "axisColor": "#DADADA",
+              "dashLength": 1,
+              "minorGridEnabled": true,
+              "minPeriod": "mm",
+          },
+          "export": {
+              "enabled": true
+          }
+      };
+  }    
+
   exportExcel() {
     this.dashboardService.exportChartExcel(
       this.formatDateTimeMySQL(this.dateTimeRange[0], true), 

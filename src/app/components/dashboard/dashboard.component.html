@@ -37,7 +37,7 @@
           </div>
         </div>
       </div>
-      <canvas id="chartCanvas" class="my-4" width="900" height="380">{{ chart }}</canvas>
+      <div id="amChart" [style.width.%]="100" [style.height.px]="500"></div>
       <app-lastfeed [channelId]="dropdownChannel" [machineCode]="dropdownMachine" [date]="dateTimeRange" (refreshDash)="refreshChart($event)"></app-lastfeed>
     </main>
   </div>

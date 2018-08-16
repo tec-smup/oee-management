@@ -11,6 +11,7 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 
 import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 import {AgGridModule} from "ag-grid-angular";
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import {AgGridModule} from "ag-grid-angular";
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,
     AgGridModule.withComponents([]),
+    AmChartsModule,
   ],
   declarations: [ 
     DashboardComponent,
