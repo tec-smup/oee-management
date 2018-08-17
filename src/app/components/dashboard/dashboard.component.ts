@@ -135,6 +135,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
           "type": "serial",
           "theme": "light",
           "language": "pt",
+          "dataDateFormat": "YYYY-MM-DDTHH:NN:SS.QQQ",
           "marginRight": 20,
           "autoMarginOffset": 20,
           "responsive": {
@@ -187,10 +188,10 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
           "categoryField": "labels",
           "categoryAxis": {
               "dateFormats": [
-                  { "period": "fff", "format": "JJ:NN:SS" },
-                  { "period": "ss", "format": "JJ:NN:SS" },
-                  { "period": "mm", "format": "JJ:NN:SS" },
-                  { "period": "hh", "format": "JJ:NN:SS" },
+                  { "period": "fff", "format": "JJ:NN" },
+                  { "period": "ss", "format": "JJ:NN" },
+                  { "period": "mm", "format": "JJ:NN" },
+                  { "period": "hh", "format": "JJ:NN" },
                   { "period": "DD", "format": "DD/MM" },
                   { "period": "WW", "format": "DD/MM" },
                   { "period": "MM", "format": "MMM" },
@@ -200,7 +201,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
               "axisColor": "#DADADA",
               "dashLength": 1,
               "minorGridEnabled": true,
-              "minPeriod": "mm",
+              "minPeriod": "ss",
           },
           "export": {
               "enabled": true
