@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
-import { Chart } from 'chart.js';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
@@ -10,7 +9,7 @@ import { AmChart, AmChartsService } from '../../../../node_modules/@amcharts/amc
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent extends BaseComponent implements OnInit {
+export class DashboardComponent extends BaseComponent implements OnInit, OnDestroy {
   amChart: AmChart;
   dropdownMachine: string;
   dropdownChannel: number;
@@ -30,9 +29,31 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       this.dateTimeRange = [this.setTimeOnDatetime(now, (channelTurn.initial)), this.setTimeOnDatetime(now, (channelTurn.final))];   
   }
 
-  ngOnInit() {     
-    this.amChart = this.AmCharts.makeChart('amChart', this.makeOptions([]));      
+  ngOnInit() {
+    this.AmCharts.addInitHandler(function(chart) {
+  
+      // check if data is mepty
+      if (chart.dataProvider === undefined || chart.dataProvider.length === 0) {
+        // add some bogus data
+        var dp = {};
+        dp[chart.categoryField] = new Date();
+        dp[chart.valueField] = 0;
+        dp["chart_tooltip_desc"] = "__value";
+        chart.dataProvider.push(dp)
+        
+        // disable slice labels
+        chart.labelsEnabled = false;
+        
+        // add label to let users know the chart is empty
+        chart.addLabel("50%", "50%", "Não encontrei dados com os filtros informados.", "middle", 16);
+        
+        // dim the whole chart
+        chart.alpha = 0.3;
+      }
+      
+    }, ["serial"]);
 
+    this.amChart = this.AmCharts.makeChart('amChart', this.makeOptions([]));      
     // this.timer = setInterval(() => {
     //     this.AmCharts.updateChart(this.amChart, () => {
     //         this.amChart.dataProvider = this.makeRandomDataProvider();
@@ -86,12 +107,23 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       this.dropdownMachine
     )
     .subscribe(
-      result => {
-        let tooltips = result[0] ? result[0].chart_tooltip_desc : "[[value]]";
-        
-        this.AmCharts.updateChart(this.amChart, () => {
-          this.amChart.dataProvider = result;          
-        });              
+      result => {   
+          this.AmCharts.updateChart(this.amChart, () => {            
+            this.amChart.dataProvider.shift(); 
+            if(result.length > 0) {
+              this.amChart.dataProvider = result;
+              this.amChart.allLabels = [];
+            }
+            else {
+              this.amChart.dataProvider = [{
+                labels: new Date(),
+                data: 0,
+                chart_tooltip_desc: "__value"
+              }];
+              this.amChart.addLabel("50%", "50%", "Não encontrei dados com os filtros informados.", "middle", 16);
+            }    
+            this.amChart.validateData();                              
+          });
       },
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true });
@@ -110,28 +142,37 @@ export class DashboardComponent extends BaseComponent implements OnInit {
           },          
           "marginTop": 0,
           "dataProvider": dataProvider,
-          "valueAxes": [{
-              "axisAlpha": 0.2,
-              "dashLength": 1,
+          "valueAxes": [
+            {
+              "axisAlpha": 0,
               "position": "left"
-          }],
+            }        
+          ],
           "mouseWheelZoomEnabled": true,
+          "balloon": {
+            "borderThickness": 1,
+            "shadowAlpha": 0
+          },          
           "graphs": [{
               "id": "g1",
               "balloonText": "[[value]]",
               "bullet": "round",
               "bulletBorderAlpha": 1,
+              "bulletSize": 5,
               "bulletColor": "#FFFFFF",
-              "hideBulletsCount": 50,
+              "hideBulletsCount": 100,
               "valueField": "data",
               "useLineColorForBulletBorder": true,
               "balloon": {
-                  "drop": true
+                "adjustBorderColor": false,
+                "color": "#ffffff",
+                "horizontalPadding": 20,
+                "verticalPadding": 20
               },
               "balloonFunction": function(graphDataItem, graph) {
                 let text = graphDataItem.dataContext.chart_tooltip_desc;
                 let data = graphDataItem.dataContext.data;
-                return text.replace("__value", data);
+                return text.replace("__value", data) || "[[value]]";
               }
           }],
           "chartScrollbar": {
