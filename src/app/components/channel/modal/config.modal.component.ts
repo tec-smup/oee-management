@@ -157,10 +157,10 @@ import { Observable } from 'rxjs';
       this.channelService.updateChannelConfig(this.form.value)
       .subscribe(
         result => {
-          this.toastr.success("Configurações do canal atualizadas.", "Sucesso!", { enableHTML: true });
+          this.toastr.success("Configurações do canal atualizadas.", "Sucesso!", { enableHTML: true, showCloseButton: true });
         },
         error => {
-          this.toastr.error(error, "Erro!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
         }
       );      
     }

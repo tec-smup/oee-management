@@ -51,7 +51,7 @@ export class DropdownMachineComponent extends BaseComponent implements OnInit {
         }
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });     
   }
 

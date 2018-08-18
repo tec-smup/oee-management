@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { MachineConfig } from "../../../models/machine.config";
 import { MachineService } from "../../../services/machine/machine.service";
 
+declare var $ :any;
+
 @Component({
     selector: 'modal-content',
     template: `
@@ -164,14 +166,16 @@ import { MachineService } from "../../../services/machine/machine.service";
 
     confirm(event) {
       event.preventDefault();
+      //fecha acordion     
+      $(".collapse").collapse('hide');      
 
       this.machineService.updateMachineSQL(this.form.value)
       .subscribe(
         result => {
-          this.toastr.success("Configurações de SQL da máquina atualizadas.", "Sucesso!", { enableHTML: true });
+          this.toastr.success("Configurações de SQL da máquina atualizadas.", "Sucesso!", { enableHTML: true, showCloseButton: true });
         },
         error => {
-          this.toastr.error(error, "Erro!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
         }
       );      
     }

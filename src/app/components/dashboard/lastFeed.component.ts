@@ -75,7 +75,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
         this.startIntervalTimer();
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });     
   }  
 
@@ -144,7 +144,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
         this.gridApi.hideOverlay();
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });    
   }  
 

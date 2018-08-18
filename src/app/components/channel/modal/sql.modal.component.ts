@@ -7,6 +7,8 @@ import { ChannelService } from "../../../services/channel/channel.service";
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
+declare var $ :any;
+
 @Component({
     selector: 'modal-content',
     template: `
@@ -153,14 +155,16 @@ import { Observable } from 'rxjs';
 
     confirm(event) {
       event.preventDefault();
+      //fecha acordion     
+      $(".collapse").collapse('hide');
 
       this.channelService.updateChannelSQL(this.form.value)
       .subscribe(
         result => {
-          this.toastr.success("Configurações de SQL do canal atualizadas.", "Sucesso!", { enableHTML: true });
+          this.toastr.success("Configurações de SQL do canal atualizadas.", "Sucesso!", { enableHTML: true, showCloseButton: true });
         },
         error => {
-          this.toastr.error(error, "Erro!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
         }
       );      
     }

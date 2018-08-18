@@ -72,7 +72,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
   changeDateRange(dates: any): any {
     // var hours = Math.abs(dates.value[0] - dates.value[1]) / 36e5;   
     // if(hours > 24) {
-    //   this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Erro!", { enableHTML: true });
+    //   this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Erro!", { enableHTML: true, showCloseButton: true });
     // }
     // else {
     //   this.refreshChart(true);  
@@ -126,7 +126,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
           });
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });  
   }  
 
@@ -162,10 +162,12 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
               "bulletColor": "#FFFFFF",
               "hideBulletsCount": 100,
               "valueField": "data",
+              "lineThickness": 2,
+              "lineColor": "#A8CF45",
               "useLineColorForBulletBorder": true,
               "balloon": {
                 "adjustBorderColor": false,
-                "color": "#ffffff",
+                "color": "#000000",
                 "horizontalPadding": 20,
                 "verticalPadding": 20
               },
@@ -229,11 +231,11 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
           a.remove();
         }
         else {
-          this.toastr.warning("Não existe dados com os filtros selecionados.", "Aviso!", { enableHTML: true });
+          this.toastr.warning("Não existe dados com os filtros selecionados.", "Aviso!", { enableHTML: true, showCloseButton: true });
         }
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       }
     );
   }

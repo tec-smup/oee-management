@@ -46,7 +46,7 @@ export class DropdownChannelComponent extends BaseComponent implements OnInit {
         }
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });    
   }
 
@@ -61,7 +61,7 @@ export class DropdownChannelComponent extends BaseComponent implements OnInit {
         }
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });    
   }
 

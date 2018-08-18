@@ -91,7 +91,7 @@ export class MachinePauseComponent extends BaseComponent implements OnInit, OnDe
         this.startIntervalTimer();
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       }
     );    
     this.gridApi.sizeColumnsToFit();
@@ -115,7 +115,7 @@ export class MachinePauseComponent extends BaseComponent implements OnInit, OnDe
         this.changeDateRange(pause.date_ref);
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       }
     );    
   }

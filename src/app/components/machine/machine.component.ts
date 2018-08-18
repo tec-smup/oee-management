@@ -101,7 +101,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
         this.gridApi.setRowData(result);
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       }); 
     this.gridApi.sizeColumnsToFit();
   }
@@ -112,7 +112,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
         this.gridApi.setRowData(result);
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       }); 
     this.gridApi.sizeColumnsToFit();    
   }
@@ -130,7 +130,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
         this.gridApi.updateRowData({ add: [result] });
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       }
     );
     this.machine = new Machine();
@@ -141,7 +141,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
     .subscribe(
       result => {},
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       }
     );    
   }
@@ -158,7 +158,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
             this.gridApi.updateRowData({ remove: [row] });
           },
           error => {
-            this.toastr.error(error, "Erro!", { enableHTML: true });
+            this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
           }
         );         
       });      

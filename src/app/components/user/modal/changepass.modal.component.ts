@@ -63,11 +63,11 @@ import { User } from "../../../models/user";
       this.userService.changePass(this.user)
       .subscribe(
         result => {
-          this.toastr.success("Senha alterada.", "Sucesso!", { enableHTML: true });
+          this.toastr.success("Senha alterada.", "Sucesso!", { enableHTML: true, showCloseButton: true });
           this.user.password = "";
         },
         error => {
-          this.toastr.error(error, "Erro!", { enableHTML: true });
+          this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
         }
       );      
     }
