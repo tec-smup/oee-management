@@ -179,13 +179,13 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
               }
           }],
           "chartScrollbar": {
-              "autoGridCount": true,
-              "graph": "g1",
-              "scrollbarHeight": 40
+            "autoGridCount": true,
+            "graph": "g1",
+            "scrollbarHeight": 40
           },
           "chartCursor": {
-              "categoryBalloonDateFormat": "JJ:NN:SS, DD/MM/YYYY",
-              "limitToGraph":"g1"
+            "categoryBalloonDateFormat": "JJ:NN:SS, DD/MM/YYYY",
+            "limitToGraph":"g1",              
           },
           "categoryField": "labels",
           "categoryAxis": {
@@ -204,10 +204,16 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
               "dashLength": 1,
               "minorGridEnabled": true,
               "minPeriod": "ss",
-          },
+          },         
           "export": {
               "enabled": true
-          }
+          },
+          "listeners": [{
+            "event": "clickGraphItem",
+            "method": function(e) {
+              console.log(e);
+            }
+          }]          
       };
   }    
 
