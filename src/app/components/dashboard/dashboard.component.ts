@@ -210,12 +210,15 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
           },
           "listeners": [{
             "event": "clickGraphItem",
-            "method": function(e) {
-              console.log(e);
-            }
+            "method": this.clickGraphItem.bind(this)
           }]          
       };
   }    
+
+  clickGraphItem(e) {
+    console.log(this.dropdownChannel, 
+      this.dropdownMachine,e.item.dataContext);
+  }
 
   exportExcel() {
     this.dashboardService.exportChartExcel(
