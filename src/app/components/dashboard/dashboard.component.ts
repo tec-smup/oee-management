@@ -3,6 +3,8 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 import { AmChart, AmChartsService } from '../../../../node_modules/@amcharts/amcharts3-angular';
+import { Dashboard } from '../../models/dashboard';
+import { DashboardPause } from '../../models/dashboard.pause';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +16,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
   dropdownMachine: string;
   dropdownChannel: number;
   dateTimeRange: Date[];
+  pauses: Array<DashboardPause> = [];
 
   constructor(
     private dashboardService: DashboardService, 
@@ -216,8 +219,18 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
   }    
 
   clickGraphItem(e) {
-    console.log(this.dropdownChannel, 
-      this.dropdownMachine,e.item.dataContext);
+    let pause = new DashboardPause();
+    pause.machine_code = this.dropdownMachine;
+    pause.date = e.item.dataContext.labels;
+    pause.value = e.item.dataContext.data;
+
+    if(this.pauses.length < 2)
+      this.pauses.push(pause); 
+  }
+
+  removePause(index: number) {
+    console.log(this.pauses[index]);
+    this.pauses.splice(index, 1);
   }
 
   exportExcel() {

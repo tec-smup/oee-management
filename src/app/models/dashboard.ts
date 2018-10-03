@@ -29,8 +29,7 @@ export class Dashboard extends BaseModel {
   lastFeed: LastFeed;
   chart: Chart;
   lastFeeds: Array<LastFeed>;
-  pauses: MachinePauseList["pauses"];
-  
+  pauses: MachinePauseList["pauses"];  
   
   constructor() {
     super();
