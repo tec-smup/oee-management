@@ -37,25 +37,51 @@
           </div>
         </div>
       </div>
-      
+
       <!-- pausas -->
-      <div class="my-3 p-3 bg-white rounded shadow-sm" *ngIf="pauses.length > 0">
-        <h6 class="border-bottom border-gray pb-2 mb-0">Pausas de máquina</h6>        
-        <div class="media text-muted pt-3" *ngFor="let pause of pauses; let i = index">
-          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <div class="d-flex justify-content-between align-items-center w-100">
-              <strong class="text-gray-dark">Data: {{pause.date}}</strong>
-              <button class="btn btn-sm btn-outline-secondary" (click)="removePause(i)">Remover</button>
-            </div>
-            <span class="d-block">Valor: {{pause.value}}</span>
+      <div class="row" style="padding-left:65px;padding-right: 35px" *ngIf="pauses.length > 0">
+        <div class="card border-primary mb-3" style="width:100%">
+          <h5 class="card-header">Definir pausas da máquina</h5>          
+          <div class="card-body">
+              <p class="card-text">Para gerar a pausa, selecione dois pontos no gráfico.</p>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Data</th>
+                  <th scope="col">Valor</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pause of pauses; let i = index">
+                  <th scope="row">{{i+1}}</th>
+                  <td>{{pause.date}}</td>
+                  <td>{{pause.value}}</td>
+                  <td><button class="btn btn-link" (click)="removePause(i)">Remover</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="form-group">
+              <label for="pauseReason">Motivo</label>
+              <input 
+                name="pauseReason" 
+                [(ngModel)]="pauseReason" 
+                #pauseReasonModel="ngModel" 
+                type="text" 
+                class="form-control"
+                placeholder="Motivo da pausa"
+                required autofocus
+                [disabled]="pauses.length < 2"
+              >
+            </div>            
+            <button class="btn btn-sm btn-outline-primary" [disabled]="pauses.length < 2" (click)="addPause()">Confirmar lançamento de pausa</button>
           </div>
         </div>
-        <br/>
-        <button class="btn btn-sm btn-outline-secondary" [disabled]="pauses.length < 2">Confirmar lançamento de pausa</button>
       </div>
+      
+      <div id="amChart" [style.width.%]="100" [style.height.px]="500"></div>      
 
-      <div id="amChart" [style.width.%]="100" [style.height.px]="500"></div>
-              
       <app-lastfeed [channelId]="dropdownChannel" [machineCode]="dropdownMachine" [date]="dateTimeRange" (refreshDash)="refreshChart($event)"></app-lastfeed>
     </main>
   </div>

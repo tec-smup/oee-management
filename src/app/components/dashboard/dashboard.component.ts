@@ -5,6 +5,8 @@ import { BaseComponent } from '../base.component';
 import { AmChart, AmChartsService } from '../../../../node_modules/@amcharts/amcharts3-angular';
 import { Dashboard } from '../../models/dashboard';
 import { DashboardPause } from '../../models/dashboard.pause';
+import { MachinePause } from '../../models/machine.pause';
+import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,9 +19,11 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
   dropdownChannel: number;
   dateTimeRange: Date[];
   pauses: Array<DashboardPause> = [];
-
+  pauseReason: string;
+  
   constructor(
     private dashboardService: DashboardService, 
+    private machinePauseService: MachinePauseService,
     private AmCharts: AmChartsService,
     public toastr: ToastsManager, 
     vcr: ViewContainerRef) {   
@@ -261,5 +265,27 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
         this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       }
     );
+  }
+
+  addPause() {
+
+    let pause = new MachinePause();
+    pause.id = 0;
+    pause.mc_cd = this.pauses[0].machine_code;
+    pause.date_ref = this.formatDate(new Date(this.pauses[0].date));
+    pause.pause = this.getDatetimeDiffInMin(this.pauses[1].date, this.pauses[0].date);
+    pause.justification = this.pauseReason;
+
+    this.machinePauseService.add(pause)
+    .subscribe(
+      result => {
+        this.changeDateRange(pause.date_ref);
+      },
+      error => {
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+      }
+    ); 
+
+    console.log(this.pauses, this.pauseReason, pause);
   }
 }

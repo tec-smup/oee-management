@@ -202,4 +202,10 @@ export class BaseComponent implements OnInit {
 
     return shours + ":" + sminutes + ":" + sseconds;    
   }    
+
+  getDatetimeDiffInMin(dt1, dt2) {
+    var diff =(new Date(dt1).getTime() - new Date(dt2).getTime()) / 1000;
+    diff /= 60;
+    return Math.abs(Math.round(diff));
+  }
 }
