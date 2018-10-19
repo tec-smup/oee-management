@@ -1,4 +1,4 @@
-<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+<nav class="col-md-2 d-none d-md-block bg-light sidebar" style="overflow-y: scroll;">
   <div class="sidebar-fixed margin-top-55">
     
     <ul class="nav flex-column">
@@ -78,12 +78,43 @@
           </a>
         </li>
         <li class="nav-item">
-          <a [ngClass]="(linkActive=='docs')?'nav-link active':'nav-link'" href="#">
+          <a [ngClass]="(linkActive=='docs')?'nav-link active':'nav-link'" href="{{docsURL}}" target="_blank">
             <i-help-circle class="feather"></i-help-circle>
             Docs
           </a>
         </li>                                 
       </ul>
+    </div>
+
+    <div *ngIf="productionCount.length > 0">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Hora</th>
+            <th scope="col">Fardos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of productionCount[0]">
+            <th>{{p.hora}}</th>
+            <td>{{p.total}}</td>
+          </tr>
+        </tbody>
+      </table>    
+      <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Hora</th>
+              <th scope="col">Unidades</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of productionCount[1]">
+              <th>{{p.hora}}</th>
+              <td>{{p.total}}</td>
+            </tr>
+          </tbody>
+        </table>         
     </div>
 
   </div>

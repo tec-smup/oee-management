@@ -3,7 +3,6 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 import { AmChart, AmChartsService } from '../../../../node_modules/@amcharts/amcharts3-angular';
-import { Dashboard } from '../../models/dashboard';
 import { DashboardPause } from '../../models/dashboard.pause';
 import { MachinePause } from '../../models/machine.pause';
 import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';

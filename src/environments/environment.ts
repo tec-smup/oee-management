@@ -31,6 +31,7 @@ export const environment = {
   lastFeedURL: serverURL + 'feed/lastFeed',
   chartURL: serverURL + 'feed/chart',
   exportChartExcelURL: serverURL + 'exportexcel/chart',
+  productionURL: serverURL + 'feed/production',
   //machine pause
   machinePauseListURL: serverURL + 'machinepause/list',  
   machinePauseAddURL: serverURL + 'machinepause',
@@ -47,4 +48,6 @@ export const environment = {
   //userchannel    
   userChannelAddURL: serverURL + 'userchannel', 
   userChannelDeleteURL: serverURL + 'userchannel/delete',
+  //docs
+  docsURL: serverURL,  
 };

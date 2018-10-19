@@ -6,7 +6,6 @@ import {
   Output, 
   OnDestroy, 
   Input,
-  OnChanges, 
   SimpleChange } from '@angular/core';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';

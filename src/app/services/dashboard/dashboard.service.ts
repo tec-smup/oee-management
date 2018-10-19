@@ -70,4 +70,16 @@ export class DashboardService extends BaseService {
         })
         .pipe(catchError(this.handleError));        
     }
+
+    productionCount(dateIni: string, dateFin: string, channelId: number): Observable<Dashboard["production"][]> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({headers: headers});
+
+        return this.http.get(environment.productionURL + "?dateIni=" + dateIni + "&dateFin=" + dateFin + "&ch_id=" + channelId.toString(), options)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
+    }     
 }

@@ -25,11 +25,18 @@ class Chart {
   chart_tooltip_desc: string;
 }
 
+class Production {
+  hora: string;
+  total: number;
+  tipo: string; 
+}
+
 export class Dashboard extends BaseModel {
   lastFeed: LastFeed;
   chart: Chart;
   lastFeeds: Array<LastFeed>;
   pauses: MachinePauseList["pauses"];  
+  production: Production;
   
   constructor() {
     super();
