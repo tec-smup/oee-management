@@ -20,6 +20,7 @@ export class MenuComponent extends BaseComponent implements OnInit {
   dateFinSelected: string;  
   productionCount: Array<any> = [];
   productionTypes: Array<string> = [];
+  intervalTimer: any;
 
   constructor(private dashboardService: DashboardService,
     public toastr: ToastsManager, 
@@ -32,6 +33,10 @@ export class MenuComponent extends BaseComponent implements OnInit {
     this.currentUser = this.getCurrentUser();
   }
 
+  ngOnDestroy() {
+    clearInterval(this.intervalTimer);
+  }  
+
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
     this.channelIdSelected = changes.channelId && changes.channelId.currentValue != null ? 
       changes.channelId.currentValue : this.channelIdSelected;
@@ -42,6 +47,21 @@ export class MenuComponent extends BaseComponent implements OnInit {
     if(this.channelIdSelected == 0)
       return;
 
+    this.getData();
+    let sec = 60;
+    clearInterval(this.intervalTimer);
+    this.intervalTimer = setInterval(
+      () => {
+        sec--;
+        if(sec == 0) {
+          sec = 60;
+          this.getData();
+        }
+      }, 1000);      
+    
+  }
+  
+  getData() {
     this.dashboardService.productionCount(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected)
     .subscribe(
       result => {        
@@ -65,27 +85,34 @@ export class MenuComponent extends BaseComponent implements OnInit {
               hora: m.hora,
               tipo: m.tipo,
               total: m.total,
-              totalOld: m.total
+              totalOld: m.total,
+              taxa: 0
             })
           );
 
           //faz calculo inverso: 1-0, 2-1, 3-2, etc
-          typeArray.filter(function (object, index, array) {
-            if(index === 0) {
-              return object;
+          let totalizador = {
+            totalHora : 0,
+            mediaTaxa: 0
+          };
+          for(let i = 0; i < typeArray.length; i++) {
+            if(i > 0) {
+              typeArray[i].total -= typeArray[i-1].totalOld;
             }
-            else {
-              object.total -= array[index-1].totalOld;
-              return object;
-            }
-          });
-          this.productionCount.push(typeArray);  
+            typeArray[i].taxa = Math.round((typeArray[i].total / 60) * 100) / 100;
+            totalizador.totalHora += typeArray[i].total;
+            totalizador.mediaTaxa += typeArray[i].taxa;
+          }
+          totalizador.mediaTaxa = Math.round((totalizador.mediaTaxa / typeArray.length) * 100) / 100;
+          
+          this.productionCount.push(typeArray);          
+          this.productionCount.push(totalizador);
+          typeArray = [];
         });
         console.log(this.productionCount);
-
       },
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });     
-  }   
+  }
 }
