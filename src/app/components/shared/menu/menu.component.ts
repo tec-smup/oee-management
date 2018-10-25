@@ -97,7 +97,8 @@ export class MenuComponent extends BaseComponent implements OnInit {
           };
           for(let i = 0; i < typeArray.length; i++) {
             if(i > 0) {
-              typeArray[i].total -= typeArray[i-1].totalOld;
+              let x = typeArray[i].total -= typeArray[i-1].totalOld;
+              typeArray[i].total = x < 0 ? 0 : x; //controle para negativos
             }
             typeArray[i].taxa = Math.round((typeArray[i].total / 60) * 100) / 100;
             totalizador.totalHora += typeArray[i].total;
@@ -109,7 +110,6 @@ export class MenuComponent extends BaseComponent implements OnInit {
           this.productionCount.push(totalizador);
           typeArray = [];
         });
-        console.log(this.productionCount);
       },
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });

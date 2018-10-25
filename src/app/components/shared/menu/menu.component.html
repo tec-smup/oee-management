@@ -91,8 +91,8 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col">Hora</th>
-            <th scope="col">Fardos</th>
-            <th scope="col">Taxa</th>
+            <th scope="col">{{productionCount[0][0].tipo}}</th>
+            <th scope="col">Taxa/Min</th>
           </tr>
         </thead>
         <tbody>
@@ -103,8 +103,8 @@
           </tr>
           <tr class="table-active">
             <th>&nbsp;</th>
-            <td>{{productionCount[1].totalHora}}</td>
-            <td>{{productionCount[1].mediaTaxa}}</td>
+            <td><b>Total<br/>{{productionCount[1].totalHora}}</b></td>
+            <td><b>Tx. média<br/>{{productionCount[1].mediaTaxa}}</b></td>
           </tr>             
         </tbody>
       </table>    
@@ -112,8 +112,8 @@
           <thead class="thead-dark">
             <tr>
               <th scope="col">Hora</th>
-              <th scope="col">Unidades</th>
-              <th scope="col">Taxa</th>
+              <th scope="col">{{productionCount[2][0].tipo}}</th>
+              <th scope="col">Taxa/Min</th>
             </tr>             
           </thead>
           <tbody>
@@ -124,8 +124,8 @@
             </tr>
             <tr class="table-active">
               <th>&nbsp;</th>
-              <td>{{productionCount[3].totalHora}}</td>
-              <td>{{productionCount[3].mediaTaxa}}</td>
+              <td><b>Total<br/>{{productionCount[3].totalHora}}</b></td>
+              <td><b>Tx. média<br/>{{productionCount[3].mediaTaxa}}</b></td>
             </tr>            
           </tbody>
         </table>         
