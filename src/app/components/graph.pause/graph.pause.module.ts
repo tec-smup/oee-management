@@ -8,6 +8,10 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from
 import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 
+import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.module';
+import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,7 +19,9 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
     SharedModule,
     AmChartsModule,
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    DropdownChannelModule,
+    DropdownMachineModule 
   ],
   declarations: [ 
     GraphPauseComponent,    

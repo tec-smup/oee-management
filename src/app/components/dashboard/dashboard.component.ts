@@ -155,7 +155,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
               "position": "left"
             }        
           ],
-          "mouseWheelZoomEnabled": true,
+          "mouseWheelZoomEnabled": false,
           "balloon": {
             "borderThickness": 1,
             "shadowAlpha": 0
