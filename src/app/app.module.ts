@@ -11,6 +11,7 @@ import { DashboardModule } from './components/dashboard/dashboard.module';
 import { MachineModule } from './components/machine/machine.module';
 import { ChannelModule } from './components/channel/channel.module';
 import { MachinePauseModule } from './components/machine.pause/machine.pause.module';
+import { GraphPauseModule } from './components/graph.pause/graph.pause.module';
 import { UserModule } from './components/user/user.module';
 import {ToastModule} from 'ng2-toastr';
 
@@ -34,6 +35,7 @@ import { UserService } from './services/user/user.service';
     ChannelModule,
     MachineModule,
     MachinePauseModule,
+    GraphPauseModule,
     UserModule,
     ToastModule.forRoot()
   ],

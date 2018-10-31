@@ -6,6 +6,7 @@ import { MachineComponent } from './components/machine/machine.component';
 import { ChannelComponent } from './components/channel/channel.component';
 import { MachinePauseComponent } from './components/machine.pause/machine.pause.component';
 import { UserComponent } from './components/user/user.component';
+import { GraphPauseComponent } from './components/graph.pause/graph.pause.component';
 
 const appRoutes: Routes = [
     {
@@ -36,6 +37,11 @@ const appRoutes: Routes = [
       canActivate: [AuthGuard],
       component: MachinePauseComponent
     }, 
+    {
+      path: 'graphpause',
+      canActivate: [AuthGuard],
+      component: GraphPauseComponent
+    },     
     {
       path: 'user',
       canActivate: [AuthGuard],

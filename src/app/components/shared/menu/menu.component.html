@@ -55,9 +55,15 @@
       <li class="nav-item">
         <a [ngClass]="(linkActive=='machinepause')?'nav-link active':'nav-link'" [routerLink]="['/machinepause']">
           <i-pause-circle class="feather"></i-pause-circle>
-          Pausas
+          Apontar pausa na lista
         </a>
-      </li>                        
+      </li>    
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='graphpause')?'nav-link active':'nav-link'" [routerLink]="['/graphpause']">
+          <i-crosshair class="feather"></i-crosshair>
+          Apontar pausa no gráfico
+        </a>
+      </li>                           
     </ul>
     <hr style="margin-top: 0.2rem" />
     <div [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
