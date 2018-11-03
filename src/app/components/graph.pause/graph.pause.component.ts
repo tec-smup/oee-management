@@ -16,6 +16,8 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
   dropdownChannel: number;
   dateTimeRange: Date[];
 
+  dataPausePoints: Array<any> = [];
+
   constructor(
     private dashboardService: DashboardService, 
     private machinePauseService: MachinePauseService,    
@@ -55,7 +57,8 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
       
     }, ["serial"]);
 
-    this.amChart = this.AmCharts.makeChart('amChart', this.makeOptions([]));     
+    this.amChart = this.AmCharts.makeChart('amChart', this.makeOptions([]));    
+     
     // this.timer = setInterval(() => {
     //     this.AmCharts.updateChart(this.amChart, () => {
     //         this.amChart.dataProvider = this.makeRandomDataProvider();
@@ -68,6 +71,15 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
     if (this.amChart) {
         this.AmCharts.destroyChart(this.amChart);
     }      
+  }
+
+  selectedPause(event) {
+    this.dataPausePoints = [];
+    let dataStartPoint = event.chart.dataProvider[event.startIndex];
+    let dataEndPoint = event.chart.dataProvider[event.endIndex];    
+    this.dataPausePoints.push(dataStartPoint);
+    this.dataPausePoints.push(dataEndPoint);
+    console.log(this.dataPausePoints);
   }
 
   changeDateRange(dates: any): any {
@@ -125,13 +137,6 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
             }    
             this.amChart.validateData();                              
           });
-
-        this.amChart.addListener("rendered", function () {
-          // this.amChart.chartCursor.addListener("selected", function (event) {
-          //   console.log(event);
-          // });
-        }); 
-
       },
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
@@ -193,9 +198,12 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
           },
           "chartCursor": {
             "categoryBalloonDateFormat": "JJ:NN:SS, DD/MM/YYYY",
-            "limitToGraph":"g1",              
-            "cursorPosition": "mouse",
-            "selectWithoutZooming": true            
+            "limitToGraph":"g1",        
+            "selectWithoutZooming": true,
+            "listeners": [{
+              "event": "selected",
+              "method": this.selectedPause.bind(this)
+            }]                    
           },
           "categoryField": "labels",
           "categoryAxis": {
