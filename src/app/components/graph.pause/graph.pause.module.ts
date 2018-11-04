@@ -10,6 +10,7 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 
 import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.module';
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
+import { PauseModalComponent } from './pause.modal.component';
 
 
 @NgModule({
@@ -25,11 +26,15 @@ import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.modu
   ],
   declarations: [ 
     GraphPauseComponent,    
+    PauseModalComponent
   ],
   exports: [ GraphPauseComponent ],
   providers: [ 
     DashboardService,
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
-  ]
+  ],
+  entryComponents: [
+    PauseModalComponent
+  ],   
 })
 export class GraphPauseModule { }

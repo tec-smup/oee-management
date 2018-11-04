@@ -3,7 +3,11 @@ import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
-import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';
+import { DashboardPause } from '../../models/dashboard.pause';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { PauseModalComponent } from './pause.modal.component';
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'app-graph-pause',
@@ -15,15 +19,16 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
   dropdownMachine: string;
   dropdownChannel: number;
   dateTimeRange: Date[];
+  bsModalRef: BsModalRef;
 
-  dataPausePoints: Array<any> = [];
+  pauses: Array<DashboardPause> = [];
 
   constructor(
-    private dashboardService: DashboardService, 
-    private machinePauseService: MachinePauseService,    
+    private dashboardService: DashboardService,    
     private AmCharts: AmChartsService,
     public toastr: ToastsManager, 
-    vcr: ViewContainerRef) {
+    vcr: ViewContainerRef,
+    private modalService: BsModalService) {
     super();        
     this.toastr.setRootViewContainerRef(vcr);
 
@@ -71,15 +76,6 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
     if (this.amChart) {
         this.AmCharts.destroyChart(this.amChart);
     }      
-  }
-
-  selectedPause(event) {
-    this.dataPausePoints = [];
-    let dataStartPoint = event.chart.dataProvider[event.startIndex];
-    let dataEndPoint = event.chart.dataProvider[event.endIndex];    
-    this.dataPausePoints.push(dataStartPoint);
-    this.dataPausePoints.push(dataEndPoint);
-    console.log(this.dataPausePoints);
   }
 
   changeDateRange(dates: any): any {
@@ -225,11 +221,39 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
           },         
           "export": {
               "enabled": true
-          },     
-          // "listeners": [{
-          //   "event": "rendered",
-          //   "method": this.clickGraphItem.bind(this)
-          // }]              
+          }            
       };
   }  
+
+  selectedPause(event) {
+    this.pauses = [];
+
+    let dataStartPoint = event.chart.dataProvider[event.startIndex];
+    let dataEndPoint = event.chart.dataProvider[event.endIndex];    
+        
+    let start = new DashboardPause();
+    start.machine_code = this.dropdownMachine;
+    start.date = dataStartPoint.labels;
+    start.dateFormated = moment(dataStartPoint.labels).utc().format("DD/MM/YYYY HH:mm:ss");
+    start.value = dataStartPoint.data;
+    
+    let end = new DashboardPause();
+    end.machine_code = this.dropdownMachine;
+    end.date = dataEndPoint.labels;
+    end.dateFormated = moment(dataEndPoint.labels).utc().format("DD/MM/YYYY HH:mm:ss");
+    end.value = dataEndPoint.data; 
+    end.dateDif = this.getDatetimeDiffInMin(end.date, start.date);   
+
+    this.pauses.push(start);     
+    this.pauses.push(end);  
+
+    const initialState = {
+      pauses: this.pauses
+    };
+    this.bsModalRef = this.modalService.show(PauseModalComponent, {initialState});
+
+  }
+  removePause() {
+    this.pauses = [];
+  }    
 }

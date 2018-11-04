@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h5 class="modal-title pull-left">Confirmar pausa selecionada</h5>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row" style="margin-bottom: 10px">
+        <div class="col">
+            A tabela abaixo represeta o ponto inicial e final da seleção que você fez no gráfico.
+        </div>
+    </div>    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Data</th>
+                <th scope="col">Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pause of pauses; let i = index">
+                <th scope="row">{{i+1}}</th>
+                <td>{{pause.dateFormated}}</td>
+                <td>{{pause.value}}</td>
+            </tr>
+            <tr class="table-danger">
+                <td colspan="3"><b>Os pontos selecionados representam uma pausa de {{pauses[1].dateDif}} minutos.</b></td>
+            </tr>
+        </tbody>
+    </table>  
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="bsModalRef.hide()">Fechar</button>
+</div>
