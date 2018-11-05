@@ -3,11 +3,11 @@ import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
-import { DashboardPause } from '../../models/dashboard.pause';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { PauseModalComponent } from './pause.modal.component';
 import * as moment from 'moment-timezone';
+import { MachinePauseDash } from '../../models/machine.pause.dash';
 
 @Component({
   selector: 'app-graph-pause',
@@ -21,7 +21,7 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
   dateTimeRange: Date[];
   bsModalRef: BsModalRef;
 
-  pauses: Array<DashboardPause> = [];
+  pauses: Array<MachinePauseDash> = [];
 
   constructor(
     private dashboardService: DashboardService,    
@@ -218,9 +218,6 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
               "dashLength": 1,
               "minorGridEnabled": true,
               "minPeriod": "ss",
-          },         
-          "export": {
-              "enabled": true
           }            
       };
   }  
@@ -231,24 +228,28 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
     let dataStartPoint = event.chart.dataProvider[event.startIndex];
     let dataEndPoint = event.chart.dataProvider[event.endIndex];    
         
-    let start = new DashboardPause();
+    let start = new MachinePauseDash();
+    start.channel_id = this.dropdownChannel;
     start.machine_code = this.dropdownMachine;
-    start.date = dataStartPoint.labels;
-    start.dateFormated = moment(dataStartPoint.labels).utc().format("DD/MM/YYYY HH:mm:ss");
+    start.date_ref = moment(dataStartPoint.labels).utc().format("YYYY-MM-DD HH:mm:ss");
+    start.date_formated = moment(dataStartPoint.labels).utc().format("DD/MM/YYYY HH:mm:ss");
     start.value = dataStartPoint.data;
     
-    let end = new DashboardPause();
+    let end = new MachinePauseDash();
+    end.channel_id = this.dropdownChannel;
     end.machine_code = this.dropdownMachine;
-    end.date = dataEndPoint.labels;
-    end.dateFormated = moment(dataEndPoint.labels).utc().format("DD/MM/YYYY HH:mm:ss");
+    end.date_ref = moment(dataEndPoint.labels).utc().format("YYYY-MM-DD HH:mm:ss");
+    end.date_formated = moment(dataEndPoint.labels).utc().format("DD/MM/YYYY HH:mm:ss");
     end.value = dataEndPoint.data; 
-    end.dateDif = this.getDatetimeDiffInMin(end.date, start.date);   
+    end.date_dif = this.getDatetimeDiffInMin(end.date_ref, start.date_ref);   
 
     this.pauses.push(start);     
     this.pauses.push(end);  
 
     const initialState = {
-      pauses: this.pauses
+      pauses: this.pauses,
+      title: `Confirmar pausa selecionada de ${end.date_dif} minutos`,
+      channelId: this.dropdownChannel
     };
     this.bsModalRef = this.modalService.show(PauseModalComponent, {initialState});
 

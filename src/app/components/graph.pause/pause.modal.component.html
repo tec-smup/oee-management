@@ -1,10 +1,13 @@
 <div class="modal-header">
-    <h5 class="modal-title pull-left">Confirmar pausa selecionada</h5>
+    <h5 class="modal-title pull-left">{{title}}</h5>
     <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
 <div class="modal-body">
+    <div class="alert alert-success" role="alert" *ngIf="success">
+        <strong>Well done!</strong> You successfully read this important alert message.
+    </div>    
     <div class="row" style="margin-bottom: 10px">
         <div class="col">
             A tabela abaixo represeta o ponto inicial e final da seleção que você fez no gráfico.
@@ -21,15 +24,22 @@
         <tbody>
             <tr *ngFor="let pause of pauses; let i = index">
                 <th scope="row">{{i+1}}</th>
-                <td>{{pause.dateFormated}}</td>
+                <td>{{pause.date_formated}}</td>
                 <td>{{pause.value}}</td>
             </tr>
             <tr class="table-danger">
-                <td colspan="3"><b>Os pontos selecionados representam uma pausa de {{pauses[1].dateDif}} minutos.</b></td>
+                <td colspan="3"><b>Os pontos selecionados representam uma pausa de {{pauses[1].date_dif}} minutos.</b></td>
             </tr>
         </tbody>
     </table>  
+    <div class="row">
+        <div class="col">
+            <dropdown-pause-reason [channelId]="channelId" (emitChangeEvent)="setPauseReason($event)"></dropdown-pause-reason>
+        </div>
+    </div>
+    
 </div>
 <div class="modal-footer">
+    <button class="btn btn-sm btn-outline-primary" [disabled]="!pauses[0].pause_reason_id" (click)="confirm()">Confirmar lançamento de pausa</button>
     <button type="button" class="btn btn-outline-secondary" (click)="bsModalRef.hide()">Fechar</button>
 </div>

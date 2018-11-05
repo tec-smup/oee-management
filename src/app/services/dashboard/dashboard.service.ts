@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { Dashboard } from '../../models/dashboard';
 import { environment } from '../../../environments/environment';
 import { BaseService } from '../base.service';
+import { MachinePauseDash } from '../../models/machine.pause.dash';
 
 @Injectable()
 export class DashboardService extends BaseService {
@@ -81,5 +82,17 @@ export class DashboardService extends BaseService {
         return this.http.get(environment.productionURL + "?dateIni=" + dateIni + "&dateFin=" + dateFin + "&ch_id=" + channelId.toString(), options)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
-    }     
+    }
+    
+    //sei la pq essa bosta nao funciona em outro serviço
+    addPause(machinePause: MachinePauseDash): Observable<any> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });                
+        return this.http.post(environment.machinePauseDashAddURL, 
+            JSON.stringify(machinePause), { headers: headers })
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));            
+    }    
 }

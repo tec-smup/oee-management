@@ -11,6 +11,7 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.module';
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
 import { PauseModalComponent } from './pause.modal.component';
+import { DropdownPauseReasonModule } from '../dropdown/pause.reason/dropdown.pause.reason.module';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { PauseModalComponent } from './pause.modal.component';
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     DropdownChannelModule,
-    DropdownMachineModule 
+    DropdownMachineModule,
+    DropdownPauseReasonModule 
   ],
   declarations: [ 
     GraphPauseComponent,    

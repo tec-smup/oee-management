@@ -1,0 +1,9 @@
+<ng-select
+    [items]="items"
+    bindLabel="name"
+    bindValue="id" 
+    (add)="emitChangeValue($event)"
+    placeholder="Selecione um motivo"
+    [clearable]="false"
+    [ngStyle]="{ 'width': '100%' }">
+</ng-select>
