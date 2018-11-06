@@ -27,10 +27,15 @@
             </div>
             <div class="col">
               <dropdown-machine [channelId]="dropdownChannel" (changeEvent)="setMachine($event)"></dropdown-machine> 
-            </div>                     
+            </div>                        
           </div>                       
-        </div>           
+        </div>     
 
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+            <button class="btn btn-sm btn-outline-secondary" (click)="refreshChart(true)" [disabled]="loading">Atualizar</button>
+          </div>
+        </div>
       </div>
       
       <div id="amChart" [style.width.%]="100" [style.height.px]="500"></div>      

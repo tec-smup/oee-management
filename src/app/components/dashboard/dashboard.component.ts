@@ -4,7 +4,6 @@ import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 import { AmChart, AmChartsService } from '../../../../node_modules/@amcharts/amcharts3-angular';
 import { DashboardPause } from '../../models/dashboard.pause';
-import { MachinePause } from '../../models/machine.pause';
 import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';
 
 @Component({
@@ -22,7 +21,6 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
   
   constructor(
     private dashboardService: DashboardService, 
-    private machinePauseService: MachinePauseService,
     private AmCharts: AmChartsService,
     public toastr: ToastsManager, 
     vcr: ViewContainerRef) {   
@@ -170,7 +168,8 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
               "hideBulletsCount": 100,
               "valueField": "data",
               "lineThickness": 2,
-              "lineColor": "#A8CF45",
+              "lineColorField": "line_color",
+              "fillColorsField": "line_color",
               "useLineColorForBulletBorder": true,
               "balloon": {
                 "adjustBorderColor": false,
@@ -179,15 +178,31 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
                 "verticalPadding": 20
               },
               "balloonFunction": function(graphDataItem, graph) {
+                let pauseReason = graphDataItem.dataContext.pause_reason;
                 let text = graphDataItem.dataContext.chart_tooltip_desc;
                 let data = graphDataItem.dataContext.data;
-                return text.replace("__value", data) || "[[value]]";
+                text = text.replace("__value", data) || "[[value]]";
+                if(pauseReason) {
+                  text += `<br/><b>Motivo pausa: ${pauseReason}</b>`;
+                }
+                return text;
               }
           }],
-          "chartScrollbar": {
-            "autoGridCount": true,
-            "graph": "g1",
-            "scrollbarHeight": 40
+          "chartScrollbar": {            
+            "graph":"g1",
+            "gridAlpha":0,
+            "color":"#888888",
+            "scrollbarHeight":30,
+            "backgroundAlpha":0,
+            "selectedBackgroundAlpha":0.1,
+            "selectedBackgroundColor":"#888888",
+            "graphFillAlpha":0,
+            "autoGridCount":true,
+            "selectedGraphFillAlpha":0,
+            "graphLineAlpha":0.2,
+            "graphLineColor":"#c2c2c2",
+            "selectedGraphLineColor":"#888888",
+            "selectedGraphLineAlpha":1
           },
           "chartCursor": {
             "categoryBalloonDateFormat": "JJ:NN:SS, DD/MM/YYYY",
@@ -215,25 +230,14 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
               "enabled": true
           },
           "listeners": [{
-            "event": "clickGraphItem",
-            "method": this.clickGraphItem.bind(this)
+            "event": "rendered",
+            "method": this.handleRender.bind(this)
           }]          
       };
   }    
 
-  clickGraphItem(e) {
-    let pause = new DashboardPause();
-    pause.machine_code = this.dropdownMachine;
-    pause.date = e.item.dataContext.labels;
-    pause.value = e.item.dataContext.data;
-
-    if(this.pauses.length < 2)
-      this.pauses.push(pause); 
-  }
-
-  removePause(index: number) {
-    console.log(this.pauses[index]);
-    this.pauses.splice(index, 1);
+  handleRender(event) {
+    //console.log(event.chart.dataProvider);
   }
 
   exportExcel() {
@@ -266,25 +270,29 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     );
   }
 
-  addPause() {
+  // addPause() {
 
-    let pause = new MachinePause();
-    pause.id = 0;
-    pause.mc_cd = this.pauses[0].machine_code;
-    pause.date_ref = this.formatDate(new Date(this.pauses[0].date));
-    pause.pause = this.getDatetimeDiffInMin(this.pauses[1].date, this.pauses[0].date);
-    pause.justification = this.pauseReason;
+  //   let pause = new MachinePause();
+  //   pause.id = 0;
+  //   pause.mc_cd = this.pauses[0].machine_code;
+  //   pause.date_ref = this.formatDate(new Date(this.pauses[0].date));
+  //   pause.pause = this.getDatetimeDiffInMin(this.pauses[1].date, this.pauses[0].date);
+  //   pause.justification = this.pauseReason;
 
-    this.machinePauseService.add(pause)
-    .subscribe(
-      result => {
-        this.changeDateRange(pause.date_ref);
-      },
-      error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
-      }
-    ); 
+  //   this.machinePauseService.add(pause)
+  //   .subscribe(
+  //     result => {
+  //       this.changeDateRange(pause.date_ref);
+  //     },
+  //     error => {
+  //       this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+  //     }
+  //   ); 
 
-    console.log(this.pauses, this.pauseReason, pause);
-  }
+  //   console.log(this.pauses, this.pauseReason, pause);
+  // }
+  // removePause(index: number) {
+  //   console.log(this.pauses[index]);
+  //   this.pauses.splice(index, 1);
+  // }  
 }

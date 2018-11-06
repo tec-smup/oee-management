@@ -20,6 +20,7 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
   dropdownChannel: number;
   dateTimeRange: Date[];
   bsModalRef: BsModalRef;
+  loading: boolean = false;
 
   pauses: Array<MachinePauseDash> = [];
 
@@ -109,6 +110,7 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
   }
 
   getChartData() {  
+    this.loading = true;
     this.dashboardService.chart(
       this.formatDateTimeMySQL(this.dateTimeRange[0], true), 
       this.formatDateTimeMySQL(this.dateTimeRange[1], false), 
@@ -133,9 +135,11 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
             }    
             this.amChart.validateData();                              
           });
+          this.loading = false;
       },
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+        this.loading = false;
       });  
   }  
 
@@ -173,8 +177,10 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
               "hideBulletsCount": 100,
               "valueField": "data",
               "lineThickness": 2,
-              "lineColor": "#A8CF45",
+              "lineColorField": "line_color",
+              "fillColorsField": "line_color",
               "useLineColorForBulletBorder": true,
+              "type": "smoothedLine",
               "balloon": {
                 "adjustBorderColor": false,
                 "color": "#000000",
@@ -182,15 +188,31 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
                 "verticalPadding": 20
               },
               "balloonFunction": function(graphDataItem, graph) {
+                let pauseReason = graphDataItem.dataContext.pause_reason;
                 let text = graphDataItem.dataContext.chart_tooltip_desc;
                 let data = graphDataItem.dataContext.data;
-                return text.replace("__value", data) || "[[value]]";
+                text = text.replace("__value", data) || "[[value]]";
+                if(pauseReason) {
+                  text += `<br/><b>Motivo pausa: ${pauseReason}</b>`;
+                }
+                return text;
               }
           }],
           "chartScrollbar": {
-            "autoGridCount": true,
-            "graph": "g1",
-            "scrollbarHeight": 40
+            "graph":"g1",
+            "gridAlpha":0,
+            "color":"#888888",
+            "scrollbarHeight":30,
+            "backgroundAlpha":0,
+            "selectedBackgroundAlpha":0.1,
+            "selectedBackgroundColor":"#888888",
+            "graphFillAlpha":0,
+            "autoGridCount":true,
+            "selectedGraphFillAlpha":0,
+            "graphLineAlpha":0.2,
+            "graphLineColor":"#c2c2c2",
+            "selectedGraphLineColor":"#888888",
+            "selectedGraphLineAlpha":1
           },
           "chartCursor": {
             "categoryBalloonDateFormat": "JJ:NN:SS, DD/MM/YYYY",

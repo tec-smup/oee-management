@@ -37,48 +37,6 @@
           </div>
         </div>
       </div>
-
-      <!-- pausas -->
-      <div class="row" style="padding-left:65px;padding-right: 35px" *ngIf="pauses.length > 0">
-        <div class="card border-primary mb-3" style="width:100%">
-          <h5 class="card-header">Definir pausas da máquina</h5>          
-          <div class="card-body">
-              <p class="card-text">Para gerar a pausa, selecione dois pontos no gráfico.</p>
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Data</th>
-                  <th scope="col">Valor</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let pause of pauses; let i = index">
-                  <th scope="row">{{i+1}}</th>
-                  <td>{{pause.date}}</td>
-                  <td>{{pause.value}}</td>
-                  <td><button class="btn btn-link" (click)="removePause(i)">Remover</button></td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="form-group">
-              <label for="pauseReason">Motivo</label>
-              <input 
-                name="pauseReason" 
-                [(ngModel)]="pauseReason" 
-                #pauseReasonModel="ngModel" 
-                type="text" 
-                class="form-control"
-                placeholder="Motivo da pausa"
-                required autofocus
-                [disabled]="pauses.length < 2"
-              >
-            </div>            
-            <button class="btn btn-sm btn-outline-primary" [disabled]="pauses.length < 2" (click)="addPause()">Confirmar lançamento de pausa</button>
-          </div>
-        </div>
-      </div>
       
       <div id="amChart" [style.width.%]="100" [style.height.px]="500"></div>      
 

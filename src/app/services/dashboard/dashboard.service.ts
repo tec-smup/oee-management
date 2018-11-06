@@ -85,7 +85,7 @@ export class DashboardService extends BaseService {
     }
     
     //sei la pq essa bosta nao funciona em outro serviço
-    addPause(machinePause: MachinePauseDash): Observable<any> {
+    addPause(machinePause: MachinePauseDash[]): Observable<any> {
         let headers = new Headers({ 
             'Content-Type': 'application/json',
             'x-access-token': this.getToken()

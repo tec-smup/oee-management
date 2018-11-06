@@ -13,7 +13,6 @@ import { DashboardService } from "../../services/dashboard/dashboard.service";
     pauses: Array<MachinePauseDash> = [];
     title: string;
     channelId: number;
-    success: boolean = false;
    
     constructor(
       public bsModalRef: BsModalRef,
@@ -27,19 +26,16 @@ import { DashboardService } from "../../services/dashboard/dashboard.service";
     }
 
     confirm() {
-      this.pauses.forEach(f => {       
-        this.dashboardService.addPause(f)
-        .subscribe(
-          result => {
-            this.success = true;
-            console.log(result);   
-            this.bsModalRef.hide();         
-          },
-          error => {
-            this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
-          }
-        ); 
-      });
+      this.dashboardService.addPause(this.pauses)
+      .subscribe(
+        result => {
+          console.log(result);
+          this.bsModalRef.hide();         
+        },
+        error => {
+          this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+        }
+      );
     }
 
     setPauseReason($event) {
