@@ -26,11 +26,11 @@ import { DashboardService } from "../../services/dashboard/dashboard.service";
     }
 
     confirm() {
+      this.bsModalRef.hide();
       this.dashboardService.addPause(this.pauses)
       .subscribe(
         result => {
-          console.log(result);
-          this.bsModalRef.hide();         
+          console.log(result);                   
         },
         error => {
           this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });

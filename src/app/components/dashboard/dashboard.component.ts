@@ -179,12 +179,16 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
               },
               "balloonFunction": function(graphDataItem, graph) {
                 let pauseReason = graphDataItem.dataContext.pause_reason;
+                let pauseInMin = graphDataItem.dataContext.pause_in_minutes;
                 let text = graphDataItem.dataContext.chart_tooltip_desc;
                 let data = graphDataItem.dataContext.data;
                 text = text.replace("__value", data) || "[[value]]";
                 if(pauseReason) {
                   text += `<br/><b>Motivo pausa: ${pauseReason}</b>`;
                 }
+                if(pauseInMin) {
+                  text += `<br/><b>Pausa de: ${pauseInMin} minutos</b>`;
+                }                
                 return text;
               }
           }],
