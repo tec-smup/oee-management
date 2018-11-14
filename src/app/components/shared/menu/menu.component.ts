@@ -18,11 +18,10 @@ export class MenuComponent extends BaseComponent implements OnInit {
   @Input() date: Date[];
   dateIniSelected: string;
   dateFinSelected: string;  
-  productionCount: Array<any> = [];
-  productionTypes: Array<string> = [];
-  intervalTimer: any;
+  //productionCount: Array<any> = [];
+  //intervalTimer: any;
 
-  constructor(private dashboardService: DashboardService,
+  constructor(/*private dashboardService: DashboardService,*/
     public toastr: ToastsManager, 
     vcr: ViewContainerRef) { 
     super();
@@ -34,7 +33,7 @@ export class MenuComponent extends BaseComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    clearInterval(this.intervalTimer);
+    //clearInterval(this.intervalTimer);
   }  
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
@@ -47,72 +46,60 @@ export class MenuComponent extends BaseComponent implements OnInit {
     if(this.channelIdSelected == 0)
       return;
 
-    this.getData();
-    let sec = 60;
-    clearInterval(this.intervalTimer);
-    this.intervalTimer = setInterval(
-      () => {
-        sec--;
-        if(sec == 0) {
-          sec = 60;
-          this.getData();
-        }
-      }, 1000);      
+    // this.getData();
+    // let sec = 60;
+    // clearInterval(this.intervalTimer);
+    // this.intervalTimer = setInterval(
+    //   () => {
+    //     sec--;
+    //     if(sec == 0) {
+    //       sec = 60;
+    //       this.getData();
+    //     }
+    //   }, 1000);      
     
   }
   
-  getData() {
-    this.dashboardService.productionCount(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected)
-    .subscribe(
-      result => {        
-        //limpa array
-        this.productionCount = [];
+  // getData() {
+  //   let type: number = 1;
+  //   this.dashboardService.productionCount(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, type)
+  //   .subscribe(
+  //     result => {
+  //       this.productionCount = [];
+        
+  //       //pega colunas para exibir na lista
+  //       let columsArray = [];
+  //       for(let col in result[0]) {
+  //         if(col.indexOf("MAQ_") > -1)
+  //           columsArray.push(col.replace("MAQ_",""));
+  //       }
 
-        //obtem os tipos de produção
-        this.productionTypes = result.map(function(elem) {
-          return elem.tipo;
-        })
-        .filter(function (value, index, self) {
-          return self.indexOf(value) === index;
-        });
+  //       let totalizador = {
+  //         totalHora : 0,
+  //         mediaTaxa: 0
+  //       };
 
-        //itera sobre os tipos para fazer o recalculo da produção
-        this.productionTypes.forEach(f => {
-          //mapeia array com o primeiro tipo
-          let typeArray = result.filter(fi => fi.tipo === f)          
-          .map(m => (
-            {
-              hora: m.hora,
-              tipo: m.tipo,
-              total: m.total,
-              totalOld: m.total,
-              taxa: 0
-            })
-          );
-
-          //faz calculo inverso: 1-0, 2-1, 3-2, etc
-          let totalizador = {
-            totalHora : 0,
-            mediaTaxa: 0
-          };
-          for(let i = 0; i < typeArray.length; i++) {
-            if(i > 0) {
-              let x = typeArray[i].total -= typeArray[i-1].totalOld;
-              typeArray[i].total = x < 0 ? 0 : x; //controle para negativos
-            }
-            typeArray[i].taxa = Math.round((typeArray[i].total / 60) * 100) / 100;
-            totalizador.totalHora += typeArray[i].total;
-            totalizador.mediaTaxa += typeArray[i].taxa;
-          }
-          totalizador.mediaTaxa = Math.round((totalizador.mediaTaxa / typeArray.length) * 100) / 100;
-          
-          this.productionCount.push(typeArray);          
-          this.productionCount.push(totalizador);
-          typeArray = [];
-        });
-      },
-      error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
-      });     
-  }
+  //       //faz calculo inverso: 1-0, 2-1, 3-2, etc
+  //       for(let i = 0; i < result.length; i++) {            
+  //         if(i > 0) {
+  //           let total = result[i].total -= result[i-1].total_ref;
+  //           result[i].total = total < 0 ? 0 : total; //controle para negativos
+            
+  //           let taxa = Math.round((result[i].taxa - result[i-1].taxa_ref) * 100) / 100;
+  //           result[i].taxa = taxa < 0 ? 0 : taxa; //controle para negativos
+  //         }            
+  //         totalizador.totalHora += result[i].total;
+  //         totalizador.mediaTaxa += result[i].taxa;
+  //       }
+  //       totalizador.mediaTaxa = Math.round((totalizador.mediaTaxa / result.length) * 100) / 100;
+        
+  //       this.productionCount.push(result);          
+  //       this.productionCount.push(totalizador);
+  //       this.productionCount.push(columsArray);
+  //       console.log(this.productionCount);
+  //     },
+  //     error => {
+  //       this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+  //     });     
+  // }
 }

@@ -36,6 +36,9 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   @Output() refreshDash = new EventEmitter<boolean>();
   intervalTimer: any;
   timerStr: string = "00:00:00";
+
+  productionCount: Array<any> = [];
+  productionCount1: Array<any> = [];
   
   constructor(private dashboardService: DashboardService, 
     public toastr: ToastsManager, 
@@ -59,23 +62,10 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     
     if(this.channelIdSelected == 0 || !this.machineCodeSelected)
       return;
-
-    this.dashboardService.lastFeed(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, this.machineCodeSelected, this.getCurrentUser().id)
-    .subscribe(
-      result => {
-        this.lastFeed = result.lastFeeds;
-        this.pauses = result.pauses;
-        
-        if(this.lastFeed.length > 0) {
-          this.setColumnDefs();
-          this.gridApi.setRowData(this.lastFeed);        
-          this.gridApi.sizeColumnsToFit();              
-        }     
-        this.startIntervalTimer();
-      },
-      error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
-      });     
+     
+    this.getLastFeed();
+    this.getProductionCount(1);  
+    this.getProductionCount(2);  
   }  
 
   ngOnDestroy() {
@@ -126,26 +116,30 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   }
 
   refreshNow() {
-    this.refreshDash.emit(true);
-    this.startIntervalTimer();
+    this.getLastFeed();
+    this.refreshDash.emit(true);    
+  }  
+
+  getLastFeed() {    
     this.gridApi.showLoadingOverlay();
     this.dashboardService.lastFeed(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, this.machineCodeSelected, this.getCurrentUser().id)
     .subscribe(
-      result => {
+      result => {        
         this.lastFeed = result.lastFeeds;
         this.pauses = result.pauses;
+        this.startIntervalTimer();
 
         if(this.lastFeed.length > 0) {
           this.setColumnDefs();
           this.gridApi.setRowData(this.lastFeed);        
           this.gridApi.sizeColumnsToFit();          
         }
-        this.gridApi.hideOverlay();
+        this.gridApi.hideOverlay();        
       },
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
-      });    
-  }  
+      });
+  }
 
   startIntervalTimer() {
     let sec = this.lastFeed[0] ? this.lastFeed[0].refresh_time : 300;
@@ -156,8 +150,64 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
         sec--;
         if(sec == 0) {
           this.refreshNow();
+          this.getProductionCount(1);
+          this.getProductionCount(2);
         }
         this.timerStr = this.secToTime(sec);
       }, 1000);
   }   
+
+  getProductionCount(position: number) {
+    this.dashboardService.productionCount(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, position)
+    .subscribe(
+      result => {
+        if(position === 1)
+          this.productionCount = [];
+        else
+          this.productionCount1 = [];
+
+        //pega colunas para exibir na lista
+        let columsArray = [];
+        for(let col in result[0]) {
+          if(col.indexOf("MAQ_") > -1)
+            columsArray.push(col.replace("MAQ_",""));
+        }
+
+        let totalizador = {
+          totalHora : 0,
+          mediaTaxa: 0
+        };
+
+        //faz calculo inverso: 1-0, 2-1, 3-2, etc
+        for(let i = 0; i < result.length; i++) {            
+          if(i > 0) {
+            let total = result[i].total -= result[i-1].total_ref;
+            result[i].total = total < 0 ? 0 : total; //controle para negativos
+            
+            let taxa = Math.round((result[i].taxa - result[i-1].taxa_ref) * 100) / 100;
+            result[i].taxa = taxa < 0 ? 0 : taxa; //controle para negativos
+          }            
+          totalizador.totalHora += result[i].total;
+          totalizador.mediaTaxa += result[i].taxa;
+        }
+        totalizador.mediaTaxa = Math.round((totalizador.mediaTaxa / result.length) * 100) / 100;
+        
+        if(position === 1) {
+          this.productionCount.push(result);          
+          this.productionCount.push(totalizador);
+          this.productionCount.push(columsArray);
+          console.log(this.productionCount);
+        }
+        else {
+          this.productionCount1.push(result);          
+          this.productionCount1.push(totalizador);
+          this.productionCount1.push(columsArray);
+          console.log(this.productionCount1);          
+        }
+
+      },
+      error => {
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+      });     
+  }  
 }

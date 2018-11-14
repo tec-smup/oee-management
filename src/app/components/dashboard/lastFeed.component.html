@@ -3,7 +3,10 @@
       <a class="nav-item nav-link active" id="nav-medicoes-dia-tab" data-toggle="tab" href="#nav-medicoes-dia" role="tab" aria-controls="nav-medicoes-dia" aria-selected="true">
         Detalhes
         <span class="badge badge-pill badge-secondary">{{lastFeed?.length < 100 ? lastFeed?.length : lastFeed?.length + "+" }}</span>
-      </a>
+      </a>      
+      <a *ngIf="productionCount[0]?.length > 0" class="nav-item nav-link" id="nav-contagem-dia-tab" data-toggle="tab" href="#nav-contagem-dia" role="tab" aria-controls="nav-contagem-dia" aria-selected="false">
+        Produção do dia
+      </a>      
       <a class="nav-item nav-link" id="nav-ver-pausas-tab" data-toggle="tab" href="#nav-ver-pausas" role="tab" aria-controls="nav-ver-pausas" aria-selected="false">
         Pausas lançadas
         <span class="badge badge-pill badge-secondary">{{pauses?.length}}</span>
@@ -14,6 +17,7 @@
     </div>
   </nav>
   <div class="tab-content" id="nav-tabContent">
+    <!-- detalhes -->
     <div class="tab-pane fade show active" id="nav-medicoes-dia" role="tabpanel" aria-labelledby="nav-medicoes-dia-tab">
       <div class="table-responsive margin-top-5px" [ngStyle]="{'display': lastFeed?.length == 0 ? 'none' : 'block'}">
         <ag-grid-angular #agGrid
@@ -33,6 +37,69 @@
         Nenhuma medição recebida até o momento.
       </div>      
     </div>
+
+    <!-- produção -->
+    <div class="tab-pane fade" id="nav-contagem-dia" role="tabpanel" aria-labelledby="nav-contagem-dia-tab">
+      <div class="table-responsive margin-top-5px">
+        <div class="row">
+          <div class="col" *ngIf="productionCount[0]?.length > 0">
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Hora</th>
+                  <th scope="col" *ngFor="let col of productionCount[2]">{{col}}</th>
+                  <th scope="col">{{productionCount[0][0].tipo}}</th>
+                  <th scope="col">Taxa/Min</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of productionCount[0]">
+                  <th>{{p.hora}}</th>
+                  <td *ngFor="let col of productionCount[2]">{{p['MAQ_'+col]}}</td>
+                  <td>{{p.total}}</td>
+                  <td>{{p.taxa}}</td>
+                </tr>
+                <tr class="table-active">
+                  <th>&nbsp;</th>
+                  <td *ngFor="let col of productionCount[2]"></td>
+                  <td><b>Total<br/>{{productionCount[1].totalHora}}</b></td>
+                  <td><b>Tx. média<br/>{{productionCount[1].mediaTaxa}}</b></td>
+                </tr>             
+              </tbody>
+            </table> 
+          </div>
+          <div class="col" *ngIf="productionCount1[0]?.length > 0">
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Hora</th>
+                  <th scope="col" *ngFor="let col of productionCount1[2]">{{col}}</th>
+                  <th scope="col">{{productionCount1[0][0].tipo}}</th>
+                  <th scope="col">Taxa/Min</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of productionCount1[0]">
+                  <th>{{p.hora}}</th>
+                  <td *ngFor="let col of productionCount1[2]">{{p['MAQ_'+col]}}</td>
+                  <td>{{p.total}}</td>
+                  <td>{{p.taxa}}</td>
+                </tr>
+                <tr class="table-active">
+                  <th>&nbsp;</th>
+                  <td *ngFor="let col of productionCount1[2]"></td>
+                  <td><b>Total<br/>{{productionCount1[1].totalHora}}</b></td>
+                  <td><b>Tx. média<br/>{{productionCount1[1].mediaTaxa}}</b></td>
+                </tr>             
+              </tbody>
+            </table> 
+          </div>                 
+      </div>      
+      <div class="alert alert-info margin-top-5px" role="alert" *ngIf="productionCount[0]?.length == 0 || productionCount1[0]?.length == 0">
+        Nenhuma medição recebida até o momento.
+      </div>      
+    </div>
+
     <div class="tab-pane fade" id="nav-ver-pausas" role="tabpanel" aria-labelledby="nav-ver-pausas-tab">
       <div class="table-responsive margin-top-5px" style="height: 780px;">
         <table class="table table-striped table-sm" *ngIf="pauses.length > 0">
