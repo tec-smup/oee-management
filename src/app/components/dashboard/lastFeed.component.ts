@@ -149,6 +149,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       () => {
         sec--;
         if(sec == 0) {
+          clearInterval(this.intervalTimer);
           this.refreshNow();
           this.getProductionCount(1);
           this.getProductionCount(2);
@@ -157,6 +158,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       }, 1000);
   }   
 
+  //ja tenho que refazer toda essa pagina ta td uma bosta...
   getProductionCount(position: number) {
     this.dashboardService.productionCount(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, position)
     .subscribe(
@@ -169,24 +171,19 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
         //pega colunas para exibir na lista
         let columsArray = [];
         for(let col in result[0]) {
-          if(col.indexOf("MAQ_") > -1)
-            columsArray.push(col.replace("MAQ_",""));
+          if(col.indexOf("COL_") > -1)
+            columsArray.push({
+              code: col,
+              name: col.replace("COL_","")
+          });
         }
 
         let totalizador = {
           totalHora : 0,
           mediaTaxa: 0
         };
-
-        //faz calculo inverso: 1-0, 2-1, 3-2, etc
-        for(let i = 0; i < result.length; i++) {            
-          if(i > 0) {
-            let total = result[i].total -= result[i-1].total_ref;
-            result[i].total = total < 0 ? 0 : total; //controle para negativos
-            
-            let taxa = Math.round((result[i].taxa - result[i-1].taxa_ref) * 100) / 100;
-            result[i].taxa = taxa < 0 ? 0 : taxa; //controle para negativos
-          }            
+        //faz calculo totalizador
+        for(let i = 0; i < result.length; i++) {                        
           totalizador.totalHora += result[i].total;
           totalizador.mediaTaxa += result[i].taxa;
         }
