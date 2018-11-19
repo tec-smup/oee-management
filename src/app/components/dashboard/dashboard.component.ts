@@ -167,7 +167,7 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
               "bulletColor": "#FFFFFF",
               "hideBulletsCount": 100,
               "valueField": "data",
-              "lineThickness": 2,
+              "lineThickness": 3,
               "lineColorField": "line_color",
               "fillColorsField": "line_color",
               "useLineColorForBulletBorder": true,

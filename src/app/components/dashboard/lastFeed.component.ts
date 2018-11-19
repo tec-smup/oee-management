@@ -187,19 +187,17 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
           totalizador.totalHora += result[i].total;
           totalizador.mediaTaxa += result[i].taxa;
         }
-        totalizador.mediaTaxa = Math.round((totalizador.mediaTaxa / result.length) * 100) / 100;
+        totalizador.mediaTaxa = Math.round((totalizador.mediaTaxa / (result.length >= 6 ? result.length-1 : result.length)) * 100) / 100;
         
         if(position === 1) {
           this.productionCount.push(result);          
           this.productionCount.push(totalizador);
           this.productionCount.push(columsArray);
-          console.log(this.productionCount);
         }
         else {
           this.productionCount1.push(result);          
           this.productionCount1.push(totalizador);
-          this.productionCount1.push(columsArray);
-          console.log(this.productionCount1);          
+          this.productionCount1.push(columsArray);   
         }
 
       },
