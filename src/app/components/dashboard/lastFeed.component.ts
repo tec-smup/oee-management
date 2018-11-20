@@ -36,6 +36,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   @Output() refreshDash = new EventEmitter<boolean>();
   intervalTimer: any;
   timerStr: string = "00:00:00";
+  refreshing: boolean = false;
 
   productionCount: Array<any> = [];
   productionCount1: Array<any> = [];
@@ -144,11 +145,13 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   startIntervalTimer() {
     let sec = this.lastFeed[0] ? this.lastFeed[0].refresh_time : 300;
     this.timerStr = this.secToTime(sec);
+    this.refreshing = false;
     clearInterval(this.intervalTimer);
     this.intervalTimer = setInterval(
       () => {
         sec--;
         if(sec == 0) {
+          this.refreshing = true;
           clearInterval(this.intervalTimer);
           this.refreshNow();
           this.getProductionCount(1);
