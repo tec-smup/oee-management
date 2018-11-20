@@ -176,7 +176,7 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
               "bulletColor": "#FFFFFF",
               "hideBulletsCount": 100,
               "valueField": "data",
-              "lineThickness": 2,
+              "lineThickness": 3,
               "lineColorField": "line_color",
               "fillColorsField": "line_color",
               "useLineColorForBulletBorder": true,
