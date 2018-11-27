@@ -117,16 +117,14 @@
               <th>Data</th>
               <th>Pausa</th>
               <th>Justificativa</th>
-              <th>Inserido em</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let pause of pauses">
-              <td>{{pause.mc_cd}}- {{pause.name}}</td>
-              <td>{{pause.date_ref}}</td>
-              <td>{{pause.pause}}</td>
-              <td>{{pause.justification}}</td>
-              <td>{{pause.inserted_at}}</td>         
+              <td>{{pause.machine_name}}</td>
+              <td>{{pause.date_ref_format}}</td>
+              <td>{{pause.pause_time}}</td>
+              <td>{{pause.pause_reason}}</td>      
             </tr>                
           </tbody>
         </table>
