@@ -72,6 +72,59 @@ export class DashboardService extends BaseService {
         .pipe(catchError(this.handleError));        
     }
 
+    exportProductionExcel(date_ini: string, date_fin: string, ch_id: number) {
+        let params = {
+            dateIni: date_ini, 
+            dateFin: date_fin, 
+            ch_id: ch_id
+        };
+
+        let headers = new Headers({ 
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({
+            headers: headers,
+            responseType: ResponseContentType.Blob,
+            search: params             
+        });
+        
+        return this.http.get(environment.exportProductionExcelURL, options)
+        .map(res => {
+            return {
+              filename: (new Date().getTime()) + '.xlsx',
+              data: res.blob()
+            };
+        })
+        .pipe(catchError(this.handleError));        
+    }    
+
+    exportPauseExcel(date_ini: string, date_fin: string, ch_id: number, mc_cd: string) {
+        let params = {
+            dateIni: date_ini, 
+            dateFin: date_fin, 
+            ch_id: ch_id, 
+            mc_cd: mc_cd
+        };
+
+        let headers = new Headers({ 
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({
+            headers: headers,
+            responseType: ResponseContentType.Blob,
+            search: params             
+        });
+        
+        return this.http.get(environment.exportPauseExcelURL, options)
+        .map(res => {
+            return {
+              filename: (new Date().getTime()) + '.xlsx',
+              data: res.blob()
+            };
+        })
+        .pipe(catchError(this.handleError));        
+    }
+
     //productionCount(dateIni: string, dateFin: string, channelId: number): Observable<Dashboard["production"][]> {
     productionCount(dateIni: string, dateFin: string, channelId: number, position: number): Observable<any> {
         let headers = new Headers({ 

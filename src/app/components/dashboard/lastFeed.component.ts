@@ -162,6 +162,8 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   }   
 
   //ja tenho que refazer toda essa pagina ta td uma bosta...
+  //pra dar uma melhoradinha, alterar na api pra chamada com multiple statment
+  //assim como esta no export
   getProductionCount(position: number) {
     this.dashboardService.productionCount(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, position)
     .subscribe(
@@ -207,5 +209,59 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });     
+  }
+  
+  exportProductionExcel() {
+    this.dashboardService.exportProductionExcel(
+      this.dateIniSelected, this.dateFinSelected, this.channelIdSelected
+    ) 
+    .subscribe(
+      result => {
+        if(result.data.size > 0) {
+          let url = window.URL.createObjectURL(result.data);
+          let a = document.createElement('a');
+          document.body.appendChild(a);
+          a.setAttribute('style', 'display: none');
+          a.href = url;
+          a.download = result.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+        }
+        else {
+          this.toastr.warning("Não existe dados com os filtros selecionados.", "Aviso!", { enableHTML: true, showCloseButton: true });
+        }
+      },
+      error => {
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+      }
+    );
+  }
+
+  exportPauseExcel() {
+    this.dashboardService.exportPauseExcel(
+      this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, this.machineCodeSelected
+    ) 
+    .subscribe(
+      result => {
+        if(result.data.size > 0) {
+          let url = window.URL.createObjectURL(result.data);
+          let a = document.createElement('a');
+          document.body.appendChild(a);
+          a.setAttribute('style', 'display: none');
+          a.href = url;
+          a.download = result.filename;
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+        }
+        else {
+          this.toastr.warning("Não existe dados com os filtros selecionados.", "Aviso!", { enableHTML: true, showCloseButton: true });
+        }
+      },
+      error => {
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+      }
+    );
   }  
 }

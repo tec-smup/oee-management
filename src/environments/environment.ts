@@ -31,6 +31,8 @@ export const environment = {
   lastFeedURL: `${serverURL}feed/lastFeed`,
   chartURL: `${serverURL}feed/chart`,
   exportChartExcelURL: `${serverURL}exportexcel/chart`,
+  exportProductionExcelURL: `${serverURL}exportexcel/production`,
+  exportPauseExcelURL: `${serverURL}exportexcel/pause`,
   productionURL: `${serverURL}feed/production`,
   //machine pause
   machinePauseListURL: `${serverURL}machinepause/list`,  
