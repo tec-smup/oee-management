@@ -91,6 +91,18 @@
                           class="form-control form-control-no-border"
                           maxlength="5">
                       </div>                      
+                      <div class="col-md-3 mb-3">
+                        <label for="nominal_output">Velocidade nominal</label>
+                        <input 
+                          name="nominal_output" 
+                          [(ngModel)]="machine.nominal_output" 
+                          #mobilename="ngModel" 
+                          type="number" 
+                          class="form-control form-control-no-border"
+                          maxlength="15">
+                      </div>                                                  
+                    </div>
+                    <div class="row row-vcenter">
                       <div class="col-md-2 mb-3 vcenter">
                         <label for="next_maintenance">&nbsp;</label>
                         <button 
@@ -99,7 +111,7 @@
                           type="submit">
                           Adicionar
                         </button>
-                      </div>                                                  
+                      </div>
                     </div>
                     <div 
                       *ngIf="machine.message" 

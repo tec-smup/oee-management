@@ -9,6 +9,7 @@ export class Machine extends BaseModel {
   last_maintenance?: string;
   next_maintenance?: string;
   dropdown_label: string;
+  nominal_output: number;
   
   constructor() {
     super();

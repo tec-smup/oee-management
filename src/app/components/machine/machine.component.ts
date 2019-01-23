@@ -56,17 +56,22 @@ export class MachineComponent extends BaseComponent implements OnInit {
         editable: true
       },
       {
-        headerName: "Última manutenção",
-        field: "last_maintenance",
-        editable: true,
-        cellEditor: "datePicker"
-      },
-      {
-        headerName: "Próxima manutenção",
-        field: "next_maintenance",
-        editable: true,
-        cellEditor: "datePicker"
-      },
+        headerName: "Velocidade nominal",
+        field: "nominal_output",
+        editable: true
+      },      
+      // {
+      //   headerName: "Última manutenção",
+      //   field: "last_maintenance",
+      //   editable: true,
+      //   cellEditor: "datePicker"
+      // },
+      // {
+      //   headerName: "Próxima manutenção",
+      //   field: "next_maintenance",
+      //   editable: true,
+      //   cellEditor: "datePicker"
+      // },
       {
         headerName: "Configurações",
         cellRenderer: "machineGridButtonRenderer",
@@ -98,6 +103,7 @@ export class MachineComponent extends BaseComponent implements OnInit {
     this.machineService.list(this.getCurrentUser().id, 0) //passa canal zero pois quero ver todas as maquinas do usuario
     .subscribe(
       result => {
+        console.log(result);
         this.gridApi.setRowData(result);
       },
       error => {
