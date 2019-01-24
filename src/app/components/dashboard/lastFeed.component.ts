@@ -39,7 +39,6 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   refreshing: boolean = false;
 
   productionCount: Array<any> = [];
-  productionCount1: Array<any> = [];
   
   constructor(private dashboardService: DashboardService, 
     public toastr: ToastsManager, 
@@ -65,8 +64,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       return;
      
     this.getLastFeed();
-    this.getProductionCount(1);  
-    this.getProductionCount(2);  
+    this.getProductionCount();
   }  
 
   ngOnDestroy() {
@@ -154,61 +152,66 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
           this.refreshing = true;
           clearInterval(this.intervalTimer);
           this.refreshNow();
-          this.getProductionCount(1);
-          this.getProductionCount(2);
+          this.getProductionCount();
         }
         this.timerStr = this.secToTime(sec);
       }, 1000);
   }   
 
   //ja tenho que refazer toda essa pagina ta td uma bosta...
-  //pra dar uma melhoradinha, alterar na api pra chamada com multiple statment
-  //assim como esta no export
-  getProductionCount(position: number) {
-    this.dashboardService.productionCount(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, position)
+  //agora ja ta um pouco melhor, mas sempre da pra melhorar
+  getProductionCount() {  
+    this.dashboardService.productionCount(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected)
     .subscribe(
       result => {
-        if(position === 1)
-          this.productionCount = [];
-        else
-          this.productionCount1 = [];
+        this.productionCount = [];  
 
-        //pega colunas para exibir na lista
-        let columsArray = [];
-        for(let col in result[0]) {
-          if(col.indexOf("COL_") > -1)
-            columsArray.push({
-              code: col,
-              name: col.replace("COL_","")
-          });
-        }
+        //rejeito result set "ok" do mysql
+        let validResultSet = [];
+        for(let i = 0; i < result.length; i++)
+          if(result[i].length > 0) validResultSet.push(result[i]);        
 
-        let totalizador = {
-          totalHora : 0,
-          mediaTaxa: 0
-        };
+        validResultSet.forEach(table => {
+          //pega primeira linha para montar dados de colunas
+          let first = table[0];
+          
+          //monta nome das colunas das maquinas
+          let columns = [];
+          for(let col in first) {
+            if(col.indexOf("COL_") > -1)
+              columns.push({
+                code: col,
+                name: col.replace("COL_","")
+            });
+          }          
+
+          let totalizer = {
+            totalHora : 0,
+            mediaTaxa: 0,
+            turno: [] //continuar daqui criar a totalizaçao de turno
+          };
+
         //faz calculo totalizador
-        for(let i = 0; i < result.length; i++) {                        
-          totalizador.totalHora += result[i].total;
-          totalizador.mediaTaxa += result[i].taxa;
+        for(let i = 0; i < table.length; i++) {                        
+          totalizer.totalHora += table[i].total;
+          totalizer.mediaTaxa += table[i].taxa;
         }
-        totalizador.mediaTaxa = Math.round((totalizador.mediaTaxa / (result.length >= 6 ? result.length-1 : result.length)) * 100) / 100;
-        
-        if(position === 1) {
-          this.productionCount.push(result);          
-          this.productionCount.push(totalizador);
-          this.productionCount.push(columsArray);
-        }
-        else {
-          this.productionCount1.push(result);          
-          this.productionCount1.push(totalizador);
-          this.productionCount1.push(columsArray);   
-        }
+        totalizer.mediaTaxa = Math.round((totalizer.mediaTaxa / (table.length >= 6 ? table.length-1 : table.length)) * 100) / 100;
+        totalizer.totalHora = parseFloat(totalizer.totalHora.toFixed(2));       
 
-      },
-      error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
-      });     
+        //shift_hour é o cara responsavel por avisar que a tabela tem quebra de turno em determinada hora, não precisa entrar no productionCount
+        if(!table[0].shift_hour)
+          this.productionCount.push({
+            table: table,
+            columns: columns,
+            totalizer: totalizer
+          });
+
+      });      
+    },
+    error => {
+      this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+    });     
   }
   
   exportProductionExcel() {

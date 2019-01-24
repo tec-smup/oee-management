@@ -5,7 +5,7 @@
         Detalhes        
         <span class="badge badge-pill badge-secondary">{{lastFeed?.length < 100 ? lastFeed?.length : lastFeed?.length + "+" }}</span>
       </a>      
-      <a *ngIf="productionCount[0]?.length > 0" class="nav-item nav-link" id="nav-contagem-dia-tab" data-toggle="tab" href="#nav-contagem-dia" role="tab" aria-controls="nav-contagem-dia" aria-selected="false">
+      <a *ngIf="productionCount?.length > 0" class="nav-item nav-link" id="nav-contagem-dia-tab" data-toggle="tab" href="#nav-contagem-dia" role="tab" aria-controls="nav-contagem-dia" aria-selected="false">
         <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
         Produção do dia
       </a>      
@@ -51,61 +51,36 @@
           </div>              
         </div>  
         <div class="table-responsive margin-top-5px" style="overflow-x:hidden">
-          <div class="row">            
-            <div class="col" *ngIf="productionCount[0]?.length > 0">
+          <div class="row">     
+            
+            <div class="col" *ngFor="let prodTable of productionCount">
               <table class="table table-sm table-hover">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col">Hora</th>
-                    <th scope="col" *ngFor="let col of productionCount[2]">{{col.name}}</th>
-                    <th scope="col">{{productionCount[0][0].tipo}}</th>
-                    <th scope="col">Taxa/Min</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let p of productionCount[0]">
-                    <th>{{p.hora}}</th>
-                    <td *ngFor="let col of productionCount[2]">{{p[col.code]}}</td>
-                    <td>{{p.total}}</td>
-                    <td>{{p.taxa}}</td>
-                  </tr>
-                  <tr>
-                    <th>&nbsp;</th>
-                    <td *ngFor="let col of productionCount[2]"></td>
-                    <td><b>Total<br/>{{productionCount[1].totalHora}}</b></td>
-                    <td><b>Tx. média<br/>{{productionCount[1].mediaTaxa}}</b></td>
-                  </tr>             
-                </tbody>
-              </table> 
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Hora</th>
+                      <th scope="col" *ngFor="let col of prodTable.columns">{{col.name}}</th>
+                      <th scope="col">{{prodTable.table[0].tipo}}</th>
+                      <th scope="col">Taxa/Min</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let p of prodTable.table">
+                      <th>{{p.hora}}</th>
+                      <td *ngFor="let col of prodTable.columns">{{p[col.code]}}</td>
+                      <td>{{p.total}}</td>
+                      <td>{{p.taxa}}</td>
+                    </tr>
+                    <tr class="table-active">
+                      <th>&nbsp;</th>
+                      <td *ngFor="let col of prodTable.columns"></td>
+                      <td><b>Total<br/>{{prodTable.totalizer.totalHora}}</b></td>
+                      <td><b>Tx. média<br/>{{prodTable.totalizer.mediaTaxa}}</b></td>
+                    </tr>            
+                  </tbody>
+                </table>               
             </div>
-            <div class="col" *ngIf="productionCount1[0]?.length > 0">
-              <table class="table table-sm table-hover">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col">Hora</th>
-                    <th scope="col" *ngFor="let col of productionCount1[2]">{{col.name}}</th>
-                    <th scope="col">{{productionCount1[0][0].tipo}}</th>
-                    <th scope="col">Taxa/Min</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let p of productionCount1[0]">
-                    <th>{{p.hora}}</th>
-                    <td *ngFor="let col of productionCount1[2]">{{p[col.code]}}</td>
-                    <td>{{p.total}}</td>
-                    <td>{{p.taxa}}</td>
-                  </tr>
-                  <tr>
-                    <th>&nbsp;</th>
-                    <td *ngFor="let col of productionCount1[2]"></td>
-                    <td><b>Total<br/>{{productionCount1[1].totalHora}}</b></td>
-                    <td><b>Tx. média<br/>{{productionCount1[1].mediaTaxa}}</b></td>
-                  </tr>             
-                </tbody>
-              </table> 
-            </div>                 
         </div>      
-        <div class="alert alert-info margin-top-5px" role="alert" *ngIf="productionCount[0]?.length == 0 && productionCount1[0]?.length == 0">
+        <div class="alert alert-info margin-top-5px" role="alert" *ngIf="productionCount?.length == 0">
           Nenhuma medição recebida até o momento.
         </div>      
       </div>    

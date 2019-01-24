@@ -125,15 +125,14 @@ export class DashboardService extends BaseService {
         .pipe(catchError(this.handleError));        
     }
 
-    //productionCount(dateIni: string, dateFin: string, channelId: number): Observable<Dashboard["production"][]> {
-    productionCount(dateIni: string, dateFin: string, channelId: number, position: number): Observable<any> {
+    productionCount(dateIni: string, dateFin: string, channelId: number): Observable<any> {
         let headers = new Headers({ 
             'Content-Type': 'application/json',
             'x-access-token': this.getToken()
         });
         let options = new RequestOptions({headers: headers});
 
-        let params = `${environment.productionURL}?dateIni=${dateIni}&dateFin=${dateFin}&ch_id=${channelId.toString()}&position=${position.toString()}`;
+        let params = `${environment.productionURL}?dateIni=${dateIni}&dateFin=${dateFin}&ch_id=${channelId.toString()}`;
         return this.http.get(params, options)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
