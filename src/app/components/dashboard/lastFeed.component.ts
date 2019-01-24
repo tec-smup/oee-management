@@ -168,8 +168,10 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
 
         //rejeito result set "ok" do mysql
         let validResultSet = [];
-        for(let i = 0; i < result.length; i++)
-          if(result[i].length > 0) validResultSet.push(result[i]);        
+        for(let i = 0; i < result.length; i++) {
+          if(result[i].length > 0) 
+            validResultSet.push(result[i]);
+        }        
 
         validResultSet.forEach(table => {
           //pega primeira linha para montar dados de colunas
@@ -187,8 +189,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
 
           let totalizer = {
             totalHora : 0,
-            mediaTaxa: 0,
-            turno: [] //continuar daqui criar a totalizaçao de turno
+            mediaTaxa: 0
           };
 
         //faz calculo totalizador
@@ -197,16 +198,16 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
           totalizer.mediaTaxa += table[i].taxa;
         }
         totalizer.mediaTaxa = Math.round((totalizer.mediaTaxa / (table.length >= 6 ? table.length-1 : table.length)) * 100) / 100;
-        totalizer.totalHora = parseFloat(totalizer.totalHora.toFixed(2));       
+        //totalizer.totalHora = parseFloat(totalizer.totalHora.toFixed(2));       
 
         //shift_hour é o cara responsavel por avisar que a tabela tem quebra de turno em determinada hora, não precisa entrar no productionCount
-        if(!table[0].shift_hour)
+        if(table && !table[0].shift_hour) {
           this.productionCount.push({
             table: table,
             columns: columns,
             totalizer: totalizer
           });
-
+        }
       });      
     },
     error => {
