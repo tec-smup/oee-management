@@ -132,7 +132,7 @@ export class DashboardService extends BaseService {
         });
         let options = new RequestOptions({headers: headers});
 
-        let params = `${environment.productionURL}?dateIni=${dateIni}&dateFin=${dateFin}&ch_id=${channelId.toString()}`;
+        let params = `${environment.productionURL2}?dateIni=${dateIni}&dateFin=${dateFin}&ch_id=${channelId.toString()}`;
         return this.http.get(params, options)
             .map(res => res.json())
             .pipe(catchError(this.handleError));
