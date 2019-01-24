@@ -200,15 +200,17 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
         totalizer.mediaTaxa = Math.round((totalizer.mediaTaxa / (table.length >= 6 ? table.length-1 : table.length)) * 100) / 100;
         totalizer.totalHora = Math.round(totalizer.totalHora * 100) / 100;       
 
-        //shift_hour é o cara responsavel por avisar que a tabela tem quebra de turno em determinada hora, não precisa entrar no productionCount
-        if(table && !table[0].shift_hour) {
+        //shift_hour é o cara responsavel por avisar que a tabela tem quebra de turno em determinada hora, não precisa 
+        //entrar no productionCount. Consigo verificar diretamente table[0] pq nos clientes que não tem shift_hour, esse
+        //cara nem existe em validResultSet
+        if(!table[0].shift_hour) {
           this.productionCount.push({
             table: table,
             columns: columns,
             totalizer: totalizer
           });
         }
-      });      
+      }); 
     },
     error => {
       this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
