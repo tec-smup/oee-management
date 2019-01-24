@@ -198,7 +198,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
           totalizer.mediaTaxa += table[i].taxa;
         }
         totalizer.mediaTaxa = Math.round((totalizer.mediaTaxa / (table.length >= 6 ? table.length-1 : table.length)) * 100) / 100;
-        //totalizer.totalHora = parseFloat(totalizer.totalHora.toFixed(2));       
+        totalizer.totalHora = Math.round(totalizer.totalHora * 100) / 100;       
 
         //shift_hour é o cara responsavel por avisar que a tabela tem quebra de turno em determinada hora, não precisa entrar no productionCount
         if(table && !table[0].shift_hour) {
