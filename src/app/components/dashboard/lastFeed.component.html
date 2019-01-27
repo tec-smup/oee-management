@@ -8,7 +8,11 @@
       <a *ngIf="productionCount?.length > 0" class="nav-item nav-link" id="nav-contagem-dia-tab" data-toggle="tab" href="#nav-contagem-dia" role="tab" aria-controls="nav-contagem-dia" aria-selected="false">
         <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
         Produção do dia
-      </a>      
+      </a>
+      <a *ngIf="productionOEE[0]?.length > 0" class="nav-item nav-link" id="nav-oee-tab" data-toggle="tab" href="#nav-oee" role="tab" aria-controls="nav-oee" aria-selected="false">
+        <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
+        OEE
+      </a>            
       <a class="nav-item nav-link" id="nav-ver-pausas-tab" data-toggle="tab" href="#nav-ver-pausas" role="tab" aria-controls="nav-ver-pausas" aria-selected="false">
         <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
         Pausas lançadas        
@@ -86,6 +90,40 @@
       </div>    
     </div>
     <!-- produção -->
+
+    <!-- oee -->
+    <div class="tab-pane fade" id="nav-oee" role="tabpanel" aria-labelledby="nav-oee-tab"> 
+      <div class="table-responsive margin-top-5px" style="overflow-x:hidden">
+        <div class="row"> 
+          <div class="col">
+            <table class="table table-sm table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Máquina</th>
+                    <th scope="col">Disponibilidade</th>
+                    <th scope="col">Desempenho</th>
+                    <th scope="col">Qualidade</th>
+                    <th scope="col">OEE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let p of productionOEE[0]">
+                    <th>{{p.machine_code}}</th>
+                    <td>{{p.availability}}%</td>
+                    <td>{{p.performance}}%</td>
+                    <td>{{p.quality}}%</td>
+                    <td>{{p.oee}}%</td>
+                  </tr>            
+                </tbody>
+              </table>               
+          </div>
+      </div>      
+      <div class="alert alert-info margin-top-5px" role="alert" *ngIf="productionOEE[0]?.length == 0">
+        Nenhuma medição recebida até o momento.
+      </div>      
+    </div>    
+  </div>
+  <!-- oee -->
 
     <!-- pausas -->
     <div class="tab-pane fade" id="nav-ver-pausas" role="tabpanel" aria-labelledby="nav-ver-pausas-tab">

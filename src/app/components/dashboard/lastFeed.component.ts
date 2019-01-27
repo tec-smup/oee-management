@@ -39,6 +39,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   refreshing: boolean = false;
 
   productionCount: Array<any> = [];
+  productionOEE: Array<any> = [];
   
   constructor(private dashboardService: DashboardService, 
     public toastr: ToastsManager, 
@@ -65,6 +66,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
      
     this.getLastFeed();
     this.getProductionCount();
+    this.getProductionOEE();
   }  
 
   ngOnDestroy() {
@@ -153,6 +155,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
           clearInterval(this.intervalTimer);
           this.refreshNow();
           this.getProductionCount();
+          this.getProductionOEE();
         }
         this.timerStr = this.secToTime(sec);
       }, 1000);
@@ -269,5 +272,23 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
         this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       }
     );
+  }  
+
+  getProductionOEE() {  
+    this.dashboardService.productionOEE(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected)
+    .subscribe(
+      result => {
+        this.productionOEE = []; 
+        
+        //rejeito result set "ok" do mysql
+        for(let i = 0; i < result.length; i++) {
+          //vou ter que resolver isso depois na proc, to sem paciencia agora
+          if(result[i].length > 1) 
+            this.productionOEE.push(result[i]);
+        }       
+    },
+    error => {
+      console.log(error);
+    });     
   }  
 }

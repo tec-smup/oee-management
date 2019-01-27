@@ -35,6 +35,7 @@ export const environment = {
   exportPauseExcelURL: `${serverURL}exportexcel/pause`,
   productionURL: `${serverURL}feed/production`,
   productionURL2: `${serverURL}feed/production/v2`,
+  productionOEEURL: `${serverURL}feed/oee`,
   //machine pause
   machinePauseListURL: `${serverURL}machinepause/list`,  
   machinePauseAddURL: `${serverURL}machinepause`,

@@ -137,6 +137,19 @@ export class DashboardService extends BaseService {
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }
+
+    productionOEE(dateIni: string, dateFin: string, channelId: number): Observable<any> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({headers: headers});
+
+        let params = `${environment.productionOEEURL}?dateIni=${dateIni}&dateFin=${dateFin}&ch_id=${channelId.toString()}`;
+        return this.http.get(params, options)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
+    }    
     
     //sei la pq essa bosta nao funciona em outro serviço
     addPause(machinePause: MachinePauseDash[]): Observable<any> {
