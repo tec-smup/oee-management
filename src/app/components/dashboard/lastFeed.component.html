@@ -2,8 +2,7 @@
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a class="nav-item nav-link active" id="nav-medicoes-dia-tab" data-toggle="tab" href="#nav-medicoes-dia" role="tab" aria-controls="nav-medicoes-dia" aria-selected="true">
         <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
-        Detalhes        
-        <span class="badge badge-pill badge-secondary">{{lastFeed?.length < 100 ? lastFeed?.length : lastFeed?.length + "+" }}</span>
+        Log        
       </a>      
       <a *ngIf="productionCount?.length > 0" class="nav-item nav-link" id="nav-contagem-dia-tab" data-toggle="tab" href="#nav-contagem-dia" role="tab" aria-controls="nav-contagem-dia" aria-selected="false">
         <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
@@ -15,7 +14,7 @@
       </a>            
       <a class="nav-item nav-link" id="nav-ver-pausas-tab" data-toggle="tab" href="#nav-ver-pausas" role="tab" aria-controls="nav-ver-pausas" aria-selected="false">
         <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
-        Pausas lançadas        
+        Pausas        
         <span class="badge badge-pill badge-secondary">{{pauses?.length}}</span>
       </a>
       <a class="nav-item nav-link disabled" id="nav-timer-tab" data-toggle="tab" href="#" role="tab" aria-controls="nav-timer" aria-selected="false">
@@ -108,7 +107,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let p of productionOEE[0]">
-                    <th>{{p.machine_code}}</th>
+                    <th>{{p.machine_name}}</th>
                     <td>{{p.availability}}%</td>
                     <td>{{p.performance}}%</td>
                     <td>{{p.quality}}%</td>

@@ -285,7 +285,19 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
           //vou ter que resolver isso depois na proc, to sem paciencia agora
           if(result[i].length > 1) 
             this.productionOEE.push(result[i]);
-        }       
+        }
+                
+        //filtra oee conforme maquina selecionada e exibe ao lado do menu (é o que deu por hj...)
+        let oee = this.productionOEE[0].filter(f => {
+          return f.machine_code === this.machineCodeSelected;
+        });
+        let divOee = document.getElementById("divOEE");
+        console.log(oee);
+        if(oee && oee.length > 0) {
+          divOee.style.display = "block";
+          let p = divOee.getElementsByTagName("p");
+          p[0].innerHTML = `OEE ${oee[0].machine_name}:<br/>${oee[0].oee}%`;
+        }
     },
     error => {
       console.log(error);
