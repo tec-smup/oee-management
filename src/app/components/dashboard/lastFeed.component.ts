@@ -292,7 +292,6 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
           return f.machine_code === this.machineCodeSelected;
         });
         let divOee = document.getElementById("divOEE");
-        console.log(oee);
         if(oee && oee.length > 0) {
           divOee.style.display = "block";
           let p = divOee.getElementsByTagName("p");

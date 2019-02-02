@@ -103,7 +103,6 @@ export class MachineComponent extends BaseComponent implements OnInit {
     this.machineService.list(this.getCurrentUser().id, 0) //passa canal zero pois quero ver todas as maquinas do usuario
     .subscribe(
       result => {
-        console.log(result);
         this.gridApi.setRowData(result);
       },
       error => {
