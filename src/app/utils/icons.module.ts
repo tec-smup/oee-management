@@ -7,7 +7,8 @@ import {
   IconHelpCircle,
   IconPauseCircle,
   IconHome,
-  IconCrosshair } from 'angular-feather';
+  IconCrosshair,
+  IconTrendingUp } from 'angular-feather';
 
 const icons = [
     IconPlusCircle, 
@@ -17,7 +18,8 @@ const icons = [
     IconHelpCircle,
     IconPauseCircle,
     IconHome,
-    IconCrosshair
+    IconCrosshair,
+    IconTrendingUp
   ];
 
   @NgModule({

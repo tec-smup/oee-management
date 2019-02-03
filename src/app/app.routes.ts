@@ -7,6 +7,7 @@ import { ChannelComponent } from './components/channel/channel.component';
 import { MachinePauseComponent } from './components/machine.pause/machine.pause.component';
 import { UserComponent } from './components/user/user.component';
 import { GraphPauseComponent } from './components/graph.pause/graph.pause.component';
+import { MachineProductionComponent } from './components/machine.production/machine.production.component';
 
 const appRoutes: Routes = [
     {
@@ -46,7 +47,12 @@ const appRoutes: Routes = [
       path: 'user',
       canActivate: [AuthGuard],
       component: UserComponent
-    },            
+    },
+    {
+      path: 'machineproduction',
+      canActivate: [AuthGuard],
+      component: MachineProductionComponent
+    },                
     {
       path: '**',
       redirectTo: 'dashboard'
