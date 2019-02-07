@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, OnDestroy, Input } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr/src/toast-manager';
 
 @Component({
@@ -7,7 +7,10 @@ import { ToastsManager } from 'ng2-toastr/src/toast-manager';
   styleUrls: ['./machine.prod.chart.component.css']
 })
 export class MachineProductionChartComponent implements OnInit, OnDestroy {
-  
+  @Input() channelId: number;
+  @Input() dateRange: Date[];
+  @Input() machineCode: string;
+
   constructor(public toastr: ToastsManager, 
               vcr: ViewContainerRef) {
     

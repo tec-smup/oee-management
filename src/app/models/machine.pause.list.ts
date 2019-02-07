@@ -13,6 +13,9 @@ class Pauses {
   pause_reason: string;
   pause_time: string;
   row_num: number;
+  pause_type: string;
+  type: string;
+  pause_in_minutes: number;
 }
 
 export class MachinePauseList extends BaseModel {
