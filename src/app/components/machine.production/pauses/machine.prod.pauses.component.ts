@@ -19,7 +19,7 @@ export class MachineProductionPausesComponent extends BaseComponent implements O
     sum: {}
   };  
 
-  private refreshing: boolean = false;
+  public refreshing: boolean = false;
   
   constructor(
     private machinePauseService: MachinePauseService,

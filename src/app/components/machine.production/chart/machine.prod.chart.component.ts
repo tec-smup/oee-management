@@ -15,8 +15,8 @@ export class MachineProductionChartComponent extends BaseComponent implements On
   @Input() machineCode: string;
   @Input() dateRangeError: boolean;
 
-  private chart: AmChart;
-  private refreshing: boolean = false;
+  public chart: AmChart;
+  public refreshing: boolean = false;
 
   constructor(
     private dashboardService: DashboardService,

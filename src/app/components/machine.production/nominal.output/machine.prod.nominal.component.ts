@@ -19,7 +19,7 @@ export class MachineProductionNominalComponent extends BaseComponent implements 
     sum: {}
   };
   
-  private refreshing: boolean = false;
+  public refreshing: boolean = false;
 
   constructor(
     private machineService: MachineService,
