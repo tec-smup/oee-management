@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewContainerRef, OnDestroy, Input, SimpleChange } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr/src/toast-manager';
-import { Dashboard } from '../../../models/dashboard';
-import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { BaseComponent } from '../../base.component';
+import { MachinePauseService } from '../../../services/machine.pause/machine.pause.service';
 
 @Component({
   selector: 'app-machine-production-pauses',
@@ -19,9 +18,11 @@ export class MachineProductionPausesComponent extends BaseComponent implements O
     table: [],
     sum: {}
   };  
+
+  private refreshing: boolean = false;
   
   constructor(
-    private dashboardService: DashboardService,
+    private machinePauseService: MachinePauseService,
     public toastr: ToastsManager, 
     vcr: ViewContainerRef) {
       super();
@@ -36,42 +37,25 @@ export class MachineProductionPausesComponent extends BaseComponent implements O
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
     if(this.dateRange && this.channelId && this.machineCode) {
-      if(!this.dateRangeError) this.getPauses();
+      if(!this.dateRangeError)  {
+        this.refreshing = true;
+        this.getPauses();
+      }
     }
   }   
 
   getPauses() {    
     let dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
     let dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
-    this.dashboardService.lastFeed(dateIni, dateFin, this.channelId, this.machineCode, this.getCurrentUser().id)
+    this.machinePauseService.list(dateIni, dateFin, this.channelId, this.machineCode)
     .subscribe(
-      result => {   
+      result => {     
         this.pauses.table = [];
-        this.pauses.sum = {};
+        this.pauses.sum = {};    
 
-        //pega tipos de pause distintos
-        let types = result.pauses.map(function(p) {
-          return p.type;
-        })
-        .filter(function(elem, pos, arr) {
-          return arr.indexOf(elem) == pos;
-        });     
-        
-        //monta objeto de total de pausas por tipo
-        let pauseTotal = {
-          total: 0
-        };
-        for(let i = 0; i < types.length; i++) {
-          pauseTotal[types[i]] = 0;
-        }
-
-        //soma pausas agrupadas por tipo
-        for(let i = 0; i < result.pauses.length; i++) {
-          pauseTotal.total += result.pauses[i].pause_in_minutes;
-        }           
         this.pauses.table = result.pauses;
-        this.pauses.sum = pauseTotal;        
-        console.log(this.pauses);
+        this.pauses.sum = result.pause_grouped;
+        this.refreshing = false;
       },
       error => {
         this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });

@@ -18,10 +18,16 @@ class Pauses {
   pause_in_minutes: number;
 }
 
+class PauseGrouped {
+  machine_code: string;
+  pp: string;
+  pnp: string;
+}
+
 export class MachinePauseList extends BaseModel {
-  list: Array<MachinePause>;
   pauses: Array<Pauses>;
-  
+  pause_grouped: Array<PauseGrouped>;
+
   constructor() {
     super();
   }  

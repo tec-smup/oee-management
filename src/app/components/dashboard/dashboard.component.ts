@@ -4,7 +4,6 @@ import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 import { AmChart, AmChartsService } from '../../../../node_modules/@amcharts/amcharts3-angular';
 import { DashboardPause } from '../../models/dashboard.pause';
-import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';
 
 @Component({
   selector: 'app-dashboard',

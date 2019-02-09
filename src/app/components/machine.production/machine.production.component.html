@@ -43,7 +43,8 @@
           <app-machine-production-chart 
             [channelId]="dropdownChannel" 
             [machineCode]="dropdownMachine" 
-            [dateRange]="dateTimeRange">
+            [dateRange]="dateTimeRange"
+            [dateRangeError]="dateTimeRangeError">
           </app-machine-production-chart>    
         </div> 
       </div>        
@@ -53,7 +54,8 @@
             <app-machine-production-nominal 
               [channelId]="dropdownChannel" 
               [machineCode]="dropdownMachine" 
-              [dateRange]="dateTimeRange">
+              [dateRange]="dateTimeRange"
+              [dateRangeError]="dateTimeRangeError">
             </app-machine-production-nominal>    
           </div>            
           <div class="col-6">

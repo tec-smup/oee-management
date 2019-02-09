@@ -15,15 +15,16 @@ export class MachinePauseService extends BaseService {
         super();
     }
 
-    list(date: string, userId: number): Observable<MachinePauseList> {
+    list(dateIni: string, dateFin: string, channelId: number, machineCode: string): Observable<MachinePauseList> {
         let headers = new Headers({ 
             'Content-Type': 'application/json',
             'x-access-token': this.getToken()
         });
         let params = {
-            dateIni: date,
-            dateFin: date,
-            userId: userId
+            dateIni: dateIni,
+            dateFin: dateFin,
+            ch_id: channelId,
+            mc_cd: machineCode
         };
         let options = new RequestOptions({
             headers: headers, 

@@ -10,7 +10,6 @@ import { LoginModule } from './components/login/login.module';
 import { DashboardModule } from './components/dashboard/dashboard.module';
 import { MachineModule } from './components/machine/machine.module';
 import { ChannelModule } from './components/channel/channel.module';
-import { MachinePauseModule } from './components/machine.pause/machine.pause.module';
 import { GraphPauseModule } from './components/graph.pause/graph.pause.module';
 import { UserModule } from './components/user/user.module';
 import { MachineProductionModule } from './components/machine.production/machine.production.module';
@@ -35,7 +34,6 @@ import { UserService } from './services/user/user.service';
     DashboardModule,   
     ChannelModule,
     MachineModule,
-    MachinePauseModule,
     GraphPauseModule,
     UserModule,
     MachineProductionModule,

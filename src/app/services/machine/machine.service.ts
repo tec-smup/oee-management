@@ -123,5 +123,20 @@ export class MachineService extends BaseService {
             JSON.stringify(machineConfig), { headers: headers })
             .map(res => res.json())
             .pipe(catchError(this.handleError));         
-    }    
+    } 
+    
+    getNominalComparative(params: any): Observable<any> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });         
+        let options = new RequestOptions({
+            headers: headers,
+            search: params             
+        });
+        return this.http.get(environment.machineComparativeURL, options)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));           
+    }
+        
 }

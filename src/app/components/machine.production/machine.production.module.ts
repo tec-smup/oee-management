@@ -6,15 +6,17 @@ import { SharedModule } from '../shared/shared.module';
 import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.module';
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
 import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
+import { AmChartsModule } from '@amcharts/amcharts3-angular';
+
+import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';
+import { MachineService } from '../../services/machine/machine.service';
 
 import { MachineProductionChartComponent } from './chart/machine.prod.chart.component';
 import { MachineProductionNominalComponent } from './nominal.output/machine.prod.nominal.component';
 import { MachineProductionPausesComponent } from './pauses/machine.prod.pauses.component';
 import { MachineProductionComponent } from './machine.production.component';
 
-import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { HHMMSSPipe } from '../../pipes/HHMMSS';
-
 
 @NgModule({
   imports: [
@@ -25,6 +27,7 @@ import { HHMMSSPipe } from '../../pipes/HHMMSS';
     DropdownMachineModule,    
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,   
+    AmChartsModule
   ],
   declarations: [ 
     MachineProductionComponent,   
@@ -41,7 +44,8 @@ import { HHMMSSPipe } from '../../pipes/HHMMSS';
     HHMMSSPipe
   ],
   providers: [ 
-    DashboardService,
+    MachinePauseService,
+    MachineService,
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
   ]
 })

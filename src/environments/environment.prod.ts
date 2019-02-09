@@ -10,7 +10,8 @@ export const environment = {
   machineDeleteURL: `${serverURL}machine/delete`,
   machineConfigURL: `${serverURL}machineconfig/:machineCode`,
   machineConfigUpdateURL: `${serverURL}machineconfig`,
-  machineSQLUpdateURL: `${serverURL}machineconfig/sql`,  
+  machineSQLUpdateURL: `${serverURL}machineconfig/sql`, 
+  machineComparativeURL: `${serverURL}machine/nominalcomparative`, 
   //channel
   channelListURL: `${serverURL}:userId/channel`,
   channelConfigURL: `${serverURL}channelconfig/:channelId`,
