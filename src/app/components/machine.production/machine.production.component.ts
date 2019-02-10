@@ -12,9 +12,13 @@ export class MachineProductionComponent extends BaseComponent implements OnInit,
   dropdownChannel: number;
   dateTimeRange: Date[];
   dateTimeRangeError: boolean = false;
-
-  constructor(public toastr: ToastsManager, 
-              vcr: ViewContainerRef) {
+  intervalTimer: any;
+  timerStr: string = "00:00:00";
+  refreshing: boolean = false;
+  
+  constructor(
+    public toastr: ToastsManager, 
+    vcr: ViewContainerRef) {
     super();             
     //devo fazer isso aqui pois o componente que carrega as últimas medições depende dessa data
     let now = new Date(Date.now());
@@ -23,10 +27,31 @@ export class MachineProductionComponent extends BaseComponent implements OnInit,
   }
 
   ngOnInit() {
+    this.startIntervalTimer();
   }
 
   ngOnDestroy() {
+    clearInterval(this.intervalTimer);
   }
+
+  startIntervalTimer() {
+    let sec = 60;
+    this.timerStr = this.secToTime(sec);
+    clearInterval(this.intervalTimer);
+    this.intervalTimer = setInterval(
+      () => {
+        sec--; 
+
+        //espero alguns segundos para voltar a false para que na proxima atualização funcione correatamente
+        if(sec == 40) this.refreshing = false;        
+
+        if(sec == 0) {
+          this.refreshing = true;
+          this.startIntervalTimer();
+        }
+        this.timerStr = this.secToTime(sec);
+      }, 1000);
+  }   
 
   changeDateRange(dates: any): any {
     this.dateTimeRangeError = false;
@@ -45,5 +70,5 @@ export class MachineProductionComponent extends BaseComponent implements OnInit,
   }
   setMachine($event) {
     this.dropdownMachine = $event;
-  }    
+  }   
 }

@@ -13,13 +13,12 @@ export class MachineProductionPausesComponent extends BaseComponent implements O
   @Input() dateRange: Date[];
   @Input() machineCode: string;
   @Input() dateRangeError: boolean;
+  @Input() refreshing: boolean;
 
   pauses = {
     table: [],
     sum: {}
-  };  
-
-  public refreshing: boolean = false;
+  }; 
   
   constructor(
     private machinePauseService: MachinePauseService,
@@ -36,11 +35,9 @@ export class MachineProductionPausesComponent extends BaseComponent implements O
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if(this.dateRange && this.channelId && this.machineCode) {
-      if(!this.dateRangeError)  {
-        this.refreshing = true;
-        this.getPauses();
-      }
+    if(!this.dateRangeError && ((this.dateRange && this.channelId && this.machineCode) || this.refreshing)) {
+      this.refreshing = true;
+      this.getPauses();
     }
   }   
 

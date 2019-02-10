@@ -14,9 +14,10 @@ export class MachineProductionChartComponent extends BaseComponent implements On
   @Input() dateRange: Date[];
   @Input() machineCode: string;
   @Input() dateRangeError: boolean;
+  @Input() refreshing: boolean;
 
-  public chart: AmChart;
-  public refreshing: boolean = false;
+  public chart: AmChart;  
+  public productionOEE: Array<any>;
 
   constructor(
     private dashboardService: DashboardService,
@@ -30,11 +31,10 @@ export class MachineProductionChartComponent extends BaseComponent implements On
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if(this.dateRange && this.channelId && this.machineCode) {
-      if(!this.dateRangeError) {
-        this.refreshing = true;
-        this.getChartData();
-      }
+    if(!this.dateRangeError && ((this.dateRange && this.channelId && this.machineCode) || this.refreshing)) {
+      this.refreshing = true;
+      this.getChartData();
+      this.getProductionOEE();
     }
   }   
 
@@ -201,4 +201,38 @@ export class MachineProductionChartComponent extends BaseComponent implements On
         }        
     };
   }  
+
+  getProductionOEE() {  
+    let dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
+    let dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
+    this.dashboardService.productionOEE(
+      dateIni, 
+      dateFin, 
+      this.channelId)
+    .subscribe(
+      result => {
+        this.productionOEE = []; 
+        
+        //rejeito result set "ok" do mysql
+        for(let i = 0; i < result.length; i++) {
+          //vou ter que resolver isso depois na proc, to sem paciencia agora
+          if(result[i].length > 1) 
+            this.productionOEE.push(result[i]);
+        }
+                
+        //filtra oee conforme maquina selecionada e exibe ao lado do menu (é o que deu por hj...)
+        let oee = this.productionOEE[0].filter(f => {
+          return f.machine_code === this.machineCode;
+        });
+        let divOee = document.getElementById("divOEE");
+        if(oee && oee.length > 0) {
+          divOee.style.display = "block";
+          let p = divOee.getElementsByTagName("p");
+          p[0].innerHTML = `OEE ${oee[0].machine_name}:<br/>${oee[0].oee}%`;
+        }
+    },
+    error => {
+      console.log(error);
+    });     
+  }     
 }

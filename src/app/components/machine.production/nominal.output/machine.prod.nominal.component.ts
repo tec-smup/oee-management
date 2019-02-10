@@ -13,14 +13,13 @@ export class MachineProductionNominalComponent extends BaseComponent implements 
   @Input() dateRange: Date[];
   @Input() machineCode: string;
   @Input() dateRangeError: boolean;  
-  
+  @Input() refreshing: boolean;
+
   comparative = {
     table: [],
     sum: {}
   };
   
-  public refreshing: boolean = false;
-
   constructor(
     private machineService: MachineService,
     public toastr: ToastsManager, 
@@ -36,12 +35,10 @@ export class MachineProductionNominalComponent extends BaseComponent implements 
   }
 
   ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if(this.dateRange && this.channelId && this.machineCode) {
-      if(!this.dateRangeError) {
-        this.refreshing = true;
-        this.getComparative();
-      }      
-    }
+    if(!this.dateRangeError && ((this.dateRange && this.channelId && this.machineCode) || this.refreshing)) {
+      this.refreshing = true;  
+      this.getComparative();
+    }    
   }  
 
   getComparative() {    
@@ -59,12 +56,13 @@ export class MachineProductionNominalComponent extends BaseComponent implements 
         this.comparative.table = [];
         this.comparative.sum = {};  
           
-        let sum = { production: 0, nominal: 0, diff: 0 };
+        let sum = { production: 0, nominal: 0, diff: 0, eficiency: 0 };
         for(let i = 0; i < result.length; i++) {
           sum.production += result[i].production;
           sum.nominal += result[i].nominal;
           sum.diff += result[i].diff;
         }
+        sum.eficiency = ((sum.production / sum.nominal) * 100);
         this.comparative.table = result;
         this.comparative.sum = sum;
         this.refreshing = false;

@@ -26,12 +26,13 @@
             </div>
             <div class="col">
               <dropdown-machine [channelId]="dropdownChannel" (changeEvent)="setMachine($event)"></dropdown-machine> 
-            </div>                     
+            </div>                   
           </div>                       
         </div>           
 
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
+              Próxima atualização: {{timerStr}}
             <!-- <button class="btn btn-sm btn-outline-secondary">Share</button> -->
             <!-- <button class="btn btn-sm btn-outline-secondary" (click)="exportExcel()">Exportar</button> -->
           </div>
@@ -44,7 +45,8 @@
             [channelId]="dropdownChannel" 
             [machineCode]="dropdownMachine" 
             [dateRange]="dateTimeRange"
-            [dateRangeError]="dateTimeRangeError">
+            [dateRangeError]="dateTimeRangeError"
+            [refreshing]="refreshing">
           </app-machine-production-chart>    
         </div> 
       </div>        
@@ -55,7 +57,8 @@
               [channelId]="dropdownChannel" 
               [machineCode]="dropdownMachine" 
               [dateRange]="dateTimeRange"
-              [dateRangeError]="dateTimeRangeError">
+              [dateRangeError]="dateTimeRangeError"
+              [refreshing]="refreshing">
             </app-machine-production-nominal>    
           </div>            
           <div class="col-6">
@@ -63,7 +66,8 @@
               [channelId]="dropdownChannel" 
               [machineCode]="dropdownMachine" 
               [dateRange]="dateTimeRange"
-              [dateRangeError]="dateTimeRangeError">
+              [dateRangeError]="dateTimeRangeError"
+              [refreshing]="refreshing">
             </app-machine-production-pauses>    
           </div>     
         </div>         
