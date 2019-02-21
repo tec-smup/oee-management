@@ -67,5 +67,25 @@ export class MachinePauseService extends BaseService {
             JSON.stringify(machinePause), { headers: headers })
             .map(res => res.json())
             .pipe(catchError(this.handleError));         
+    }  
+    
+    pareto(channelId: number, machineCode: string, filter: number): Observable<MachinePauseList> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let params = {
+            channel_id: channelId,
+            machine_code: machineCode,
+            filter: filter
+        };
+        let options = new RequestOptions({
+            headers: headers, 
+            search: params
+        });
+
+        return this.http.get(environment.machinePauseChartParetoURL, options)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
     }    
 }

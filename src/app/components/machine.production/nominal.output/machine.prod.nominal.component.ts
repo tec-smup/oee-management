@@ -68,7 +68,7 @@ export class MachineProductionNominalComponent extends BaseComponent implements 
         this.refreshing = false;
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+        this.toastr.error(error, "Erro1!", { enableHTML: true, showCloseButton: true });
       });
   }   
 }

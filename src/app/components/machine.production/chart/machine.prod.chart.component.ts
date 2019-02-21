@@ -107,7 +107,7 @@ export class MachineProductionChartComponent extends BaseComponent implements On
         "theme": "light",
         "language": "pt",
         "dataDateFormat": "YYYY-MM-DDTHH:NN:SS.QQQ",
-        "autoMarginOffset": 20,
+        "autoMarginOffset": 20,        
         "responsive": {
           "enabled": true
         },          

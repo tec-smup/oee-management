@@ -43,6 +43,7 @@ export const environment = {
   machinePauseUpdateURL: `${serverURL}machinepause/update`,
   machinePauseDeleteURL: `${serverURL}machinepause/delete`, 
   machinePauseDashAddURL: `${serverURL}machinepausedash`, 
+  machinePauseChartParetoURL: `${serverURL}machinepause/pareto`, 
   //user
   userAuthenticationURL: `${serverURL}auth`,
   userListURL: `${serverURL}user`,

@@ -1,5 +1,4 @@
 import { BaseModel } from "./baseModel";
-import { MachinePause } from "./machine.pause";
 
 class Pauses {
   id: number;
@@ -24,9 +23,19 @@ class PauseGrouped {
   pnp: string;
 }
 
+class Pareto {
+  pause_name: string; 
+  pause_type: string;
+  pause: number;
+  pause_in_time: string;
+  percentage: number;
+  sum_percentage: number;
+}
+
 export class MachinePauseList extends BaseModel {
   pauses: Array<Pauses>;
   pause_grouped: Array<PauseGrouped>;
+  pareto: Array<Pareto>;
 
   constructor() {
     super();

@@ -15,6 +15,7 @@ import { MachineProductionChartComponent } from './chart/machine.prod.chart.comp
 import { MachineProductionNominalComponent } from './nominal.output/machine.prod.nominal.component';
 import { MachineProductionPausesComponent } from './pauses/machine.prod.pauses.component';
 import { MachineProductionComponent } from './machine.production.component';
+import { MachineProductionChartPauseParetoComponent } from './chart.pause.pareto/machine.prod.chart.pause.pareto.component';
 
 import { HHMMSSPipe } from '../../pipes/HHMMSS';
 
@@ -34,6 +35,7 @@ import { HHMMSSPipe } from '../../pipes/HHMMSS';
     MachineProductionChartComponent,
     MachineProductionNominalComponent,
     MachineProductionPausesComponent,
+    MachineProductionChartPauseParetoComponent,
     HHMMSSPipe
   ],
   exports: [ 
@@ -41,6 +43,7 @@ import { HHMMSSPipe } from '../../pipes/HHMMSS';
     MachineProductionChartComponent,
     MachineProductionNominalComponent,
     MachineProductionPausesComponent,
+    MachineProductionChartPauseParetoComponent,
     HHMMSSPipe
   ],
   providers: [ 
