@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-body">
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+            <button class="btn btn-sm btn-outline-secondary" (click)="setFilter(3)">Dia</button>
+            <button class="btn btn-sm btn-outline-secondary" (click)="setFilter(2)">Semana</button>
+            <button class="btn btn-sm btn-outline-secondary" (click)="setFilter(1)">Mês</button>
+            <button class="btn btn-sm btn-outline-secondary" (click)="setFilter(0)">Ano</button>
+          </div>
+          <div style="width:100px">{{filterDescription}}</div> 
+        </div>        
+        <hr/>
+
+        <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
+        <div id="amChartPareto" [style.width.%]="100" [style.height.px]="300"></div>
+    </div>
+</div>
