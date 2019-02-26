@@ -55,7 +55,7 @@ export class MachineProductionPausesComponent extends BaseComponent implements O
         this.refreshing = false;
       },
       error => {
-        this.toastr.error(error, "Erro1!", { enableHTML: true, showCloseButton: true });
+        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });
   }  
 }
