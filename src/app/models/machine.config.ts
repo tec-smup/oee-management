@@ -6,6 +6,7 @@ export class MachineConfig extends BaseModel {
   chart_sql: string;
   mobile_sql: string;
   chart_tooltip_desc: string;
+  max_day_production: number;
   
   constructor() {
     super();

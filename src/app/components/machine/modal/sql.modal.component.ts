@@ -39,6 +39,16 @@ declare var $ :any;
           </div>
 
           <div class="form-group">
+            <label for="max_day_production">Produção máxima do dia</label>
+            <input 
+              id="max_day_production" 
+              formControlName="max_day_production"
+              type="number" 
+              class="form-control" />
+              <small id="max_day_production" class="form-text text-muted">Esse é o valor máximo que a máquina deve produzir no dia</small>
+          </div>
+
+          <div class="form-group">
           
             <div id="accordion">              
               <div class="card">
@@ -156,6 +166,7 @@ declare var $ :any;
         chart_sql: [''],
         mobile_sql: [''],
         chart_tooltip_desc: ['', Validators.required],
+        max_day_production: ['', Validators.required],
       });
 
       this.machineConfig = this.machineService.getMachineConfig(this.machineCode)
