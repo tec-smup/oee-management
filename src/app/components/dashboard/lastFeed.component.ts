@@ -128,6 +128,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       result => {        
         this.lastFeed = result.lastFeeds;
         this.pauses = result.pauses;
+        console.log(this.pauses);
         this.startIntervalTimer();
 
         if(this.lastFeed.length > 0) {
