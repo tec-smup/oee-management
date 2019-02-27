@@ -55,7 +55,7 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
         chart.labelsEnabled = false;
         
         // add label to let users know the chart is empty
-        chart.addLabel("50%", "50%", "Não encontrei dados com os filtros informados.", "middle", 16);
+        //chart.addLabel("50%", "50%", "Não encontrei dados com os filtros informados.", "middle", 16);
         
         // dim the whole chart
         chart.alpha = 0.3;
@@ -131,7 +131,7 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
                 data: 0,
                 chart_tooltip_desc: "__value"
               }];
-              this.amChart.addLabel("50%", "50%", "Não encontrei dados com os filtros informados.", "middle", 16);
+              //this.amChart.addLabel("50%", "50%", "Não encontrei dados com os filtros informados.", "middle", 16);
             }    
             this.amChart.validateData();                              
           });
