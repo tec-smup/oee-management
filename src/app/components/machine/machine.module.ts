@@ -11,6 +11,10 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { SQLModalComponent } from './modal/sql.modal.component';
 import { MachineModalComponent } from '../channel/modal/machine.modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ShiftModalComponent } from './modal/shift.modal.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { DropdownShiftsModule } from '../dropdown/shifts/dropdown.shifts.module';
+import { MachineShiftService } from '../../services/machine.shift/machine.shift.service';
 
 @NgModule({
   imports: [
@@ -18,19 +22,23 @@ import { ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     FormsModule,
     AgGridModule.withComponents([MachineGridButtonRenderer]),
-    AngularFontAwesomeModule,
+    AngularFontAwesomeModule,    
+    ModalModule.forRoot(),
+    DropdownShiftsModule,
     ReactiveFormsModule
   ],
   declarations: [ 
     MachineComponent,    
     MachineGridButtonRenderer,
-    SQLModalComponent
+    SQLModalComponent,
+    ShiftModalComponent
   ],
   exports: [ MachineComponent ],
-  providers: [ MachineService ],
+  providers: [ MachineService, MachineShiftService ],
   entryComponents: [
     MachineModalComponent,
-    SQLModalComponent
+    SQLModalComponent,
+    ShiftModalComponent
   ],  
 })
 export class MachineModule { }

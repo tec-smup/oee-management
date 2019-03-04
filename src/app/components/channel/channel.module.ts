@@ -33,7 +33,7 @@ import { SQLModalComponent } from './modal/sql.modal.component';
     AngularFontAwesomeModule,
     ModalModule.forRoot(),
     DropdownMachineModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   declarations: [ 
     ChannelComponent,    

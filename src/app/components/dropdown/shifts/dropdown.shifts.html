@@ -1,0 +1,9 @@
+<ng-select
+    [items]="items"
+    bindLabel="hour"
+    bindValue="hour" 
+    (add)="emitChangeValue($event)"
+    placeholder="Selecione"
+    [clearable]="false"
+    [ngStyle]="{ 'width': '100%' }">
+</ng-select>
