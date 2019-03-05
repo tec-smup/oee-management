@@ -16,7 +16,7 @@ import { ShiftsService } from '../../../services/shifts/shifts.service';
 })
 export class DropdownShiftsComponent extends BaseComponent implements OnInit {
   items: Array<Shift> = [];
-  @Output() emitChangeEvent = new EventEmitter();
+  @Output() changeEvent = new EventEmitter<string>();
 
   constructor(
     private shiftService: ShiftsService,
@@ -43,6 +43,6 @@ export class DropdownShiftsComponent extends BaseComponent implements OnInit {
   }   
 
   public emitChangeValue(value: any) {
-    this.emitChangeEvent.emit(value);
+    this.changeEvent.emit(value);
   }   
 }

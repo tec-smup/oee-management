@@ -41,36 +41,34 @@ declare var $ :any;
         });      
     }
 
-    setHour(hour: string, who: string) {
+    setHour(shift: any, who: string) {
       if(who === 'initial')
-        this.machineShift.hourIni = hour;
+        this.machineShift.hourIni = shift.hour;
       else  
-        this.machineShift.hourFin = hour;
+        this.machineShift.hourFin = shift.hour;
     }
 
     add() {
-      // this.channelService.addMachine(this.channelMachine)
-      // .subscribe(
-      //   result => {
-      //     this.loadGrid();
-      //   },
-      //   error => {
-      //     this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
-      //   }
-      // );  
+      this.machineShiftService.add(this.machineShift)
+      .subscribe(
+        result => {
+          this.loadGrid();
+        },
+        error => {
+          this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+        }
+      );  
     }
 
-    delete(machineCode: string) {
-      // this.channelMachine.machineCode = machineCode;
-
-      // this.channelService.deleteMachine(this.channelMachine)
-      // .subscribe(
-      //   result => {
-      //     this.loadGrid();
-      //   },
-      //   error => {
-      //     this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
-      //   }
-      // );          
+    delete(id: number) {
+      this.machineShiftService.delete(id)
+      .subscribe(
+        result => {
+          this.loadGrid();
+        },
+        error => {
+          this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+        }
+      );          
     }
   }

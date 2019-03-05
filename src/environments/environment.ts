@@ -63,4 +63,6 @@ export const environment = {
   shiftDropdownURL: `${serverURL}shift/dropdown`,
   //machine shift
   machineShiftListURL: `${serverURL}machineshift/list/:machineCode`,  
+  machineShiftURL : `${serverURL}machineshift`,
+  machineDeleteShiftURL : `${serverURL}machineshift/delete`,
 };

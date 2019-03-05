@@ -25,4 +25,26 @@ export class MachineShiftService extends BaseService {
             .map(res => res.json())
             .pipe(catchError(this.handleError));
     }
+
+    add(machineShift: MachineShift): Observable<MachineShift> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken() 
+        });                
+        return this.http.post(environment.machineShiftURL, 
+            JSON.stringify(machineShift), { headers: headers })
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));         
+    }  
+    
+    delete(id: number): Observable<MachineShift> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken() 
+        });                
+        return this.http.post(environment.machineDeleteShiftURL, 
+            JSON.stringify({id: id}), { headers: headers })
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));        
+    }       
 }
