@@ -48,7 +48,19 @@
           </app-machine-production-chart>    
         </div> 
       </div>      
-      
+
+      <div class="row" style="margin-bottom:10px">
+        <div class="col-12">
+          <gauge-shift-oee 
+            [channelId]="dropdownChannel" 
+            [machineCode]="dropdownMachine" 
+            [dateRange]="dateTimeRange"
+            [dateRangeError]="dateTimeRangeError"
+            [refreshing]="refreshing">
+          </gauge-shift-oee>
+        </div> 
+      </div>         
+
       <div class="row" style="margin-bottom:10px">
         <div class="col-12">
           <app-machine-production-chart-pause-pareto 

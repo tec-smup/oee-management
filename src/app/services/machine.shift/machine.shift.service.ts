@@ -7,6 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { BaseService } from '../base.service';
 import { MachineShift } from '../../models/machine.shift';
+import { Parameters } from '../../models/parameters';
 
 @Injectable()
 export class MachineShiftService extends BaseService {
@@ -46,5 +47,21 @@ export class MachineShiftService extends BaseService {
             JSON.stringify({id: id}), { headers: headers })
             .map(res => res.json())
             .pipe(catchError(this.handleError));        
-    }       
+    }   
+    
+    oee(params: Parameters): Observable<any[]> {
+        let headers = new Headers({ 
+            'Content-Type': 'application/json',
+            'x-access-token': this.getToken()
+        });
+        let options = new RequestOptions({headers: headers});
+        let url = environment.machineShiftOEEURL
+            .replace(':channelId', params.channelId.toString())
+            .replace(':machineCode', params.machineCode)
+            .replace(':dateIni', params.dateIni)
+            .replace(':dateFin', params.dateFin);
+        return this.http.get(url, options)
+            .map(res => res.json())
+            .pipe(catchError(this.handleError));
+    }    
 }

@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col" *ngFor="let gauge of gauges; let i = index">
+    <div class="card">
+      <div class="card-body">
+          <h5 class="card-title">{{gauge.label.oee_msg}}</h5>                  
+          <div id="gaugeShiftOEE_{{i}}" [style.width.%]="100" [style.height.px]="230"></div>
+      </div>
+    </div>
+  </div>
+</div>

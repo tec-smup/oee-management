@@ -25,6 +25,7 @@ export class MachineProductionChartComponent extends BaseComponent implements On
     public toastr: ToastsManager, 
     vcr: ViewContainerRef) {
       super();
+      this.toastr.setRootViewContainerRef(vcr); 
   } 
 
   ngOnInit() {
@@ -97,7 +98,8 @@ export class MachineProductionChartComponent extends BaseComponent implements On
           });
       },
       error => {
-        this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+        if(error.sqlMessage !== 'sem dados')
+          this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
       });  
   } 
 

@@ -18,6 +18,8 @@ import { MachineProductionComponent } from './machine.production.component';
 import { MachineProductionChartPauseParetoComponent } from './chart.pause.pareto/machine.prod.chart.pause.pareto.component';
 
 import { HHMMSSPipe } from '../../pipes/HHMMSS';
+import { MachineShiftService } from '../../services/machine.shift/machine.shift.service';
+import { GaugeShiftOeeComponent } from './shift.oee/shift.oee.component';
 
 @NgModule({
   imports: [
@@ -36,6 +38,7 @@ import { HHMMSSPipe } from '../../pipes/HHMMSS';
     MachineProductionNominalComponent,
     MachineProductionPausesComponent,
     MachineProductionChartPauseParetoComponent,
+    GaugeShiftOeeComponent,
     HHMMSSPipe
   ],
   exports: [ 
@@ -44,11 +47,13 @@ import { HHMMSSPipe } from '../../pipes/HHMMSS';
     MachineProductionNominalComponent,
     MachineProductionPausesComponent,
     MachineProductionChartPauseParetoComponent,
+    GaugeShiftOeeComponent,
     HHMMSSPipe
   ],
   providers: [ 
     MachinePauseService,
     MachineService,
+    MachineShiftService,
     { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
   ]
 })

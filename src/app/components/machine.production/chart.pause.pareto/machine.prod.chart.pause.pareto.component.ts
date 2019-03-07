@@ -16,7 +16,7 @@ export class MachineProductionChartPauseParetoComponent extends BaseComponent im
   @Input() dateRangeError: boolean;
   @Input() refreshing: boolean;
   public filter: number = 3; //default por dia
-  public filterDescription: string = "filtro por dia selecionado";
+  public filterDescription: string = "filtro selecionado: dia atual";
 
   public chart: AmChart;  
   public productionOEE: Array<any>;
@@ -52,19 +52,19 @@ export class MachineProductionChartPauseParetoComponent extends BaseComponent im
   setFilter(selected) {
     switch(selected) {
       case 0:
-        this.filterDescription = "filtro por ano selecionado";
+        this.filterDescription = "filtro selecionado: ano atual";
         break;
       case 1:
-        this.filterDescription = "filtro por mês selecionado";
+        this.filterDescription = "filtro selecionado: mês atual";
         break;
       case 2:
-        this.filterDescription = "filtro por semana selecionado";
+        this.filterDescription = "filtro selecionado: 7 dias atrás";
         break;
       case 3:
-        this.filterDescription = "filtro por dia selecionado";
+        this.filterDescription = "filtro selecionado: dia atual";
         break;  
       default:                      
-        this.filterDescription = "filtro por dia selecionado";
+        this.filterDescription = "filtro selecionado: dia atual";
         break;
     }
     this.filter = selected;

@@ -65,4 +65,5 @@ export const environment = {
   machineShiftListURL: `${serverURL}machineshift/list/:machineCode`,  
   machineShiftURL : `${serverURL}machineshift`,
   machineDeleteShiftURL : `${serverURL}machineshift/delete`,
+  machineShiftOEEURL: `${serverURL}machineshift/oee/:channelId/:machineCode/:dateIni/:dateFin`,
 };
