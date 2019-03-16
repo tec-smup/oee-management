@@ -20,6 +20,7 @@ import { MachineProductionChartPauseParetoComponent } from './chart.pause.pareto
 import { HHMMSSPipe } from '../../pipes/HHMMSS';
 import { MachineShiftService } from '../../services/machine.shift/machine.shift.service';
 import { GaugeShiftOeeComponent } from './shift.oee/shift.oee.component';
+import { DropdownDWMYModule } from '../dropdown/dwmy.filter/dropdown.dwmy.module';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { GaugeShiftOeeComponent } from './shift.oee/shift.oee.component';
     DropdownMachineModule,    
     OwlDateTimeModule, 
     OwlNativeDateTimeModule,   
-    AmChartsModule
+    AmChartsModule,
+    DropdownDWMYModule
   ],
   declarations: [ 
     MachineProductionComponent,   

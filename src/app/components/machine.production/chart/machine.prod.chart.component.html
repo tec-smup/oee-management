@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-body">
-        <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
+        <div class="fa fa-spinner fa-spin" style="position: absolute" *ngIf="refreshing"></div>
         <div id="amChart" [style.width.%]="100" [style.height.px]="350"></div>
     </div>
 </div>

@@ -1,17 +1,16 @@
 <div class="card">
     <div class="card-body">
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <button class="btn btn-sm btn-outline-secondary" (click)="setFilter(3)">Dia atual</button>
-            <button class="btn btn-sm btn-outline-secondary" (click)="setFilter(2)">7 dias atrás</button>
-            <button class="btn btn-sm btn-outline-secondary" (click)="setFilter(1)">Mês atual</button>
-            <button class="btn btn-sm btn-outline-secondary" (click)="setFilter(0)">Ano atual</button>
-          </div>
-          <div style="width:100px">{{filterDescription}}</div> 
+      
+      <div class="form-row">
+        <div class="col-2">
+          Filtros:
+          <dropdown-dwmy (changeEvent)="setFilter($event)"></dropdown-dwmy>          
+        </div>
+        <div col-2>
+          <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
         </div>        
-        <hr/>
-
-        <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
-        <div id="amChartPareto" [style.width.%]="100" [style.height.px]="300"></div>
+      </div>                
+      <hr/>      
+      <div id="amChartPareto" [style.width.%]="100" [style.height.px]="300"></div>
     </div>
 </div>

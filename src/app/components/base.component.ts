@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-declare var $:any;
+declare var $: any;
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-base',
@@ -194,18 +195,84 @@ export class BaseComponent implements OnInit {
     secToTime(duration: number): string {
 		var hours  = Math.floor(duration / 3600);
 		var minutes = Math.floor((duration - (hours * 3600))/60);
-    var seconds = Math.floor(duration - (hours * 3600) -  (minutes * 60)); 
-    
-    let shours = (hours < 10) ? "0" + hours : hours;
-    let sminutes = (minutes < 10) ? "0" + minutes : minutes;
-    let sseconds = (seconds < 10) ? "0" + seconds : seconds;
+        var seconds = Math.floor(duration - (hours * 3600) -  (minutes * 60)); 
+        
+        let shours = (hours < 10) ? "0" + hours : hours;
+        let sminutes = (minutes < 10) ? "0" + minutes : minutes;
+        let sseconds = (seconds < 10) ? "0" + seconds : seconds;
 
-    return shours + ":" + sminutes + ":" + sseconds;    
-  }    
+        return shours + ":" + sminutes + ":" + sseconds;    
+    }    
 
-  getDatetimeDiffInMin(dt1, dt2) {
-    var diff =(new Date(dt1).getTime() - new Date(dt2).getTime()) / 1000;
-    diff /= 60;
-    return Math.abs(Math.round(diff));
-  }
+    getDatetimeDiffInMin(dt1, dt2) {
+        var diff =(new Date(dt1).getTime() - new Date(dt2).getTime()) / 1000;
+        diff /= 60;
+        return Math.abs(Math.round(diff));
+    }
+
+    setDateByFilter(filter: number, turn = null) {
+        turn = turn == null ? this.getTurn() : turn;
+        let date1 = null;
+        let date2 = null;
+        let date = ["", ""];
+
+        switch(filter) {
+            case 0:
+                break;
+            case 1:
+                let monthIni = moment().startOf('month');
+                date1 = moment({ 
+                    year : monthIni.year(), 
+                    month : monthIni.month(), 
+                    day : monthIni.date(), 
+                    hour : parseInt(turn.initial.substring(0, 2)), 
+                    minute : parseInt(turn.initial.substring(3, 5)), 
+                    second : 0 
+                }); 
+                date2 = moment({ 
+                    year : moment().year(), 
+                    month : moment().month(), 
+                    day : moment().date(), 
+                    hour : parseInt(turn.final.substring(0, 2)), 
+                    minute : parseInt(turn.final.substring(3, 5)), 
+                    second : 0 
+                });   
+                date = [date1.format("YYYY-MM-DD HH:mm:ss"), date2.format("YYYY-MM-DD HH:mm:ss")];              
+                break;
+            case 2:
+                date1 = moment({ 
+                    year : moment().year(), 
+                    month : moment().month(), 
+                    day : moment().date(), 
+                    hour : parseInt(turn.initial.substring(0, 2)), 
+                    minute : parseInt(turn.initial.substring(3, 5)), 
+                    second : 0 
+                });        
+                date2 = moment(date1).subtract(7, 'days');
+                date = [date2.format("YYYY-MM-DD HH:mm:ss"), date1.format("YYYY-MM-DD HH:mm:ss")];
+                break;
+            case 3:
+                date1 = moment({ 
+                    year : moment().year(), 
+                    month : moment().month(), 
+                    day : moment().date(), 
+                    hour : parseInt(turn.initial.substring(0, 2)), 
+                    minute : parseInt(turn.initial.substring(3, 5)), 
+                    second : 0 
+                });        
+                date2 = moment({ 
+                    year : moment().year(), 
+                    month : moment().month(), 
+                    day : moment().date(), 
+                    hour : parseInt(turn.final.substring(0, 2)), 
+                    minute : parseInt(turn.final.substring(3, 5)), 
+                    second : 0 
+                });     
+                date = [date1.format("YYYY-MM-DD HH:mm:ss"), date2.format("YYYY-MM-DD HH:mm:ss")];            
+                break;
+            default:
+                break;                                                                
+        }
+        return date;
+    }
 }

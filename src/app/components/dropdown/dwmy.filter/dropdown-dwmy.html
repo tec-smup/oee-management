@@ -1,0 +1,10 @@
+<ng-select
+    [items]="items"
+    bindLabel="name"
+    bindValue="id"
+    placeholder="Selecione um filtro"
+    (add)="refreshValue($event)"
+    [(ngModel)]="selectedFilter"
+    [clearable]="false">
+</ng-select>
+
