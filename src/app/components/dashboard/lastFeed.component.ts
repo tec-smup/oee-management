@@ -283,7 +283,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
         //rejeito result set "ok" do mysql
         for(let i = 0; i < result.length; i++) {
           //vou ter que resolver isso depois na proc, to sem paciencia agora
-          if(result[i].length > 1) 
+          if(result[i].length > 0) 
             this.productionOEE.push(result[i]);
         }
                 
