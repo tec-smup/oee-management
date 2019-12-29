@@ -5,6 +5,7 @@ import { Routing } from '../../app.routes';
 import { IconsModule } from '../../utils/icons.module';
 import { MenuComponent } from './menu/menu.component';
 import { NavComponent } from './nav/nav.component';
+import { OEEBadgeComponent } from './oeeBadge/oee.badge.component';
 
 @NgModule({
   imports: [
@@ -15,10 +16,12 @@ import { NavComponent } from './nav/nav.component';
   declarations: [ 
     MenuComponent,
     NavComponent,    
+    OEEBadgeComponent
   ],
   exports: [
     MenuComponent,
     NavComponent,
+    OEEBadgeComponent
   ]
 })
 export class SharedModule { }

@@ -3,6 +3,8 @@ import { ToastsManager } from 'ng2-toastr/src/toast-manager';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 import { MachinePauseService } from '../../../services/machine.pause/machine.pause.service';
 import { BaseComponent } from '../../base.component';
+import { Subscription } from 'rxjs';
+import { FilterService } from '../../../services/dashboard/filter.service';
 
 @Component({
   selector: 'app-machine-production-chart-pause-pareto',
@@ -10,33 +12,27 @@ import { BaseComponent } from '../../base.component';
   styleUrls: ['./machine.prod.chart.pause.pareto.component.css']
 })
 export class MachineProductionChartPauseParetoComponent extends BaseComponent implements OnInit, OnDestroy {
-  @Input() channelId: number;
-  @Input() dateRange: Date[];
-  @Input() machineCode: string;
-  @Input() dateRangeError: boolean;
-  @Input() refreshing: boolean;
-  public filter: number = 3; //default por dia
+  private dwmy: number = undefined;
+  private channelId: number  = undefined;
+  private machineCode: string  = undefined;  
+  public refreshing: boolean = false;
 
-  public chart: AmChart;  
-  public productionOEE: Array<any>;
+  private unsubscribe: Subscription[] = [];
+
+  public chart: AmChart;
 
   constructor(
     private machinePauseService: MachinePauseService,
     private AmCharts: AmChartsService,
     public toastr: ToastsManager, 
-    vcr: ViewContainerRef) {
+    vcr: ViewContainerRef,
+    private filterService: FilterService) {
       super();
+      this.listenFilters();
   } 
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if(!this.dateRangeError && ((this.dateRange && this.channelId && this.machineCode) || this.refreshing)) {
-      this.refreshing = true;
-      this.getChartData();
-    }
-  }   
+  } 
 
   ngAfterViewInit() {  
     this.chart = this.AmCharts.makeChart("amChartPareto", this.makeOptions([]));
@@ -45,20 +41,36 @@ export class MachineProductionChartPauseParetoComponent extends BaseComponent im
   ngOnDestroy() {
     if (this.chart) {
       this.AmCharts.destroyChart(this.chart);
-    }    
+    }
+    this.unsubscribe.forEach(f => f.unsubscribe());    
   }
 
-  setFilter(selected) {
-    this.filter = selected;
-    this.refreshing = true;
-    this.getChartData();
-  }
+  private listenFilters() {
+		const subsCountdown = this.filterService.onCountdownUpdate$.subscribe(s => this.getChartData());
+		const subsDWMY = this.filterService.onDWMYUpdate$.subscribe(dwmy => {      
+			this.dwmy = dwmy;
+    });
+		const subsChannel = this.filterService.onChannelUpdate$.subscribe(channelId => {
+			this.channelId = channelId;
+    });  
+		const subsMachine = this.filterService.onMachineUpdate$.subscribe(machineCode => {
+			this.machineCode = machineCode;
+		});            
+		this.unsubscribe.push(subsCountdown);    
+		this.unsubscribe.push(subsDWMY);    
+		this.unsubscribe.push(subsChannel);    
+		this.unsubscribe.push(subsMachine);    
+  }    
 
   getChartData() {  
+    //retorna enquanto não tiver os filtros completos 
+    if(this.dwmy == undefined || this.channelId == undefined || this.machineCode == undefined)
+      return;
+
     this.machinePauseService.pareto(
       this.channelId, 
       this.machineCode,
-      this.filter
+      this.dwmy
     )
     .subscribe(
       result => {   
@@ -69,9 +81,9 @@ export class MachineProductionChartPauseParetoComponent extends BaseComponent im
             }
             else {
               this.chart.dataProvider = [{
-                pause_name_short: " ",
+                pause_name_count: " ",
                 pause: 0,
-                sum_percentage: 0
+                sum_percentage: 0,
               }];
             }    
             this.chart.validateData(); 
@@ -122,11 +134,12 @@ export class MachineProductionChartPauseParetoComponent extends BaseComponent im
           "type": "column",
           "valueField": "pause",
           "fillColors": "#1a3a5a",
-          "balloonFunction": function(graphDataItem, graph) {            
+          "balloonFunction": function(graphDataItem, graph) {
             let text = `
               Tempo: ${graphDataItem.dataContext.pause_in_time}
               <br>Pausa: ${graphDataItem.dataContext.pause_name}
               <br>Tipo: ${graphDataItem.dataContext.pause_type}
+              <br>Total: ${graphDataItem.dataContext.count}
             `;                
             return text;
           }           
@@ -150,11 +163,12 @@ export class MachineProductionChartPauseParetoComponent extends BaseComponent im
           }          
         }
       ],
-      "categoryField": "pause_name_short",
+      "categoryField": "pause_name_count",
       "categoryAxis": {
         "gridPosition": "start",
         "axisAlpha": 0,
-        "tickLength": 0,         
+        "tickLength": 0,   
+        "labelRotation": 45      
       }
     };
   }

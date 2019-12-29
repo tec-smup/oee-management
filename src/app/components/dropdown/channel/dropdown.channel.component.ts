@@ -1,7 +1,8 @@
-import { Component, ViewContainerRef, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, ViewContainerRef, OnInit, Input } from '@angular/core';
 import { ChannelService } from '../../../services/channel/channel.service';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../../base.component';
+import { FilterService } from '../../../services/dashboard/filter.service';
  
 @Component({
   selector: 'dropdown-channel',  
@@ -9,14 +10,14 @@ import { BaseComponent } from '../../base.component';
 })
 export class DropdownChannelComponent extends BaseComponent implements OnInit {
   items: Array<any> = [];
-  selectedChannelId: any;
+  selectedChannelId: number;
   @Input() listAll: boolean;
-  @Output() changeEvent = new EventEmitter<any>();
 
   constructor(
     private channelService: ChannelService,
     public toastr: ToastsManager, 
-    vcr: ViewContainerRef
+    vcr: ViewContainerRef,
+    private filterService: FilterService
   ) {
     super();
     this.toastr.setRootViewContainerRef(vcr);              
@@ -41,8 +42,8 @@ export class DropdownChannelComponent extends BaseComponent implements OnInit {
       result => {
         this.items = result.filter(f => f.active.toString() === "Ativo");
         if(this.items.length > 0) {
-          this.selectedChannelId = this.items[0].id;
-          this.refreshValue(this.items[0]);
+          this.selectedChannelId = this.items[0].id;          
+          this.setChannelLocalStorage(this.items[0]);
         }
       },
       error => {
@@ -57,7 +58,7 @@ export class DropdownChannelComponent extends BaseComponent implements OnInit {
         this.items = result.filter(f => f.active.toString() === "Ativo");
         if(this.items.length > 0) {
           this.selectedChannelId = this.items[0].id;
-          this.refreshValue(this.items[0]);
+          this.setChannelLocalStorage(this.items[0]);
         }
       },
       error => {
@@ -65,9 +66,12 @@ export class DropdownChannelComponent extends BaseComponent implements OnInit {
       });    
   }
 
-  public refreshValue(value:any) {
+  public setChannelLocalStorage(value:any) {
     this.selectedChannelId = value.id;
-    let channel = this.items.filter(f => f.id == this.selectedChannelId);    
-    this.changeEvent.emit(channel[0]);
+    let channel = this.items.filter(f => f.id == this.selectedChannelId);  
+    this.filterService.setChannelFilter(this.selectedChannelId);  
+
+    //guarda o canal no localstorage para ser utilizado em outros componentes
+    localStorage.setItem('channelId', channel[0].id);
   }    
 }

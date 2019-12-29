@@ -2,45 +2,43 @@ import {
   Component, 
   ViewContainerRef, 
   OnInit, 
-  Output, 
-  EventEmitter, 
-  Input, 
-  OnChanges, 
-  SimpleChange  } from '@angular/core';
+  OnDestroy
+} from '@angular/core';
 import { MachineService } from '../../../services/machine/machine.service';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../../base.component';
+import { FilterService } from '../../../services/dashboard/filter.service';
+import { Subscription } from 'rxjs';
  
 @Component({
   selector: 'dropdown-machine',  
   templateUrl: './dropdown-machine.html',
 })
-export class DropdownMachineComponent extends BaseComponent implements OnInit {
+export class DropdownMachineComponent extends BaseComponent implements OnInit, OnDestroy {
   items: Array<any> = [];
   selectedMachineCode: any;
-  @Input() channelId: number;
-  @Output() changeEvent = new EventEmitter<string>();
+  private unsubscribe: Subscription[] = [];
 
   constructor(
     private machineService: MachineService,
     public toastr: ToastsManager, 
-    vcr: ViewContainerRef
+    vcr: ViewContainerRef,
+    private filterService: FilterService
   ) {
     super();
     this.toastr.setRootViewContainerRef(vcr);              
   }
 
-  ngOnInit() {       
+  ngOnInit() {      
+    const subs = this.filterService.onChannelUpdate$.subscribe(channelId => this.load(channelId));   
+    this.unsubscribe.push(subs); 
   }
 
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    let id = changes.channelId && changes.channelId.currentValue != null ? changes.channelId.currentValue : null;
-    if(id) {
-      this.load(id);
-    }
+  ngOnDestroy() {
+    this.unsubscribe.forEach(f => f.unsubscribe());
   }
 
-  load(channelId: number) {
+  private load(channelId: number) {
     this.machineService.list(this.getCurrentUser().id, channelId)
     .subscribe(
       result => {
@@ -57,6 +55,6 @@ export class DropdownMachineComponent extends BaseComponent implements OnInit {
 
   public refreshValue(value:any) {
     this.selectedMachineCode = value.code;    
-    this.changeEvent.emit(this.selectedMachineCode);
+    this.filterService.setMachineFilter(value.code);
   }    
 }

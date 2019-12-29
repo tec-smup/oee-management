@@ -3,6 +3,8 @@ import { ToastsManager } from 'ng2-toastr/src/toast-manager';
 import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { BaseComponent } from '../../base.component';
+import { FilterService } from '../../../services/dashboard/filter.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-machine-production-chart',
@@ -10,34 +12,28 @@ import { BaseComponent } from '../../base.component';
   styleUrls: ['./machine.prod.chart.component.css']
 })
 export class MachineProductionChartComponent extends BaseComponent implements OnInit, OnDestroy {
-  @Input() channelId: number;
-  @Input() dateRange: Date[];
-  @Input() machineCode: string;
-  @Input() dateRangeError: boolean;
-  @Input() refreshing: boolean;
-
   public chart: AmChart;  
-  public productionOEE: Array<any>;
+  
+  private dwmy: number = undefined;
+  private channelId: number  = undefined;
+  private machineCode: string  = undefined;  
+  public refreshing: boolean = false;
+
+  private unsubscribe: Subscription[] = [];
 
   constructor(
     private dashboardService: DashboardService,
     private AmCharts: AmChartsService,
     public toastr: ToastsManager, 
-    vcr: ViewContainerRef) {
+    vcr: ViewContainerRef,
+    private filterService: FilterService) {
       super();
       this.toastr.setRootViewContainerRef(vcr); 
+      this.listenFilters();
   } 
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if(!this.dateRangeError && ((this.dateRange && this.channelId && this.machineCode) || this.refreshing)) {
-      this.refreshing = true;
-      this.getChartData();
-      this.getProductionOEE();
-    }
-  }   
+  } 
 
   ngAfterViewInit() {
     this.AmCharts.addInitHandler(function(chart) {
@@ -66,40 +62,63 @@ export class MachineProductionChartComponent extends BaseComponent implements On
     if (this.chart) {
       this.AmCharts.destroyChart(this.chart);
     }    
+    this.unsubscribe.forEach(f => f.unsubscribe());
+  }
+
+  private listenFilters() {
+		const subsCountdown = this.filterService.onCountdownUpdate$.subscribe(refresh => this.getChartData());
+		const subsDWMY = this.filterService.onDWMYUpdate$.subscribe(dwmy => {      
+			this.dwmy = dwmy;
+    });
+		const subsChannel = this.filterService.onChannelUpdate$.subscribe(channelId => {
+			this.channelId = channelId;
+    });  
+		const subsMachine = this.filterService.onMachineUpdate$.subscribe(machineCode => {
+			this.machineCode = machineCode;
+		});            
+		this.unsubscribe.push(subsCountdown);    
+		this.unsubscribe.push(subsDWMY);    
+		this.unsubscribe.push(subsChannel);    
+		this.unsubscribe.push(subsMachine);    
   }
 
   getChartData() {  
-    let dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
-    let dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
+    //retorna enquanto não tiver os filtros completos 
+    if(this.dwmy == undefined || this.channelId == undefined || this.machineCode == undefined)
+      return;      
+
+    const dateRange: string[] = this.setDateByFilter(this.dwmy);
+    this.refreshing = true;
 
     this.dashboardService.chart(
-      dateIni, 
-      dateFin, 
+      dateRange[0], 
+      dateRange[1], 
       this.channelId, 
       this.machineCode
     )
     .subscribe(
       result => {   
-          this.AmCharts.updateChart(this.chart, () => {            
-            this.chart.dataProvider.shift(); 
-            if(result.length > 0) {
-              this.chart.dataProvider = result;
-              this.chart.allLabels = [];
-            }
-            else {
-              this.chart.dataProvider = [{
-                labels: new Date(),
-                data: 0,
-                chart_tooltip_desc: "__value"
-              }];
-            }    
-            this.chart.validateData(); 
-            this.refreshing = false;                             
-          });
+        this.AmCharts.updateChart(this.chart, () => {            
+          this.chart.dataProvider.shift(); 
+          if(result.length > 0) {
+            this.chart.dataProvider = result;
+            this.chart.allLabels = [];
+          }
+          else {
+            this.chart.dataProvider = [{
+              labels: new Date(),
+              data: 0,
+              chart_tooltip_desc: "__value"
+            }];
+          }    
+          this.chart.validateData();   
+          this.refreshing = false;                       
+        });
       },
       error => {
         if(error.sqlMessage !== 'sem dados')
           this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
+          this.refreshing = false;
       });  
   } 
 
@@ -202,39 +221,5 @@ export class MachineProductionChartComponent extends BaseComponent implements On
             "enabled": true
         }        
     };
-  }  
-
-  getProductionOEE() {  
-    let dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
-    let dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
-    this.dashboardService.productionOEE(
-      dateIni, 
-      dateFin, 
-      this.channelId)
-    .subscribe(
-      result => {
-        this.productionOEE = []; 
-        
-        //rejeito result set "ok" do mysql
-        for(let i = 0; i < result.length; i++) {
-          //vou ter que resolver isso depois na proc, to sem paciencia agora
-          if(result[i].length > 0) 
-            this.productionOEE.push(result[i]);
-        }
-                
-        //filtra oee conforme maquina selecionada e exibe ao lado do menu (é o que deu por hj...)
-        let oee = this.productionOEE[0].filter(f => {
-          return f.machine_code === this.machineCode;
-        });
-        let divOee = document.getElementById("divOEE");
-        if(oee && oee.length > 0) {
-          divOee.style.display = "block";
-          let p = divOee.getElementsByTagName("p");
-          p[0].innerHTML = `OEE ${oee[0].machine_name}:<br/>${oee[0].oee}%`;
-        }
-    },
-    error => {
-      console.log(error);
-    });     
-  }     
+  }      
 }

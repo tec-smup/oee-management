@@ -3,7 +3,8 @@ import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseComponent } from '../base.component';
 import { AmChart, AmChartsService } from '../../../../node_modules/@amcharts/amcharts3-angular';
-import { DashboardPause } from '../../models/dashboard.pause';
+import { Subscription } from 'rxjs';
+import { FilterService } from '../../services/dashboard/filter.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,25 +12,22 @@ import { DashboardPause } from '../../models/dashboard.pause';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent extends BaseComponent implements OnInit, OnDestroy {
-  amChart: AmChart;
-  dropdownMachine: string;
-  dropdownChannel: number;
-  dateTimeRange: Date[];
-  pauses: Array<DashboardPause> = [];
-  pauseReason: string;
+  private amChart: AmChart;
+  private channelId: number  = undefined;
+  private machineCode: string  = undefined;  
+  private dateRange: Date[] = undefined;
+  
+  private unsubscribe: Subscription[] = [];  
   
   constructor(
     private dashboardService: DashboardService, 
     private AmCharts: AmChartsService,
     public toastr: ToastsManager, 
-    vcr: ViewContainerRef) {   
+    vcr: ViewContainerRef,
+    private filterService: FilterService) {   
       super();
       this.toastr.setRootViewContainerRef(vcr);   
-      
-      //devo fazer isso aqui pois o componente que carrega as últimas medições depende dessa data
-      let now = new Date(Date.now());
-      let channelTurn = this.getTurn();
-      this.dateTimeRange = [this.setTimeOnDatetime(now, (channelTurn.initial)), this.setTimeOnDatetime(now, (channelTurn.final))];   
+      this.listenFilters();  
   }
 
   ngOnInit() {
@@ -70,44 +68,36 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
     if (this.amChart) {
         this.AmCharts.destroyChart(this.amChart);
     }     
+    this.unsubscribe.forEach(f => f.unsubscribe());
   }  
 
-  changeDateRange(dates: any): any {
-    // var hours = Math.abs(dates.value[0] - dates.value[1]) / 36e5;   
-    // if(hours > 24) {
-    //   this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Erro!", { enableHTML: true, showCloseButton: true });
-    // }
-    // else {
-    //   this.refreshChart(true);  
-    // }  
-    this.refreshChart(true);
-  }
-
-  setChannel($event) {
-    let now1 = this.dateTimeRange[0];
-    let now2 = this.dateTimeRange[1];
-    this.dateTimeRange = [this.setTimeOnDatetime(now1, ($event.initial_turn || "08:00")), this.setTimeOnDatetime(now2, ($event.final_turn || "18:00"))];   
-
-    this.dropdownChannel = $event.id;
-  }
-
-  setMachine($event) {
-    this.dropdownMachine = $event;
-    this.refreshChart(true);
-  }  
-
-  refreshChart(refresh: boolean) {
-    if(refresh && this.dropdownChannel && this.dropdownMachine && this.dateTimeRange.length == 2) {
-      this.getChartData();
-    }
+  private listenFilters() {
+		const subsCountdown = this.filterService.onCountdownUpdate$.subscribe(refresh => this.getChartData());
+		const subsDateRange = this.filterService.onDateRangeUpdate$.subscribe(dateRange => {      
+			this.dateRange = dateRange;
+    });
+		const subsChannel = this.filterService.onChannelUpdate$.subscribe(channelId => {
+			this.channelId = channelId;
+    });  
+		const subsMachine = this.filterService.onMachineUpdate$.subscribe(machineCode => {
+			this.machineCode = machineCode;
+		});            
+		this.unsubscribe.push(subsCountdown);    
+		this.unsubscribe.push(subsDateRange);    
+		this.unsubscribe.push(subsChannel);    
+		this.unsubscribe.push(subsMachine);    
   }
 
   getChartData() {  
+    //retorna enquanto não tiver os filtros completos 
+    if(this.dateRange == undefined || this.channelId == undefined || this.machineCode == undefined)
+      return; 
+
     this.dashboardService.chart(
-      this.formatDateTimeMySQL(this.dateTimeRange[0], true), 
-      this.formatDateTimeMySQL(this.dateTimeRange[1], false), 
-      this.dropdownChannel, 
-      this.dropdownMachine
+      this.formatDateTimeMySQL(this.dateRange[0], true), 
+      this.formatDateTimeMySQL(this.dateRange[1], false), 
+      this.channelId, 
+      this.machineCode
     )
     .subscribe(
       result => {   
@@ -245,10 +235,10 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
 
   exportExcel() {
     this.dashboardService.exportChartExcel(
-      this.formatDateTimeMySQL(this.dateTimeRange[0], true), 
-      this.formatDateTimeMySQL(this.dateTimeRange[1], false), 
-      this.dropdownChannel, 
-      this.dropdownMachine
+      this.formatDateTimeMySQL(this.dateRange[0], true), 
+      this.formatDateTimeMySQL(this.dateRange[1], false), 
+      this.channelId, 
+      this.machineCode
     ) 
     .subscribe(
       result => {
@@ -272,30 +262,4 @@ export class DashboardComponent extends BaseComponent implements OnInit, OnDestr
       }
     );
   }
-
-  // addPause() {
-
-  //   let pause = new MachinePause();
-  //   pause.id = 0;
-  //   pause.mc_cd = this.pauses[0].machine_code;
-  //   pause.date_ref = this.formatDate(new Date(this.pauses[0].date));
-  //   pause.pause = this.getDatetimeDiffInMin(this.pauses[1].date, this.pauses[0].date);
-  //   pause.justification = this.pauseReason;
-
-  //   this.machinePauseService.add(pause)
-  //   .subscribe(
-  //     result => {
-  //       this.changeDateRange(pause.date_ref);
-  //     },
-  //     error => {
-  //       this.toastr.error(error, "Erro!", { enableHTML: true, showCloseButton: true });
-  //     }
-  //   ); 
-
-  //   console.log(this.pauses, this.pauseReason, pause);
-  // }
-  // removePause(index: number) {
-  //   console.log(this.pauses[index]);
-  //   this.pauses.splice(index, 1);
-  // }  
 }

@@ -6,26 +6,14 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom margin-top-45">
         <div class="btn-toolbar" role="toolbar">
           <div class="form-row">
-            <div class="col">
-              <input
-                class="form-control" 
-                placeholder="Selecione as datas"
-                [style.width]="'230px'"
-                [style.height]="'36px'"
-                [style.font-size]="'.875rem'"
-                [(ngModel)]="dateTimeRange"
-                [selectMode]="'range'"
-                [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1" 
-                (dateTimeChange)="changeDateRange($event)"
-                #dateTimeRangeValidation="ngModel"
-              />
-              <owl-date-time #dtRange1></owl-date-time>                                      
+            <div class="col-md-4">
+              <dropdown-dwmy></dropdown-dwmy>
             </div>
             <div class="col">
-              <dropdown-channel [listAll]="false" (changeEvent)="setChannel($event)"></dropdown-channel>
+              <dropdown-channel [listAll]="false"></dropdown-channel>
             </div>
             <div class="col">
-              <dropdown-machine [channelId]="dropdownChannel" (changeEvent)="setMachine($event)"></dropdown-machine> 
+              <dropdown-machine></dropdown-machine> 
             </div>                   
           </div>                       
         </div>   
@@ -39,58 +27,28 @@
 
       <div class="row" style="margin-bottom:10px">
         <div class="col-12">
-          <app-machine-production-chart 
-            [channelId]="dropdownChannel" 
-            [machineCode]="dropdownMachine" 
-            [dateRange]="dateTimeRange"
-            [dateRangeError]="dateTimeRangeError"
-            [refreshing]="refreshing">
-          </app-machine-production-chart>    
+          <app-machine-production-chart></app-machine-production-chart>    
         </div> 
       </div>      
 
       <div class="row" style="margin-bottom:10px">
         <div class="col-12">
-          <gauge-shift-oee 
-            [channelId]="dropdownChannel" 
-            [machineCode]="dropdownMachine" 
-            [dateRange]="dateTimeRange"
-            [dateRangeError]="dateTimeRangeError"
-            [refreshing]="refreshing">
-          </gauge-shift-oee>
+          <gauge-shift-oee></gauge-shift-oee>
         </div> 
       </div>         
 
       <div class="row" style="margin-bottom:10px">
         <div class="col-12">
-          <app-machine-production-chart-pause-pareto 
-            [channelId]="dropdownChannel" 
-            [machineCode]="dropdownMachine" 
-            [dateRange]="dateTimeRange"
-            [dateRangeError]="dateTimeRangeError"
-            [refreshing]="refreshing">
-          </app-machine-production-chart-pause-pareto>    
+          <app-machine-production-chart-pause-pareto></app-machine-production-chart-pause-pareto>    
         </div> 
       </div>        
 
       <div class="row">
           <div class="col-6">
-            <app-machine-production-nominal 
-              [channelId]="dropdownChannel" 
-              [machineCode]="dropdownMachine" 
-              [dateRange]="dateTimeRange"
-              [dateRangeError]="dateTimeRangeError"
-              [refreshing]="refreshing">
-            </app-machine-production-nominal>    
+            <app-machine-production-nominal></app-machine-production-nominal>    
           </div>            
           <div class="col-6">
-            <app-machine-production-pauses 
-              [channelId]="dropdownChannel" 
-              [machineCode]="dropdownMachine" 
-              [dateRange]="dateTimeRange"
-              [dateRangeError]="dateTimeRangeError"
-              [refreshing]="refreshing">
-            </app-machine-production-pauses>    
+            <app-machine-production-pauses></app-machine-production-pauses>    
           </div>     
         </div>         
     </main>

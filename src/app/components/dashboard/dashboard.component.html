@@ -1,31 +1,19 @@
 <app-nav componentName="Dashboard"></app-nav>
 <div class="container-fluid">
   <div class="row">
-    <app-menu linkActive="dashboard" [channelId]="dropdownChannel" [date]="dateTimeRange"></app-menu>
+    <app-menu linkActive="dashboard"></app-menu>
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom margin-top-45">
         <div class="btn-toolbar" role="toolbar">
           <div class="form-row">
             <div class="col">
-              <input
-                class="form-control" 
-                placeholder="Selecione as datas"
-                [style.width]="'230px'"
-                [style.height]="'36px'"
-                [style.font-size]="'.875rem'"
-                [(ngModel)]="dateTimeRange"
-                [selectMode]="'range'"
-                [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1" 
-                (dateTimeChange)="changeDateRange($event)"
-                #dateTimeRangeValidation="ngModel"
-              />
-              <owl-date-time #dtRange1></owl-date-time>                                      
+              <app-datetime-range></app-datetime-range>                                      
             </div>
             <div class="col">
-              <dropdown-channel [listAll]="false" (changeEvent)="setChannel($event)"></dropdown-channel>
+              <dropdown-channel [listAll]="false"></dropdown-channel>
             </div>
             <div class="col">
-              <dropdown-machine [channelId]="dropdownChannel" (changeEvent)="setMachine($event)"></dropdown-machine> 
+              <dropdown-machine></dropdown-machine> 
             </div>                     
           </div>                       
         </div>           
@@ -40,7 +28,7 @@
       
       <div id="amChart" [style.width.%]="100" [style.height.px]="500"></div>      
 
-      <app-lastfeed [channelId]="dropdownChannel" [machineCode]="dropdownMachine" [date]="dateTimeRange" (refreshDash)="refreshChart($event)"></app-lastfeed>
+      <app-lastfeed></app-lastfeed>
     </main>
   </div>
 </div>

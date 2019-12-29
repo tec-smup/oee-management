@@ -1,16 +1,14 @@
 import { 
   Component, 
   OnInit, 
-  ViewContainerRef, 
-  EventEmitter, 
-  Output, 
-  OnDestroy, 
-  Input,
-  SimpleChange } from '@angular/core';
+  ViewContainerRef,
+  OnDestroy } from '@angular/core';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 import { ToastsManager } from 'ng2-toastr';
 import { Dashboard } from '../../models/dashboard';
 import { BaseComponent } from '../base.component';
+import { FilterService } from '../../services/dashboard/filter.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-lastfeed',
@@ -18,59 +16,61 @@ import { BaseComponent } from '../base.component';
   styleUrls: ['./dashboard.component.css']
 })
 export class LastFeedComponent extends BaseComponent implements OnInit, OnDestroy {
-  @Input() channelId: number;
-  channelIdSelected:  number = 0;
-  @Input() date: Date[];
-  dateIniSelected: string;
-  dateFinSelected: string;
-  @Input() machineCode: string;
-  machineCodeSelected: string = "";
+  private channelId: number  = undefined;
+  private machineCode: string  = undefined;  
+  private dateRange: Date[] = undefined;
 
-  lastFeed: Array<Dashboard["lastFeed"]> = [];
-  pauses: Dashboard["pauses"] = [];
+  private unsubscribe: Subscription[] = []; 
+
+  public lastFeed: Array<Dashboard["lastFeed"]> = [];
+  public pauses: Dashboard["pauses"] = [];
   gridApi;
   gridColumnApi;
   columnDefs;
   paginationPageSize = 25;
 
-  @Output() refreshDash = new EventEmitter<boolean>();
-  intervalTimer: any;
-  timerStr: string = "00:00:00";
-  refreshing: boolean = false;
+  private intervalTimer: any;
+  public timerStr: string = "00:00:00";
+  public refreshing: boolean = false;
 
   productionCount: Array<any> = [];
   productionOEE: Array<any> = [];
   
   constructor(private dashboardService: DashboardService, 
     public toastr: ToastsManager, 
-    vcr: ViewContainerRef) {   
+    vcr: ViewContainerRef,
+    private filterService: FilterService) {   
       super();
-      this.toastr.setRootViewContainerRef(vcr);    
+      this.toastr.setRootViewContainerRef(vcr);   
+      this.listenFilters();  
   }
 
   ngOnInit() {
-  }
-
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    this.channelIdSelected = changes.channelId && changes.channelId.currentValue != null ? 
-      changes.channelId.currentValue : this.channelIdSelected;
-
-    this.machineCodeSelected = changes.machineCode && changes.machineCode.currentValue != null ? 
-      changes.machineCode.currentValue : this.machineCodeSelected;  
-
-    this.dateIniSelected = changes.date ? this.formatDateTimeMySQL(changes.date.currentValue[0], true) : this.dateIniSelected;
-    this.dateFinSelected = changes.date ? this.formatDateTimeMySQL(changes.date.currentValue[1], false) : this.dateFinSelected;
-    
-    if(this.channelIdSelected == 0 || !this.machineCodeSelected)
-      return;
-     
-    this.getLastFeed();
-    this.getProductionCount();
-    this.getProductionOEE();
-  }  
+  } 
 
   ngOnDestroy() {
     clearInterval(this.intervalTimer);
+    this.unsubscribe.forEach(f => f.unsubscribe());
+  }
+
+  private listenFilters() {
+		const subsCountdown = this.filterService.onCountdownUpdate$.subscribe(refresh => {
+      this.getLastFeed();
+      this.getProductionCount();
+    });
+		const subsDateRange = this.filterService.onDateRangeUpdate$.subscribe(dateRange => {      
+			this.dateRange = dateRange;
+    });
+		const subsChannel = this.filterService.onChannelUpdate$.subscribe(channelId => {
+			this.channelId = channelId;
+    });  
+		const subsMachine = this.filterService.onMachineUpdate$.subscribe(machineCode => {
+			this.machineCode = machineCode;
+		});            
+		this.unsubscribe.push(subsCountdown);    
+		this.unsubscribe.push(subsDateRange);    
+		this.unsubscribe.push(subsChannel);    
+		this.unsubscribe.push(subsMachine);    
   }
 
   onGridReady(params) {
@@ -114,16 +114,18 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       },           
     ];    
     this.gridApi.setColumnDefs(this.columnDefs);
-  }
+  } 
 
-  refreshNow() {
-    this.getLastFeed();
-    this.refreshDash.emit(true);    
-  }  
+  private getLastFeed() {
+    //retorna enquanto não tiver os filtros completos 
+    if(this.dateRange == undefined || this.channelId == undefined || this.machineCode == undefined)
+      return; 
 
-  getLastFeed() {    
+    const dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
+    const dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
+
     this.gridApi.showLoadingOverlay();
-    this.dashboardService.lastFeed(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, this.machineCodeSelected, this.getCurrentUser().id)
+    this.dashboardService.lastFeed(dateIni, dateFin, this.channelId, this.machineCode, this.getCurrentUser().id)
     .subscribe(
       result => {        
         this.lastFeed = result.lastFeeds;
@@ -142,7 +144,7 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       });
   }
 
-  startIntervalTimer() {
+  private startIntervalTimer() {
     let sec = this.lastFeed[0] ? this.lastFeed[0].refresh_time : 300;
     this.timerStr = this.secToTime(sec);
     this.refreshing = false;
@@ -151,20 +153,25 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
       () => {
         sec--;
         if(sec == 0) {
+          sec = 60;
           this.refreshing = true;
           clearInterval(this.intervalTimer);
-          this.refreshNow();
-          this.getProductionCount();
-          this.getProductionOEE();
+          this.filterService.setRefreshingCountdown(true);
         }
         this.timerStr = this.secToTime(sec);
       }, 1000);
   }   
 
-  //ja tenho que refazer toda essa pagina ta td uma bosta...
   //agora ja ta um pouco melhor, mas sempre da pra melhorar
-  getProductionCount() {  
-    this.dashboardService.productionCount(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected)
+  private getProductionCount() { 
+    //retorna enquanto não tiver os filtros completos 
+    if(this.dateRange == undefined || this.channelId == undefined || this.machineCode == undefined)
+      return; 
+
+    const dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
+    const dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
+
+    this.dashboardService.productionCount(dateIni, dateFin, this.channelId)
     .subscribe(
       result => {
         this.productionCount = [];  
@@ -221,8 +228,15 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   }
   
   exportProductionExcel() {
+    //retorna enquanto não tiver os filtros completos 
+    if(this.dateRange == undefined || this.channelId == undefined || this.machineCode == undefined)
+      return; 
+
+    const dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
+    const dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
+
     this.dashboardService.exportProductionExcel(
-      this.dateIniSelected, this.dateFinSelected, this.channelIdSelected
+      dateIni, dateFin, this.channelId
     ) 
     .subscribe(
       result => {
@@ -248,10 +262,14 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
   }
 
   exportPauseExcel() {
-    this.dashboardService.exportPauseExcel(
-      this.dateIniSelected, this.dateFinSelected, this.channelIdSelected, this.machineCodeSelected
-    ) 
-    .subscribe(
+    //retorna enquanto não tiver os filtros completos 
+    if(this.dateRange == undefined || this.channelId == undefined || this.machineCode == undefined)
+      return; 
+
+    const dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
+    const dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
+
+    this.dashboardService.exportPauseExcel(dateIni, dateFin, this.channelId, this.machineCode) .subscribe(
       result => {
         if(result.data.size > 0) {
           let url = window.URL.createObjectURL(result.data);
@@ -274,32 +292,8 @@ export class LastFeedComponent extends BaseComponent implements OnInit, OnDestro
     );
   }  
 
-  getProductionOEE() {  
-    this.dashboardService.productionOEE(this.dateIniSelected, this.dateFinSelected, this.channelIdSelected)
-    .subscribe(
-      result => {
-        this.productionOEE = []; 
-        
-        //rejeito result set "ok" do mysql
-        for(let i = 0; i < result.length; i++) {
-          //vou ter que resolver isso depois na proc, to sem paciencia agora
-          if(result[i].length > 0) 
-            this.productionOEE.push(result[i]);
-        }
-                
-        //filtra oee conforme maquina selecionada e exibe ao lado do menu (é o que deu por hj...)
-        let oee = this.productionOEE[0].filter(f => {
-          return f.machine_code === this.machineCodeSelected;
-        });
-        let divOee = document.getElementById("divOEE");
-        if(oee && oee.length > 0) {
-          divOee.style.display = "block";
-          let p = divOee.getElementsByTagName("p");
-          p[0].innerHTML = `OEE ${oee[0].machine_name}:<br/>${oee[0].oee}%`;
-        }
-    },
-    error => {
-      console.log(error);
-    });     
-  }  
+  get pauseIncidests() {
+    return this.pauses.map(m => m.incidents)
+      .reduce((incidents, incident) => incidents + incident, 0);
+  }
 }

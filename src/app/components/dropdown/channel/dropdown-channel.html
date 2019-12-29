@@ -4,7 +4,7 @@
         bindLabel="name"
         bindValue="id"
         placeholder="Selecione um canal"
-        (add)="refreshValue($event)"
+        (add)="setChannelLocalStorage($event)"
         [(ngModel)]="selectedChannelId"
         [clearable]="false"
         [ngStyle]="{ 'width': '200px' }">

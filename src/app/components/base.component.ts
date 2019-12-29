@@ -210,6 +210,16 @@ export class BaseComponent implements OnInit {
         return Math.abs(Math.round(diff));
     }
 
+    /*id: 4
+    name: 'Dia anterior'
+    id: 3
+    name: 'Dia atual'
+    id: 2
+    name: '7 dias atrás'
+    id: 1
+    name: 'Mês atual'
+    id: 0
+    name: 'Ano atual'*/
     setDateByFilter(filter: number, turn = null) {
         turn = turn == null ? this.getTurn() : turn;
         let date1 = null;
@@ -218,9 +228,27 @@ export class BaseComponent implements OnInit {
 
         switch(filter) {
             case 0:
+                const yearIni = moment().startOf('year');
+                date1 = moment({ 
+                    year : yearIni.year(), 
+                    month : yearIni.month(), 
+                    day : yearIni.date(), 
+                    hour : parseInt(turn.initial.substring(0, 2)), 
+                    minute : parseInt(turn.initial.substring(3, 5)), 
+                    second : 0 
+                });                
+                date2 = moment({ 
+                    year : moment().year(), 
+                    month : moment().month(), 
+                    day : moment().date(), 
+                    hour : parseInt(turn.final.substring(0, 2)), 
+                    minute : parseInt(turn.final.substring(3, 5)), 
+                    second : 0 
+                });   
+                date = [date1.format("YYYY-MM-DD HH:mm:ss"), date2.format("YYYY-MM-DD HH:mm:ss")];                
                 break;
             case 1:
-                let monthIni = moment().startOf('month');
+                const monthIni = moment().startOf('month');
                 date1 = moment({ 
                     year : monthIni.year(), 
                     month : monthIni.month(), 
@@ -269,6 +297,28 @@ export class BaseComponent implements OnInit {
                     second : 0 
                 });     
                 date = [date1.format("YYYY-MM-DD HH:mm:ss"), date2.format("YYYY-MM-DD HH:mm:ss")];            
+                break;
+            case 4:
+                date1 = moment({ 
+                    year : moment().year(), 
+                    month : moment().month(), 
+                    day : moment().date(), 
+                    hour : parseInt(turn.initial.substring(0, 2)), 
+                    minute : parseInt(turn.initial.substring(3, 5)), 
+                    second : 0 
+                });    
+                date2 = moment({ 
+                    year : moment().year(), 
+                    month : moment().month(), 
+                    day : moment().date(), 
+                    hour : parseInt(turn.final.substring(0, 2)), 
+                    minute : parseInt(turn.final.substring(3, 5)), 
+                    second : 0 
+                });                  
+                date = [
+                    date1.subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss"), 
+                    date2.subtract(1, 'days').format("YYYY-MM-DD HH:mm:ss")
+                ];                           
                 break;
             default:
                 break;                                                                

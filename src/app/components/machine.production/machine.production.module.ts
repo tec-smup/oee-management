@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.module';
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
-import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 import { AmChartsModule } from '@amcharts/amcharts3-angular';
 
 import { MachinePauseService } from '../../services/machine.pause/machine.pause.service';
@@ -29,8 +28,6 @@ import { DropdownDWMYModule } from '../dropdown/dwmy.filter/dropdown.dwmy.module
     FormsModule,
     DropdownChannelModule,
     DropdownMachineModule,    
-    OwlDateTimeModule, 
-    OwlNativeDateTimeModule,   
     AmChartsModule,
     DropdownDWMYModule
   ],
@@ -55,8 +52,7 @@ import { DropdownDWMYModule } from '../dropdown/dwmy.filter/dropdown.dwmy.module
   providers: [ 
     MachinePauseService,
     MachineService,
-    MachineShiftService,
-    { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
+    MachineShiftService
   ]
 })
 export class MachineProductionModule { }

@@ -1,0 +1,9 @@
+<ng-select
+    [items]="items"
+    bindLabel="sponsor_name"
+    bindValue="sponsor_id" 
+    (add)="emitChangeValue($event)"
+    placeholder="Selecione um responsável"
+    [clearable]="false"
+    [ngStyle]="{ 'width': '100%' }">
+</ng-select>

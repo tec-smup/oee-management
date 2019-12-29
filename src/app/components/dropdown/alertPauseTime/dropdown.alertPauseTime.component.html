@@ -1,0 +1,12 @@
+<select 
+    (change)="changeValue($event.target.value)"
+    class="ng-select ng-single form-control"
+>   
+    <option disabled></option>
+    <option        
+        *ngFor="let pause of pauseTime | enumToArray: notIn"
+        value="{{ pause.key }}"
+    >
+        {{ pause.description }}
+    </option>
+</select>

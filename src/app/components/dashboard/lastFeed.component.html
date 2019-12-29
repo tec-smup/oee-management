@@ -15,7 +15,7 @@
       <a class="nav-item nav-link" id="nav-ver-pausas-tab" data-toggle="tab" href="#nav-ver-pausas" role="tab" aria-controls="nav-ver-pausas" aria-selected="false">
         <div class="fa fa-spinner fa-spin" *ngIf="refreshing"></div>
         Pausas        
-        <span class="badge badge-pill badge-secondary">{{pauses?.length}}</span>
+        <span class="badge badge-pill badge-secondary">{{pauseIncidests}}</span>
       </a>
       <a class="nav-item nav-link disabled" id="nav-timer-tab" data-toggle="tab" href="#" role="tab" aria-controls="nav-timer" aria-selected="false">
         Próxima atualização: {{timerStr}}
@@ -139,6 +139,7 @@
               <th>Data</th>
               <th>Pausa</th>
               <th>Justificativa</th>
+              <th>Ocorrências</th>
               <th>Tipo</th>
             </tr>
           </thead>
@@ -148,6 +149,7 @@
               <td>{{pause.date_ref_format}}</td>
               <td>{{pause.pause_time}}</td>
               <td>{{pause.pause_reason}}</td>      
+              <td>{{pause.incidents}}</td>      
               <td>{{pause.pause_type}}</td>      
             </tr>            
           </tbody>

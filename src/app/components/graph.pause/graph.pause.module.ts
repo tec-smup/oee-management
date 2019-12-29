@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { GraphPauseComponent } from './graph.pause.component';
 import { SharedModule } from '../shared/shared.module';
 
-import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 import { AmChartsModule } from '@amcharts/amcharts3-angular';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 
@@ -12,6 +11,7 @@ import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.modu
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
 import { PauseModalComponent } from './pause.modal.component';
 import { DropdownPauseReasonModule } from '../dropdown/pause.reason/dropdown.pause.reason.module';
+import { DateRangeModule } from '../dropdown/dateRange/date.range.module';
 
 
 @NgModule({
@@ -20,11 +20,10 @@ import { DropdownPauseReasonModule } from '../dropdown/pause.reason/dropdown.pau
     FormsModule,
     SharedModule,
     AmChartsModule,
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
     DropdownChannelModule,
     DropdownMachineModule,
-    DropdownPauseReasonModule 
+    DropdownPauseReasonModule,
+    DateRangeModule
   ],
   declarations: [ 
     GraphPauseComponent,    
@@ -33,7 +32,6 @@ import { DropdownPauseReasonModule } from '../dropdown/pause.reason/dropdown.pau
   exports: [ GraphPauseComponent ],
   providers: [ 
     DashboardService,
-    { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
   ],
   entryComponents: [
     PauseModalComponent

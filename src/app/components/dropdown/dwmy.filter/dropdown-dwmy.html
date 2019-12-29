@@ -1,10 +1,12 @@
-<ng-select
-    [items]="items"
-    bindLabel="name"
-    bindValue="id"
-    placeholder="Selecione um filtro"
-    (add)="refreshValue($event)"
-    [(ngModel)]="selectedFilter"
-    [clearable]="false">
-</ng-select>
-
+<div class="btn-group">
+    <ng-select
+        [items]="items"
+        bindLabel="name"
+        bindValue="id"
+        placeholder="Selecione um filtro"
+        (add)="refreshValue($event)"
+        [(ngModel)]="selectedFilter"
+        [clearable]="false"
+        [ngStyle]="{ 'width': '200px' }">
+    </ng-select>    
+</div>

@@ -1,6 +1,7 @@
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
   <div class="sidebar-fixed margin-top-55">
     
+    <!-- dashboard -->
     <ul class="nav flex-column">
       <li class="nav-item">
         <a [ngClass]="(linkActive=='dashboard')?'nav-link active':'nav-link'"  [routerLink]="['/dashboard']">
@@ -14,7 +15,9 @@
             Produção da máquina
           </a>
         </li>      
-    </ul>                
+    </ul> 
+
+    <!-- canal -->
     <div [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
       <hr style="margin-top: 0.2rem" />
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
@@ -47,6 +50,9 @@
         </a>
       </li>
     </ul>
+    <!-- canal -->
+
+    <!-- maquina -->
     <hr style="margin-top: 0.2rem" />
     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
       <span>Máquina</span>
@@ -71,6 +77,30 @@
         </a>
       </li>                           
     </ul>
+    <!-- maquina -->
+
+    <!-- alertas de pausa -->
+    <hr style="margin-top: 0.2rem" />
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
+      <span>Alerta de pausa</span>
+    </h6>    
+    <ul class="nav flex-column mb-2">
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='sponsor')?'nav-link active':'nav-link'" [routerLink]="['/sponsor']">
+          <i-user class="feather"></i-user>
+          Responsável
+        </a>
+      </li>   
+      <li class="nav-item">
+        <a [ngClass]="(linkActive=='alert')?'nav-link active':'nav-link'" [routerLink]="['/alert']">
+          <i-alert-circle class="feather"></i-alert-circle>
+          Configurar alertas
+        </a>
+      </li>                           
+    </ul>
+    <!-- alertas de pausa -->
+
+    <!-- administração -->
     <hr style="margin-top: 0.2rem" />
     <div [ngStyle]="{'display': currentUser.admin == 1 ? 'block' : 'none'}">
       <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-3 mb-1 text-muted">
@@ -97,10 +127,8 @@
         </li>                                 
       </ul>
     </div>
-    <div id="divOEE" class="card text-white bg-dark text-center" style="display:none;">
-      <div class="card-body">
-        <p class="card-text" style="font-size: 20px"></p>
-      </div>
-    </div>
+    <!-- administração -->
+
+    <app-oee-badge></app-oee-badge>
   </div>
 </nav>

@@ -15,6 +15,7 @@ class Pauses {
   pause_type: string;
   type: string;
   pause_in_minutes: number;
+  incidents: number;
 }
 
 class PauseGrouped {
@@ -30,6 +31,9 @@ class Pareto {
   pause_in_time: string;
   percentage: number;
   sum_percentage: number;
+  pause_name_count: string;
+  count: number;
+  pause_name_short: string;
 }
 
 export class MachinePauseList extends BaseModel {

@@ -7,6 +7,8 @@ import { ChannelComponent } from './components/channel/channel.component';
 import { UserComponent } from './components/user/user.component';
 import { GraphPauseComponent } from './components/graph.pause/graph.pause.component';
 import { MachineProductionComponent } from './components/machine.production/machine.production.component';
+import { SponsorComponent } from './components/sponsor/sponsor.component';
+import { AlertComponent } from './components/alert/alert.component';
 
 const appRoutes: Routes = [
     {
@@ -46,7 +48,17 @@ const appRoutes: Routes = [
       path: 'machineproduction',
       canActivate: [AuthGuard],
       component: MachineProductionComponent
-    },                
+    }, 
+    {
+      path: 'sponsor',
+      canActivate: [AuthGuard],
+      component: SponsorComponent
+    },
+    {
+      path: 'alert',
+      canActivate: [AuthGuard],
+      component: AlertComponent
+    },                        
     {
       path: '**',
       redirectTo: 'dashboard'

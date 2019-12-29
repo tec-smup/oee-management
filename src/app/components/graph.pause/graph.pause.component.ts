@@ -8,6 +8,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { PauseModalComponent } from './pause.modal.component';
 import * as moment from 'moment-timezone';
 import { MachinePauseDash } from '../../models/machine.pause.dash';
+import { Subscription } from 'rxjs';
+import { FilterService } from '../../services/dashboard/filter.service';
 
 @Component({
   selector: 'app-graph-pause',
@@ -15,13 +17,15 @@ import { MachinePauseDash } from '../../models/machine.pause.dash';
   styleUrls: ['./graph.pause.component.css']
 })
 export class GraphPauseComponent extends BaseComponent implements OnInit, OnDestroy {
-  amChart: AmChart;
-  dropdownMachine: string;
-  dropdownChannel: number;
-  dateTimeRange: Date[];
-  bsModalRef: BsModalRef;
-  loading: boolean = false;
+  private amChart: AmChart;
+  private channelId: number  = undefined;
+  private machineCode: string  = undefined;  
+  private dateRange: Date[] = undefined;
+  private unsubscribe: Subscription[] = []; 
 
+  public loading: boolean = false;
+
+  bsModalRef: BsModalRef;
   pauses: Array<MachinePauseDash> = [];
 
   constructor(
@@ -29,14 +33,11 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
     private AmCharts: AmChartsService,
     public toastr: ToastsManager, 
     vcr: ViewContainerRef,
-    private modalService: BsModalService) {
+    private modalService: BsModalService,
+    private filterService: FilterService) {
     super();        
     this.toastr.setRootViewContainerRef(vcr);
-
-      //devo fazer isso aqui pois o componente que carrega as últimas medições depende dessa data
-      let now = new Date(Date.now());
-      let channelTurn = this.getTurn();
-      this.dateTimeRange = [this.setTimeOnDatetime(now, (channelTurn.initial)), this.setTimeOnDatetime(now, (channelTurn.final))];    
+    this.listenFilters();   
   }
 
   ngOnInit() {
@@ -53,69 +54,54 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
         
         // disable slice labels
         chart.labelsEnabled = false;
-        
-        // add label to let users know the chart is empty
-        //chart.addLabel("50%", "50%", "Não encontrei dados com os filtros informados.", "middle", 16);
-        
-        // dim the whole chart
+      
         chart.alpha = 0.3;
       }
       
     }, ["serial"]);
 
-    this.amChart = this.AmCharts.makeChart('amChart', this.makeOptions([]));    
-     
-    // this.timer = setInterval(() => {
-    //     this.AmCharts.updateChart(this.amChart, () => {
-    //         this.amChart.dataProvider = this.makeRandomDataProvider();
-    //     });
-    // }, 3000);     
+    this.amChart = this.AmCharts.makeChart('amChart', this.makeOptions([]));         
   }
   ngOnDestroy() {
-    //destroi instancias anteriores do grafico
-    //clearInterval(this.timer);
+    
     if (this.amChart) {
         this.AmCharts.destroyChart(this.amChart);
     }      
+    this.unsubscribe.forEach(f => f.unsubscribe());
   }
 
-  changeDateRange(dates: any): any {
-    // var hours = Math.abs(dates.value[0] - dates.value[1]) / 36e5;   
-    // if(hours > 24) {
-    //   this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Erro!", { enableHTML: true, showCloseButton: true });
-    // }
-    // else {
-    //   this.refreshChart(true);  
-    // }  
-    this.refreshChart(true);
+  public refreshChart() {
+    this.getChartData();
   }
 
-  setChannel($event) {
-    let now1 = this.dateTimeRange[0];
-    let now2 = this.dateTimeRange[1];
-    this.dateTimeRange = [this.setTimeOnDatetime(now1, ($event.initial_turn || "08:00")), this.setTimeOnDatetime(now2, ($event.final_turn || "18:00"))];   
-
-    this.dropdownChannel = $event.id;
-  }
-
-  setMachine($event) {
-    this.dropdownMachine = $event;
-    this.refreshChart(true);
+  private listenFilters() {
+		const subsDateRange = this.filterService.onDateRangeUpdate$.subscribe(dateRange => {      
+      this.dateRange = dateRange;
+      this.getChartData();
+    });
+		const subsChannel = this.filterService.onChannelUpdate$.subscribe(channelId => {
+			this.channelId = channelId;
+    });  
+		const subsMachine = this.filterService.onMachineUpdate$.subscribe(machineCode => {
+      this.machineCode = machineCode;
+      this.getChartData();
+		});               
+		this.unsubscribe.push(subsDateRange);    
+		this.unsubscribe.push(subsChannel);    
+		this.unsubscribe.push(subsMachine);    
   }  
 
-  refreshChart(refresh: boolean) {
-    if(refresh && this.dropdownChannel && this.dropdownMachine && this.dateTimeRange.length == 2) {
-      this.getChartData();
-    }
-  }
-
   getChartData() {  
+    //retorna enquanto não tiver os filtros completos 
+    if(this.dateRange == undefined || this.channelId == undefined || this.machineCode == undefined)
+      return; 
+
     this.loading = true;
     this.dashboardService.chart(
-      this.formatDateTimeMySQL(this.dateTimeRange[0], true), 
-      this.formatDateTimeMySQL(this.dateTimeRange[1], false), 
-      this.dropdownChannel, 
-      this.dropdownMachine
+      this.formatDateTimeMySQL(this.dateRange[0], true), 
+      this.formatDateTimeMySQL(this.dateRange[1], false), 
+      this.channelId, 
+      this.machineCode
     )
     .subscribe(
       result => {   
@@ -254,15 +240,15 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
     let dataEndPoint = event.chart.dataProvider[event.endIndex];    
         
     let start = new MachinePauseDash();
-    start.channel_id = this.dropdownChannel;
-    start.machine_code = this.dropdownMachine;
+    start.channel_id = this.channelId;
+    start.machine_code = this.machineCode;
     start.date_ref = moment(dataStartPoint.labels).utc().format("YYYY-MM-DD HH:mm:ss");
     start.date_formated = moment(dataStartPoint.labels).utc().format("DD/MM/YYYY HH:mm:ss");
     start.value = dataStartPoint.data;
     
     let end = new MachinePauseDash();
-    end.channel_id = this.dropdownChannel;
-    end.machine_code = this.dropdownMachine;
+    end.channel_id = this.channelId;
+    end.machine_code = this.machineCode;
     end.date_ref = moment(dataEndPoint.labels).utc().format("YYYY-MM-DD HH:mm:ss");
     end.date_formated = moment(dataEndPoint.labels).utc().format("DD/MM/YYYY HH:mm:ss");
     end.value = dataEndPoint.data; 
@@ -274,7 +260,7 @@ export class GraphPauseComponent extends BaseComponent implements OnInit, OnDest
     const initialState = {
       pauses: this.pauses,
       title: `Confirmar pausa selecionada de ${end.date_dif} minutos`,
-      channelId: this.dropdownChannel
+      channelId: this.channelId
     };
     this.bsModalRef = this.modalService.show(PauseModalComponent, {initialState});
 

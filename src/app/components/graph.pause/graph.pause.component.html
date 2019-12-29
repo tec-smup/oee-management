@@ -8,32 +8,20 @@
         <div class="btn-toolbar" role="toolbar">
           <div class="form-row">
             <div class="col">
-              <input
-                class="form-control" 
-                placeholder="Selecione as datas"
-                [style.width]="'230px'"
-                [style.height]="'36px'"
-                [style.font-size]="'.875rem'"
-                [(ngModel)]="dateTimeRange"
-                [selectMode]="'range'"
-                [owlDateTimeTrigger]="dtRange1" [owlDateTime]="dtRange1" 
-                (dateTimeChange)="changeDateRange($event)"
-                #dateTimeRangeValidation="ngModel"
-              />
-              <owl-date-time #dtRange1></owl-date-time>                                      
+              <app-datetime-range></app-datetime-range>                               
             </div>
             <div class="col">
-              <dropdown-channel [listAll]="false" (changeEvent)="setChannel($event)"></dropdown-channel>
+              <dropdown-channel [listAll]="false"></dropdown-channel>
             </div>
             <div class="col">
-              <dropdown-machine [channelId]="dropdownChannel" (changeEvent)="setMachine($event)"></dropdown-machine> 
+              <dropdown-machine></dropdown-machine>
             </div>                        
           </div>                       
         </div>     
 
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
-            <button class="btn btn-sm btn-outline-secondary" (click)="refreshChart(true)" [disabled]="loading">Atualizar</button>
+            <button class="btn btn-sm btn-outline-secondary" (click)="refreshChart()" [disabled]="loading">Atualizar</button>
           </div>
         </div>
       </div>

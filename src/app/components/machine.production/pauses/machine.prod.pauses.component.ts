@@ -2,6 +2,8 @@ import { Component, OnInit, ViewContainerRef, OnDestroy, Input, SimpleChange } f
 import { ToastsManager } from 'ng2-toastr/src/toast-manager';
 import { BaseComponent } from '../../base.component';
 import { MachinePauseService } from '../../../services/machine.pause/machine.pause.service';
+import { Subscription } from 'rxjs';
+import { FilterService } from '../../../services/dashboard/filter.service';
 
 @Component({
   selector: 'app-machine-production-pauses',
@@ -9,11 +11,12 @@ import { MachinePauseService } from '../../../services/machine.pause/machine.pau
   styleUrls: ['./machine.prod.pauses.component.css']
 })
 export class MachineProductionPausesComponent extends BaseComponent implements OnInit, OnDestroy {
-  @Input() channelId: number;
-  @Input() dateRange: Date[];
-  @Input() machineCode: string;
-  @Input() dateRangeError: boolean;
-  @Input() refreshing: boolean;
+  private dwmy: number = undefined;
+  private channelId: number  = undefined;
+  private machineCode: string  = undefined;  
+  public refreshing: boolean = false;
+
+  private unsubscribe: Subscription[] = [];
 
   pauses = {
     table: [],
@@ -23,28 +26,46 @@ export class MachineProductionPausesComponent extends BaseComponent implements O
   constructor(
     private machinePauseService: MachinePauseService,
     public toastr: ToastsManager, 
-    vcr: ViewContainerRef) {
+    vcr: ViewContainerRef,
+    private filterService: FilterService) {
       super();
       this.toastr.setRootViewContainerRef(vcr);
+      this.listenFilters();
   }
 
   ngOnInit() {
   }
 
   ngOnDestroy() {
+    this.unsubscribe.forEach(f => f.unsubscribe());
   }
 
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if(!this.dateRangeError && ((this.dateRange && this.channelId && this.machineCode) || this.refreshing)) {
-      this.refreshing = true;
-      this.getPauses();
-    }
-  }   
+  private listenFilters() {
+		const subsCountdown = this.filterService.onCountdownUpdate$.subscribe(s => this.getPauses());
+		const subsDWMY = this.filterService.onDWMYUpdate$.subscribe(dwmy => {      
+			this.dwmy = dwmy;
+    });
+		const subsChannel = this.filterService.onChannelUpdate$.subscribe(channelId => {
+			this.channelId = channelId;
+    });  
+		const subsMachine = this.filterService.onMachineUpdate$.subscribe(machineCode => {
+			this.machineCode = machineCode;
+		});            
+		this.unsubscribe.push(subsCountdown);    
+		this.unsubscribe.push(subsDWMY);    
+		this.unsubscribe.push(subsChannel);    
+		this.unsubscribe.push(subsMachine);    
+  }      
 
   getPauses() {    
-    let dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
-    let dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
-    this.machinePauseService.list(dateIni, dateFin, this.channelId, this.machineCode)
+    //retorna enquanto não tiver os filtros completos 
+    if(this.dwmy == undefined || this.channelId == undefined || this.machineCode == undefined)
+      return;
+
+    const dateRange: string[] = this.setDateByFilter(this.dwmy);
+    this.refreshing = true;   
+
+    this.machinePauseService.list(dateRange[0], dateRange[1], this.channelId, this.machineCode)
     .subscribe(
       result => {     
         this.pauses.table = [];

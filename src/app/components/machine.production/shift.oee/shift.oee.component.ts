@@ -4,6 +4,8 @@ import { AmChartsService, AmChart } from "@amcharts/amcharts3-angular";
 import { MachineShiftService } from '../../../services/machine.shift/machine.shift.service';
 import { Parameters } from '../../../models/parameters';
 import { ToastsManager } from 'ng2-toastr';
+import { Subscription } from 'rxjs';
+import { FilterService } from '../../../services/dashboard/filter.service';
 
 @Component({
   selector: 'gauge-shift-oee',
@@ -11,11 +13,12 @@ import { ToastsManager } from 'ng2-toastr';
   styleUrls: ['./shift.oee.component.css']
 })
 export class GaugeShiftOeeComponent extends BaseComponent implements OnInit, OnDestroy { 
-  @Input() channelId: number;
-  @Input() dateRange: Date[];
-  @Input() machineCode: string;
-  @Input() dateRangeError: boolean;
-  @Input() refreshing: boolean;
+  private dwmy: number = undefined;
+  private channelId: number  = undefined;
+  private machineCode: string  = undefined;  
+  public refreshing: boolean = false;
+
+  private unsubscribe: Subscription[] = [];
 
   public charts: Array<AmChart> = new Array<AmChart>();
   public gauges: Array<any> = [];
@@ -23,28 +26,24 @@ export class GaugeShiftOeeComponent extends BaseComponent implements OnInit, OnD
   constructor(private machineShiftService: MachineShiftService,
               private amChartsService: AmChartsService,
               public toastr: ToastsManager, 
-              vcr: ViewContainerRef) {
+              vcr: ViewContainerRef,
+              private filterService: FilterService) {
     super();
     this.toastr.setRootViewContainerRef(vcr); 
+    this.listenFilters();
   }
 
   ngOnInit() {
   }
-
-  ngOnChanges(changes: {[propKey: string]: SimpleChange}) {
-    if(!this.dateRangeError && ((this.dateRange && this.channelId && this.machineCode) || this.refreshing)) {
-      this.refreshing = true;
-      this.getData();
-    }
-  } 
 
   ngAfterViewInit() {
   } 
 
   ngOnDestroy() {
     this.destroyCharts(null);
+    this.unsubscribe.forEach(f => f.unsubscribe());
   }  
-  destroyCharts(cb) {    
+  private destroyCharts(cb) {    
     if (this.charts) {
       this.charts.forEach(f => this.amChartsService.destroyChart(f));
     }
@@ -52,16 +51,41 @@ export class GaugeShiftOeeComponent extends BaseComponent implements OnInit, OnD
     if(cb !== null) cb();
   }
 
-  getData() {
+  private listenFilters() {
+		const subsCountdown = this.filterService.onCountdownUpdate$.subscribe(refresh => this.getData());
+		const subsDWMY = this.filterService.onDWMYUpdate$.subscribe(dwmy => {      
+			this.dwmy = dwmy;
+    });
+		const subsChannel = this.filterService.onChannelUpdate$.subscribe(channelId => {
+			this.channelId = channelId;
+    });  
+		const subsMachine = this.filterService.onMachineUpdate$.subscribe(machineCode => {
+			this.machineCode = machineCode;
+		});            
+		this.unsubscribe.push(subsCountdown);    
+		this.unsubscribe.push(subsDWMY);    
+		this.unsubscribe.push(subsChannel);    
+		this.unsubscribe.push(subsMachine);    
+  }  
+
+  private getData() {
+    console.log('antes')
+    console.log(this.dwmy, this.channelId, this.machineCode)
+    //retorna enquanto não tiver os filtros completos 
+    if(isNaN(this.dwmy) || !this.channelId || !this.machineCode)
+      return; 
+
+      console.log('depois')
+
     this.destroyCharts(() => {
-      let dateIni = this.formatDateTimeMySQL(this.dateRange[0], true);
-      let dateFin = this.formatDateTimeMySQL(this.dateRange[1], false);
+    const dateRange: string[] = this.setDateByFilter(this.dwmy);
+    this.refreshing = true;
       
       let params = new Parameters(); 
       params.channelId = this.channelId;
       params.machineCode = this.machineCode;
-      params.dateIni = dateIni;
-      params.dateFin = dateFin;
+      params.dateIni = dateRange[0];
+      params.dateFin = dateRange[1];
 
       this.machineShiftService.oee(params)
       .subscribe(

@@ -9,9 +9,10 @@ import { DropdownChannelModule } from '../dropdown/channel/dropdown.channel.modu
 import { DropdownMachineModule } from '../dropdown/machine/dropdown.machine.module';
 import { DashboardService } from '../../services/dashboard/dashboard.service';
 
-import { OwlDateTimeModule, OwlNativeDateTimeModule, OWL_DATE_TIME_LOCALE } from 'ng-pick-datetime';
 import {AgGridModule} from "ag-grid-angular";
 import { AmChartsModule } from '@amcharts/amcharts3-angular';
+import { FilterService } from '../../services/dashboard/filter.service';
+import { DateRangeModule } from '../dropdown/dateRange/date.range.module';
 
 @NgModule({
   imports: [
@@ -20,10 +21,9 @@ import { AmChartsModule } from '@amcharts/amcharts3-angular';
     FormsModule,
     DropdownChannelModule,
     DropdownMachineModule,
-    OwlDateTimeModule, 
-    OwlNativeDateTimeModule,
     AgGridModule.withComponents([]),
     AmChartsModule,
+    DateRangeModule
   ],
   declarations: [ 
     DashboardComponent,
@@ -35,7 +35,7 @@ import { AmChartsModule } from '@amcharts/amcharts3-angular';
   ],
   providers: [ 
     DashboardService,
-    { provide: OWL_DATE_TIME_LOCALE, useValue: 'pr-br' },
+    FilterService
   ]
 })
 export class DashboardModule { }

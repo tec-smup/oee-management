@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewContainerRef, OnDestroy } from '@angular/core';
 import { BaseComponent } from '../base.component';
 import { ToastsManager } from 'ng2-toastr/src/toast-manager';
+import { FilterService } from '../../services/dashboard/filter.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-machine-production',
@@ -8,22 +10,16 @@ import { ToastsManager } from 'ng2-toastr/src/toast-manager';
   styleUrls: ['./machine.production.component.css']
 })
 export class MachineProductionComponent extends BaseComponent implements OnInit, OnDestroy {
-  dropdownMachine: string;
-  dropdownChannel: number;
-  dateTimeRange: Date[];
-  dateTimeRangeError: boolean = false;
-  intervalTimer: any;
-  timerStr: string = "00:00:00";
-  refreshing: boolean = false;
+  private intervalTimer: any;
+  public timerStr: string = "00:00:00";
+  private unsubscribe: Subscription[] = [];
   
   constructor(
     public toastr: ToastsManager, 
-    vcr: ViewContainerRef) {
-    super();             
-    //devo fazer isso aqui pois o componente que carrega as últimas medições depende dessa data
-    let now = new Date(Date.now());
-    let channelTurn = this.getTurn();
-    this.dateTimeRange = [this.setTimeOnDatetime(now, (channelTurn.initial)), this.setTimeOnDatetime(now, (channelTurn.final))];    
+    private filterService: FilterService) 
+  {
+    super();
+    this.listenFilters();              
   }
 
   ngOnInit() {
@@ -32,43 +28,39 @@ export class MachineProductionComponent extends BaseComponent implements OnInit,
 
   ngOnDestroy() {
     clearInterval(this.intervalTimer);
-  }
+    this.unsubscribe.forEach(f => f.unsubscribe());
+  } 
 
-  startIntervalTimer() {
+  private startIntervalTimer() {
     let sec = 60;
     this.timerStr = this.secToTime(sec);
     clearInterval(this.intervalTimer);
     this.intervalTimer = setInterval(
       () => {
-        sec--; 
-
-        //espero alguns segundos para voltar a false para que na proxima atualização funcione correatamente
-        if(sec == 40) this.refreshing = false;        
+        sec--;       
 
         if(sec == 0) {
-          this.refreshing = true;
-          this.startIntervalTimer();
+          sec = 60;
+          this.startIntervalTimer();          
+          this.filterService.setRefreshingCountdown(true);
         }
         this.timerStr = this.secToTime(sec);
       }, 1000);
-  }   
-
-  changeDateRange(dates: any): any {
-    this.dateTimeRangeError = false;
-    var hours = Math.abs(dates.value[0] - dates.value[1]) / 36e5;   
-    if(hours > 24) {
-      this.dateTimeRangeError = true;
-      this.toastr.warning("Datas selecionadas não podem ter mais de 1 dia de diferença.", "Erro!", { enableHTML: true, showCloseButton: true });
-    }
   }  
-  setChannel($event) {
-    let now1 = this.dateTimeRange[0];
-    let now2 = this.dateTimeRange[1];
-    this.dateTimeRange = [this.setTimeOnDatetime(now1, ($event.initial_turn || "08:00")), this.setTimeOnDatetime(now2, ($event.final_turn || "18:00"))];   
 
-    this.dropdownChannel = $event.id;
+  private stopIntervalTimer() {
+    this.timerStr = 'pausado';
+    clearInterval(this.intervalTimer);
   }
-  setMachine($event) {
-    this.dropdownMachine = $event;
+
+  private listenFilters() {
+		const subsDWMY = this.filterService.onDWMYUpdate$.subscribe(dwmy => {      
+      //diferente de dia atual, trava o countdown
+      if(dwmy != 3) 
+        this.stopIntervalTimer();
+      else 
+        this.startIntervalTimer();
+    });
+		this.unsubscribe.push(subsDWMY);    
   }   
 }
